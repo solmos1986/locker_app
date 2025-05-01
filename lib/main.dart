@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:locker_app/pages/clients.dart';
 import 'package:locker_app/pages/depas.dart';
+import 'package:locker_app/presentation/client/qr_screen.dart';
 
 void main() => runApp(MiApp());
 
@@ -84,7 +84,7 @@ class _InicioState extends State<Inicio> {
                           () => {
                             Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => Client()),
+                              MaterialPageRoute(builder: (context) =>  QrScreen()),
                             ),
                           },
                       child: Text('Recoger'),
