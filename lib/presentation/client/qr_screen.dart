@@ -2,7 +2,7 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:locker_app/presentation/client/confirmate_screen.dart';
+import 'package:locker_app/presentation/client/close_locker.dart';
 import 'package:qr_code_scanner_plus/qr_code_scanner_plus.dart';
 
 class QrScreen extends StatefulWidget {
@@ -44,13 +44,12 @@ class _QrScreenState extends State<QrScreen> {
           controller.disposed = true;
           if (result != null) {
             controller.stopCamera();
-            log('cambio detectado codigo ${result!.code.toString()}');
+            log('codigo detectado  ${result!.code.toString()}');
             Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => ConfirmateScreen(
-                        user: result!.code.toString(),
-                      )),
+                builder: (context) => CloseLocker(password: result!.code.toString()),
+              ),
             );
           }
         }
@@ -66,24 +65,25 @@ class _QrScreenState extends State<QrScreen> {
         title: Text('Enfoca el QR'),
         centerTitle: true,
       ),
-      body: Column(children: <Widget>[
-        Expanded(
-          flex: 6,
-          child: QRView(
-            key: qrKey,
-            onQRViewCreated: _onQRViewCreated,
+      body: Column(
+        children: <Widget>[
+          Expanded(
+            flex: 6,
+            child: QRView(key: qrKey, onQRViewCreated: _onQRViewCreated),
           ),
-        ),
-        Expanded(
-          flex: 1,
-          child: Center(
-            child: (result != null)
-                ? Text(
-                    'Barcode Type:  ${result!.format.toString()}  Data: ${result!.code} Validate: ${authenticado.toString()}')
-                : Text('Scan a code '),
+          Expanded(
+            flex: 1,
+            child: Center(
+              child:
+                  (result != null)
+                      ? Text(
+                        'Barcode Type:  ${result!.format.toString()}  Data: ${result!.code} Validate: ${authenticado.toString()}',
+                      )
+                      : Text('Scan a code '),
+            ),
           ),
-        )
-      ]),
+        ],
+      ),
     );
   }
 }
