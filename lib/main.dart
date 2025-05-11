@@ -1,104 +1,42 @@
 import 'package:flutter/material.dart';
-import 'package:locker_app/pages/depas.dart';
-import 'package:locker_app/presentation/client/cliente_screen.dart';
+import 'package:locker_app/config/theme.dart';
+import 'package:locker_app/presentation/provider/config_provider.dart';
+import 'package:locker_app/presentation/provider/reception_provider.dart';
+import 'package:locker_app/presentation/screens/client_screen.dart';
+import 'package:locker_app/presentation/screens/close_locker.dart';
+import 'package:locker_app/presentation/screens/config_screen.dart';
+import 'package:locker_app/presentation/screens/home_screen.dart';
+import 'package:locker_app/presentation/screens/password_screen.dart';
+import 'package:locker_app/presentation/screens/qr_screen.dart';
+import 'package:locker_app/presentation/screens/reception_screen.dart';
+import 'package:provider/provider.dart';
 
-void main() => runApp(MiApp());
+void main() => runApp(MyApp());
 
-class MiApp extends StatelessWidget {
-  const MiApp({super.key});
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(title: "Mi App2", home: Inicio());
-  }
-}
-
-class Inicio extends StatefulWidget {
-  const Inicio({super.key});
-
-  @override
-  State<Inicio> createState() => _InicioState();
-}
-
-class _InicioState extends State<Inicio> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.black,
-      body: Center(
-        child: Column(
-          //shrinkWrap: true,
-          //padding: const EdgeInsets.all(20.0),
-          children: <Widget>[
-            Expanded(
-              flex: 3, // 30%
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Padding(padding: EdgeInsets.all(0.0)),
-                  Image.network(
-                    'https://holdinghome.com.bo/web-publica/img/logo-hh.png',
-                    fit: BoxFit.contain,
-
-                    height: 80,
-                    color: Colors.white,
-                  ),
-                ],
-              ),
-            ),
-            Expanded(
-              flex: 3, // 70%
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Padding(padding: EdgeInsets.all(20.0)),
-                  SizedBox(
-                    width: 400,
-                    child: ElevatedButton(
-                      onPressed:
-                          () => {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => Depas()),
-                            ),
-                          },
-                      child: Text('Entregar'),
-                    ),
-                  ),
-                  //SizedBox(height: 30),
-                ],
-              ),
-            ),
-            Expanded(
-              flex: 3, // 70%
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Padding(padding: EdgeInsets.all(20.0)),
-                  // SizedBox(height: 30),
-                  SizedBox(
-                    width: 400,
-                    child: ElevatedButton(
-                      onPressed:
-                          () => {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) =>  ClienteScreen()),
-                            ),
-                          },
-                      child: Text('Recoger'),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Expanded(
-              flex: 2, // 70%
-              child: Column(),
-            ),
-          ],
-        ),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => ConfigProvider()),
+        ChangeNotifierProvider(create: (_) => ReceptionProvider()),
+      ],
+      child: MaterialApp(
+        title: 'Lock App',
+        theme: AppTheme().theme(),
+        initialRoute: '/home',
+        routes: {
+          "/home": (context) => HomeScreen(),
+          "/client": (context) => ClientScreen(),
+          "/reception": (context) => ReceptionScreen(),
+          "/close-locker": (context) => CloseLockerScreen(password: ''),
+          "/password": (context) => PasswordScreen(),
+          "/qr-scan": (context) => QrScreen(),
+          "/config": (context) => ConfigScreen(),
+        },
+        debugShowCheckedModeBanner: false,
       ),
     );
   }

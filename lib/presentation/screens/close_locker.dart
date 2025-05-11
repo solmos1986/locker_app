@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:locker_app/config/theme.dart';
 
-class CloseLocker extends StatelessWidget {
-  const CloseLocker({super.key, required this.password});
+class CloseLockerScreen extends StatelessWidget {
+  const CloseLockerScreen({super.key, required this.password});
 
   final String password;
 
@@ -10,8 +11,10 @@ class CloseLocker extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         actions: [],
-        title: Text('Casillero abierto'),
-        centerTitle: true,
+        title: Text(
+          'Casillero abierto',
+          style: TextStyle(color: ConfigColor.appBarTextColor),
+        ),
       ),
       body: Padding(
         padding: EdgeInsets.all(0),
@@ -22,7 +25,11 @@ class CloseLocker extends StatelessWidget {
               child: Center(
                 child: Text(
                   'No olvide cerrar el casillero ${password.toString()}',
-                  style: TextStyle(fontWeight: FontWeight.w200, fontSize: 20),
+                  style: TextStyle(
+                    fontWeight: FontWeight.w200,
+                    fontSize: 20,
+                    color: ConfigColor.appBarTextColor,
+                  ),
                 ),
               ),
             ),

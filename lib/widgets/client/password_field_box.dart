@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 class PasswordFieldBox extends StatelessWidget {
   final void Function(String) onSubmitted;
   const PasswordFieldBox({super.key, required this.onSubmitted});
@@ -22,7 +21,10 @@ class PasswordFieldBox extends StatelessWidget {
               keyboardType: TextInputType.text,
               obscureText: true,
               decoration: decoration,
-              onChanged: (value) => {print('cambio detectado codigo $value')},
+              onChanged: (value) => {
+                //movementProvider.movementList.length
+                print('cambio detectado codigo $value'),
+              },
               onFieldSubmitted: (value) {
                 onSubmitted(textController.text);
               },

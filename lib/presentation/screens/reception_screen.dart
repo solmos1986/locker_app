@@ -1,73 +1,29 @@
 import 'package:flutter/material.dart';
-import 'package:locker_app/main.dart';
+import 'package:locker_app/config/theme.dart';
+import 'package:locker_app/presentation/provider/reception_provider.dart';
+import 'package:provider/provider.dart';
 
-//void main() => runApp(MiApp());
-
-class Depas extends StatelessWidget {
-  const Depas({super.key});
+class ReceptionScreen extends StatelessWidget {
+  const ReceptionScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(title: "Mi App2", home: Inicio());
-  }
-}
+    final userProvider = context.watch<ReceptionProvider>();
+    final lockerProvider = context.watch<ReceptionProvider>();
 
-class Inicio extends StatefulWidget {
-  const Inicio({super.key});
+    userProvider.getListUsers();
+    lockerProvider.getListLockers();
+    final users = userProvider.userList;
+    final lockers = lockerProvider.lockerList;
 
-  @override
-  State<Inicio> createState() => _InicioState();
-}
-
-class _InicioState extends State<Inicio> {
-  @override
-  Widget build(BuildContext context) {
-    List listDepa = [
-      '1',
-      '2',
-      '3',
-      '4',
-      '5',
-      '6',
-      '7',
-      '8',
-      '9',
-      '10',
-      '11',
-      '12',
-      '13',
-      '14',
-      '15',
-      '16',
-      '17',
-      '18',
-      '19',
-      '20',
-    ];
-    List listLocks = [
-      '1',
-      '2',
-      '3',
-      '4',
-      '5',
-      '6',
-      '7',
-      '8',
-      '9',
-      '10',
-      '11',
-      '12',
-      '13',
-      '14',
-      '15',
-      '16',
-      '17',
-      '18',
-      '19',
-      '20',
-    ];
     return Scaffold(
-      backgroundColor: Colors.black,
+      appBar: AppBar(
+        actions: [],
+        title: Text(
+          'Deja tu encomienda',
+          style: TextStyle(color: ConfigColor.appBarTextColor),
+        ),
+      ),
       body: Center(
         child: Column(
           //shrinkWrap: true,
@@ -101,26 +57,26 @@ class _InicioState extends State<Inicio> {
                 children: [
                   Padding(padding: EdgeInsets.all(10.0)),
                   Container(
-                    color: Colors.black.withOpacity(0.3),
+                    color: Colors.black.withValues(alpha: 0.3),
                     child: Text(
                       'Selecciona un departamento',
-                      style: TextStyle(color: Colors.white.withOpacity(0.7)),
+                      style: TextStyle(
+                        color: Colors.white.withValues(alpha: 0.7),
+                      ),
                     ),
                   ),
                   Container(
-                    color: Colors.white.withOpacity(0.8),
+                    color: Colors.white.withValues(alpha: 0.8),
                     width: 300,
                     child: DropdownButtonFormField(
-                      dropdownColor: Colors.white.withOpacity(0.8),
+                      dropdownColor: Colors.white.withValues(alpha: 0.8),
                       items:
-                          listDepa.map((name) {
+                          users.map((user) {
                             return DropdownMenuItem(
-                              value: name,
+                              value: user.name,
                               child: Text(
-                                name,
-                                style: TextStyle(
-                                  color: Colors.black.withOpacity(0.6),
-                                ),
+                                'Depart #${user.name}',
+                                style: TextStyle(),
                               ),
                             );
                           }).toList(),
@@ -135,33 +91,34 @@ class _InicioState extends State<Inicio> {
             Expanded(
               flex: 2, // 30%.
               //child: Container(
-              //color: Colors.white.withOpacity(0.3),
+              //color: Colors.white.withValues(0.3),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
                   Padding(padding: EdgeInsets.all(10.0)),
                   Container(
-                    color: Colors.black.withOpacity(0.3),
-
+                    color: Colors.black.withValues(alpha: 0.3),
                     child: Text(
                       'Selecciona un casillero',
-                      style: TextStyle(color: Colors.white.withOpacity(0.7)),
+                      style: TextStyle(
+                        color: Colors.white.withValues(alpha: 0.7),
+                      ),
                     ),
                   ),
                   Container(
-                    color: Colors.white.withOpacity(0.8),
+                    color: Colors.white.withValues(alpha: 0.8),
                     width: 300,
                     child: DropdownButtonFormField(
-                      dropdownColor: Colors.white.withOpacity(0.8),
+                      dropdownColor: Colors.white.withValues(alpha: 0.8),
                       items:
-                          listLocks.map((name) {
+                          lockers.map((locker) {
                             return DropdownMenuItem(
-                              value: name,
+                              value: locker.id,
                               child: Text(
-                                name,
+                                'Casillero ${locker.id.toString()}',
                                 style: TextStyle(
-                                  color: Colors.black.withOpacity(0.6),
+                                  color: Colors.black.withValues(alpha: 0.6),
                                 ),
                               ),
                             );
@@ -194,33 +151,6 @@ class _InicioState extends State<Inicio> {
                               //al cliente y vuelve al estado inicial la app
                             },
                         child: Text('Entregar'),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            Expanded(
-              flex: 1, // 10%
-              child: Container(
-                color: Colors.black,
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Padding(padding: EdgeInsets.all(5.0)),
-                    SizedBox(
-                      width: 400,
-                      child: IconButton(
-                        icon: Icon(Icons.chevron_left),
-                        iconSize: 35,
-                        color: Colors.grey,
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => MiApp()),
-                          );
-                        },
                       ),
                     ),
                   ],

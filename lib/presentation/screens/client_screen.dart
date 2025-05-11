@@ -1,22 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:locker_app/presentation/client/password_screen.dart';
-import 'package:locker_app/presentation/client/qr_screen.dart';
+import 'package:locker_app/config/theme.dart';
+import 'package:locker_app/presentation/screens/password_screen.dart';
+import 'package:locker_app/presentation/screens/qr_screen.dart';
 
-class ClienteScreen extends StatefulWidget {
-  const ClienteScreen({super.key});
+class ClientScreen extends StatelessWidget {
+  const ClientScreen({super.key});
 
-  @override
-  State<ClienteScreen> createState() => _ClienteScreenState();
-}
-
-class _ClienteScreenState extends State<ClienteScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         actions: [],
-        title: Text('Autenticación'),
-        centerTitle: true,
+        title: Text(
+          'Autenticación',
+          style: TextStyle(color: ConfigColor.appBarTextColor),
+        ),
       ),
       body: Center(
         child: Column(
@@ -30,9 +28,7 @@ class _ClienteScreenState extends State<ClienteScreen> {
                     () => {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(
-                          builder: (context) => QrScreen(),
-                        ),
+                        MaterialPageRoute(builder: (context) => QrScreen()),
                       ),
                     },
                 child: Column(
@@ -59,11 +55,12 @@ class _ClienteScreenState extends State<ClienteScreen> {
             Padding(
               padding: EdgeInsets.all(10),
               child: ElevatedButton(
-                onPressed: () => {
+                onPressed:
+                    () => {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => ConfirmateScreen(),
+                          builder: (context) => PasswordScreen(),
                         ),
                       ),
                     },

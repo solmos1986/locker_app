@@ -2,7 +2,8 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:locker_app/presentation/client/close_locker.dart';
+import 'package:locker_app/config/theme.dart';
+import 'package:locker_app/presentation/screens/close_locker.dart';
 import 'package:qr_code_scanner_plus/qr_code_scanner_plus.dart';
 
 class QrScreen extends StatefulWidget {
@@ -48,7 +49,9 @@ class _QrScreenState extends State<QrScreen> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => CloseLocker(password: result!.code.toString()),
+                builder:
+                    (context) =>
+                        CloseLockerScreen(password: result!.code.toString()),
               ),
             );
           }
@@ -62,8 +65,10 @@ class _QrScreenState extends State<QrScreen> {
     return Scaffold(
       appBar: AppBar(
         actions: [],
-        title: Text('Enfoca el QR'),
-        centerTitle: true,
+        title: Text(
+          'Enfoca tu QR',
+          style: TextStyle(color: ConfigColor.appBarTextColor),
+        ),
       ),
       body: Column(
         children: <Widget>[
@@ -79,7 +84,10 @@ class _QrScreenState extends State<QrScreen> {
                       ? Text(
                         'Barcode Type:  ${result!.format.toString()}  Data: ${result!.code} Validate: ${authenticado.toString()}',
                       )
-                      : Text('Scan a code '),
+                      : Text(
+                        'Escaneando...',
+                        style: TextStyle(color: ConfigColor.appBarTextColor),
+                      ),
             ),
           ),
         ],
