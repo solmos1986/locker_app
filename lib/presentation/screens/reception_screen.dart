@@ -16,6 +16,10 @@ class ReceptionScreen extends StatelessWidget {
     final users = userProvider.userList;
     final lockers = lockerProvider.lockerList;
 
+    void open(){
+
+    }
+
     return Scaffold(
       appBar: AppBar(
         actions: [],
@@ -145,12 +149,48 @@ class ReceptionScreen extends StatelessWidget {
                       child: ElevatedButton(
                         onPressed:
                             () => {
-                              //Aqui nos debe abrir el casillero y cuando
-                              //detecte que el casillero cerró una ventana flotante
-                              //GRACIAS con boton OK para que envíe la alerta
-                              //al cliente y vuelve al estado inicial la app
+                              print('485 ok'),
+                              showDialog<String>(
+                                context: context,
+                                builder:
+                                    (BuildContext context) => Dialog(
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: <Widget>[
+                                            const Text(
+                                              'Abrio la puerta?',
+                                            ),
+                                            const SizedBox(height: 15),
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              //crossAxisAlignment: CrossAxisAlignment.start,
+                                              children: [
+                                                TextButton(
+                                                  onPressed: () {
+                                                    Navigator.pushNamed(context, '/close-locker');
+                                                  },
+                                                  child: const Text('si'),
+                                                ),
+                                                TextButton(
+                                                  onPressed: () {
+                                                    Navigator.pop(context);
+                                                  },
+                                                  child: const Text('No'),
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                              ),
                             },
-                        child: Text('Entregar'),
+                        child: Text('Abrir casillero'),
                       ),
                     ),
                   ],
