@@ -6,9 +6,7 @@ class DatabaseService {
   final _dio = Dio();
 
   Future<DataBaseModel> getAllDataBase() async {
-    final response = await _dio.get(
-      '${EnvConfig.baseUrl}/lock-app/public/api/database',
-    );
+    final response = await _dio.get('${EnvConfig.baseUrl}/public/api/database');
 
     return DataBaseModel.fromJson(response.data);
   }
