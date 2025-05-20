@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:locker_app/config/theme.dart';
 import 'package:locker_app/presentation/provider/config_provider.dart';
+import 'package:locker_app/presentation/provider/movement_provider.dart';
 import 'package:locker_app/presentation/provider/reception_provider.dart';
 import 'package:locker_app/presentation/screens/client_screen.dart';
 import 'package:locker_app/presentation/screens/close_locker.dart';
@@ -22,6 +23,7 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (_) => ConfigProvider()),
         ChangeNotifierProvider(create: (_) => ReceptionProvider()),
+        ChangeNotifierProvider(create: (_) => MovementProvider()),
       ],
       child: MaterialApp(
         title: 'Lock App',

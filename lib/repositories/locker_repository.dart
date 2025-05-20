@@ -16,7 +16,7 @@ class LockerRepository {
   Future<LockerModel> create(LockerModel locker) async {
     final query = await db.database;
     final id = await query.insert(LockerFields.tableName, locker.toJson());
-    return locker.copy(id: id);
+    return locker.copy(lockerId: id);
   }
 
   Future<LockerModel> read(int id) async {
@@ -32,7 +32,7 @@ class LockerRepository {
     );
 
     if (maps.isNotEmpty) {
-      return LockerModel.fromJsonMap(maps.first);
+      return LockerModel.fromJson(maps.first);
     } else {
       throw Exception('ID $id not found');
     }
@@ -40,9 +40,9 @@ class LockerRepository {
 
   Future<List<LockerModel>> readAll() async {
     final db = await LockeAppDatabase.instance.database;
-    const orderBy = ' id DESC';
+    const orderBy = ' locker_id DESC';
     final result = await db.query(LockerFields.tableName, orderBy: orderBy);
-    return result.map((json) => LockerModel.fromJsonMap(json)).toList();
+    return result.map((json) => LockerModel.fromJson(json)).toList();
   }
 
   Future<int> update(LockerModel note) async {
@@ -51,7 +51,7 @@ class LockerRepository {
       LockerFields.tableName,
       note.toJson(),
       where: '${LockerFields.id} = ?',
-      whereArgs: [note.id],
+      whereArgs: [note.lockerId],
     );
   }
 
@@ -74,7 +74,7 @@ class LockerRepository {
 }
 
 class LockerFields {
-  static const String tableName = 'lockers';
+  static const String tableName = 'locker';
   static const String idType = 'INTEGER PRIMARY KEY AUTOINCREMENT';
   static const String id = '_id';
 }

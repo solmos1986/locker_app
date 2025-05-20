@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:locker_app/config/theme.dart';
+import 'package:locker_app/presentation/provider/movement_provider.dart';
 import 'package:locker_app/presentation/provider/reception_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -10,15 +11,15 @@ class ReceptionScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final userProvider = context.watch<ReceptionProvider>();
     final lockerProvider = context.watch<ReceptionProvider>();
+    final movementProvider = context.watch<MovementProvider>();
 
     userProvider.getListUsers();
-    lockerProvider.getListLockers();
+    lockerProvider.getListDoors();
+
     final users = userProvider.userList;
-    final lockers = lockerProvider.lockerList;
+    final lockers = lockerProvider.doorList;
 
-    void open(){
-
-    }
+    void open() {}
 
     return Scaffold(
       appBar: AppBar(
@@ -118,9 +119,9 @@ class ReceptionScreen extends StatelessWidget {
                       items:
                           lockers.map((locker) {
                             return DropdownMenuItem(
-                              value: locker.id,
+                              value: locker.doorId,
                               child: Text(
-                                'Casillero ${locker.id.toString()}',
+                                'Casillero ${locker.number.toString()}',
                                 style: TextStyle(
                                   color: Colors.black.withValues(alpha: 0.6),
                                 ),
@@ -161,9 +162,7 @@ class ReceptionScreen extends StatelessWidget {
                                           mainAxisAlignment:
                                               MainAxisAlignment.center,
                                           children: <Widget>[
-                                            const Text(
-                                              'Abrio la puerta?',
-                                            ),
+                                            const Text('Abrio la puerta?'),
                                             const SizedBox(height: 15),
                                             Row(
                                               mainAxisAlignment:
@@ -171,8 +170,9 @@ class ReceptionScreen extends StatelessWidget {
                                               //crossAxisAlignment: CrossAxisAlignment.start,
                                               children: [
                                                 TextButton(
-                                                  onPressed: () {
-                                                    Navigator.pushNamed(context, '/close-locker');
+                                                  onPressed: () async  {
+                                                    await movementProvider.sendMovement(5);
+                                                    //Navigator.pushNamed(context, '/close-locker');
                                                   },
                                                   child: const Text('si'),
                                                 ),

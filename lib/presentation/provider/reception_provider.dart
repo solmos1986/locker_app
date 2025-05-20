@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:locker_app/infrastructure/locker_model.dart';
+import 'package:locker_app/infrastructure/door_model.dart';
+import 'package:locker_app/repositories/door_repository.dart';
 import 'package:locker_app/repositories/locker_repository.dart';
 import 'package:locker_app/infrastructure/user_model.dart';
 import 'package:locker_app/repositories/users_migration.dart';
-import 'package:locker_app/services/movement_service.dart';
 
 class ReceptionProvider extends ChangeNotifier {
-  final UserService userService = UserService();
   final userRepository = UserRepository();
   final lockerRepository = LockerRepository();
+  final doorRepository = DoorRepository();
 
   List<UserModel> userList = [];
-  List<LockerModel> lockerList = [];
+  List<DoorModel> doorList = [];
 
   Future<void> sendMovement(String text) async {}
 
@@ -22,9 +22,9 @@ class ReceptionProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> getListLockers() async {
-    final lockers = await lockerRepository.readAll();
-    lockerList = lockers;
+  Future<void> getListDoors() async {
+    final doors = await doorRepository.readDoorAvailable();
+    doorList = doors;
 
     notifyListeners();
   }

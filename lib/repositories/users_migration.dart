@@ -16,7 +16,7 @@ class UserRepository {
   Future<UserModel> create(UserModel user) async {
     final query = await db.database;
     final id = await query.insert(UsersFields.tableName, user.toJson());
-    return user.copy(id: id);
+    return user.copy(userId: id);
   }
 
   Future<UserModel> read(int id) async {
@@ -32,7 +32,7 @@ class UserRepository {
     );
 
     if (maps.isNotEmpty) {
-      return UserModel.fromJsonMap(maps.first);
+      return UserModel.fromJson(maps.first);
     } else {
       throw Exception('ID $id not found');
     }
@@ -40,18 +40,18 @@ class UserRepository {
 
   Future<List<UserModel>> readAll() async {
     final db = await LockeAppDatabase.instance.database;
-    const orderBy = ' id DESC';
+    const orderBy = ' user_id ASC';
     final result = await db.query(UsersFields.tableName, orderBy: orderBy);
-    return result.map((json) => UserModel.fromJsonMap(json)).toList();
+    return result.map((json) => UserModel.fromJson(json)).toList();
   }
 
-  Future<int> update(UserModel note) async {
+  Future<int> update(UserModel user) async {
     final db = await LockeAppDatabase.instance.database;
     return db.update(
       UsersFields.tableName,
-      note.toJson(),
+      user.toJson(),
       where: '${UsersFields.id} = ?',
-      whereArgs: [note.id],
+      whereArgs: [user.userId],
     );
   }
 
@@ -74,7 +74,7 @@ class UserRepository {
 }
 
 class UsersFields {
-  static const String tableName = 'users';
+  static const String tableName = 'user';
   static const String idType = 'INTEGER PRIMARY KEY AUTOINCREMENT';
   static const String id = '_id';
 }

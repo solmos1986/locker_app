@@ -1,35 +1,40 @@
 class UserModel {
-  int id;
+  int userId;
   int lockerId;
   String name;
   int state;
+  DateTime createAt;
 
   UserModel({
-    required this.id,
+    required this.userId,
     required this.lockerId,
     required this.name,
     required this.state,
+    required this.createAt,
   });
 
-  factory UserModel.fromJsonMap(Map<String, dynamic> json) => UserModel(
-    id: json["id"],
-    lockerId: json["lockerId"],
+  factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
+    userId: json["user_id"],
+    lockerId: json["locker_id"],
     name: json["name"],
     state: json["state"],
+    createAt: DateTime.parse(json["create_at"]),
   );
 
   Map<String, dynamic> toJson() => {
-    "id": id,
-    "lockerId": lockerId,
+    "user_id": userId,
+    "locker_id": lockerId,
     "name": name,
     "state": state,
+    "create_at": createAt.toIso8601String(),
   };
 
-  UserModel copy({int? id, int? lockerId, String? name, int? state}) =>
+  UserModel copy({int? userId, int? lockerId, String? name, int? state}) =>
       UserModel(
-        id: id ?? this.id,
+        userId: userId ?? this.userId,
         lockerId: lockerId ?? this.lockerId,
         name: name ?? this.name,
         state: state ?? this.state,
+        createAt: createAt,
       );
 }
