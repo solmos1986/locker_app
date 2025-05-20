@@ -34,10 +34,10 @@ class MovementProvider extends ChangeNotifier {
     } else {}
   }
 
-  Future<void> getListDoors() async {
+  /* Future<void> getListDoors() async {
     final doors = await doorRepository.readDoorAvailable();
     doorList = doors;
 
     notifyListeners();
-  }
+  } */
 }

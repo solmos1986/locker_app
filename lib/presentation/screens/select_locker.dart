@@ -1,35 +1,28 @@
 import 'package:flutter/material.dart';
-import 'package:local_auth/local_auth.dart'
-    show AuthenticationOptions, LocalAuthentication;
 import 'package:locker_app/config/theme.dart';
-import 'package:locker_app/main.dart';
-import 'package:locker_app/presentation/screens/password_screen.dart';
-import 'package:locker_app/presentation/screens/qr_screen.dart';
-import 'package:flutter_screen_lock/flutter_screen_lock.dart';
-import 'package:local_auth/local_auth.dart';
+import 'package:locker_app/presentation/provider/reception_provider.dart';
+import 'package:provider/provider.dart';
+//import 'package:flutter/services.dart' show rootBundle;
 
-class ClientScreen extends StatelessWidget {
-  const ClientScreen({super.key});
+class SelectLockerScreen extends StatelessWidget {
+  const SelectLockerScreen({super.key, required this.password});
+  
+  final String password;
+  /*  Future<String> loadAsset() async {
+    return await rootBundle.loadString('assets/caja.png');
+  } */
 
   @override
   Widget build(BuildContext context) {
-    Future<void> localAuth(BuildContext context) async {
-      final localAuth = LocalAuthentication();
-      final didAuthenticate = await localAuth.authenticate(
-        localizedReason: 'Please authenticate',
-        options: const AuthenticationOptions(biometricOnly: true),
-      );
+    final receptionProvider = context.watch<ReceptionProvider>();
 
-      if (didAuthenticate && context.mounted) {
-        Navigator.pop(context);
-      }
-    }
+    receptionProvider.getListAvailableDoors();
 
     return Scaffold(
       appBar: AppBar(
         actions: [],
         title: Text(
-          'Autenticación',
+          'Selecciona un casillero ${password.toString()}',
           style: TextStyle(color: ConfigColor.appBarTextColor),
         ),
       ),
@@ -47,7 +40,67 @@ class ClientScreen extends StatelessWidget {
                       top: 5,
                       bottom: 10,
                       left: 10,
-                      right: 20,
+                      right: 5,
+                    ),
+                    child: InkWell(
+                      child: SizedBox(
+                        width: 200,
+                        height: 150,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Color.fromARGB(115, 77, 76, 76),
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          //color: const Color.fromARGB(160, 255, 255, 255),
+                          child: Padding(
+                            padding: EdgeInsets.only(
+                              top: 5,
+                              bottom: 10,
+                              left: 10,
+                              right: 5,
+                            ),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                SizedBox(
+                                  height: 80,
+                                  child: Image.asset('assets/images/caja.png'),
+                                ),
+                                Text(
+                                  receptionProvider.doorSmall.name,
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                /* Text(
+                                  'medidas: 15x10x50',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(color: Colors.white),
+                                ), */
+                                Text(
+                                  'disponibles : ${receptionProvider.doorSmall.total}',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                      onTap: () {
+                        Navigator.pushNamed(context, '/confirm-delivery');
+                        print("tapped on container");
+                      },
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(
+                      top: 5,
+                      bottom: 10,
+                      left: 10,
+                      right: 5,
                     ),
                     child: InkWell(
                       child: SizedBox(
@@ -71,40 +124,33 @@ class ClientScreen extends StatelessWidget {
                               children: [
                                 SizedBox(
                                   height: 110,
-                                  child: Image.asset('assets/images/qr.png'),
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.only(
-                                    top: 0,
-                                    bottom: 15,
-                                    left: 10,
-                                    right: 5,
-                                  ),
+                                  child: Image.asset('assets/images/caja.png'),
                                 ),
                                 Text(
-                                  'Escanear QR',
+                                  receptionProvider.doorMedium.name,
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                     color: Colors.white,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
-
                                 /* Text(
                                   'medidas: 15x10x50',
                                   textAlign: TextAlign.center,
                                   style: TextStyle(color: Colors.white),
                                 ), */
+                                Text(
+                                  'disponibles: ${receptionProvider.doorMedium.total}',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(color: Colors.white),
+                                ),
                               ],
                             ),
                           ),
                         ),
                       ),
                       onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => QrScreen()),
-                        );
+                        Navigator.pushNamed(context, '/confirm-delivery');
                         print("tapped on container");
                       },
                     ),
@@ -113,13 +159,13 @@ class ClientScreen extends StatelessWidget {
                     padding: EdgeInsets.only(
                       top: 5,
                       bottom: 10,
-                      left: 25,
+                      left: 10,
                       right: 5,
                     ),
                     child: InkWell(
                       child: SizedBox(
                         width: 200,
-                        height: 200,
+                        height: 270,
                         child: Container(
                           decoration: BoxDecoration(
                             color: Color.fromARGB(115, 77, 76, 76),
@@ -130,57 +176,53 @@ class ClientScreen extends StatelessWidget {
                             padding: EdgeInsets.only(
                               top: 5,
                               bottom: 10,
-                              left: 1,
+                              left: 10,
                               right: 5,
                             ),
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
                                 SizedBox(
-                                  height: 120,
-                                  child: Image.asset(
-                                    'assets/images/contrasena1.png',
-                                  ),
+                                  height: 170,
+                                  child: Image.asset('assets/images/caja.png'),
                                 ),
                                 //Image.asset('assets/images/caja.png'),
                                 Text(
-                                  'Ingresar CODIGO',
+                                  receptionProvider.doorBig.name,
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                     color: Colors.white,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
-
                                 /* Text(
                                   'medidas: 15x10x50',
                                   textAlign: TextAlign.center,
                                   style: TextStyle(color: Colors.white),
                                 ), */
+                                Text(
+                                  'disponibles: ${receptionProvider.doorBig.total.toString()}',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(color: Colors.white),
+                                ),
                               ],
                             ),
                           ),
                         ),
                       ),
                       onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => Password()),
-                        );
+                        Navigator.pushNamed(context, '/confirm-delivery');
                         print("tapped on container");
                       },
                     ),
-                    //print("tapped on container");
                   ),
-                  //),
-                  //),
                   //SizedBox(height: 30),
                 ],
               ),
             ),
           ],
         ),
-      ) /* */,
+      ),
     );
   }
 }

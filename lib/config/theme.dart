@@ -39,7 +39,7 @@ class AppTheme {
 }
 
 abstract class ConfigColor {
-  static final background = Color.fromARGB(255, 39, 39, 39);
+  static final background = Color.fromARGB(255, 0, 0, 0);
   static final appBarBackground = Color.fromARGB(255, 19, 19, 19);
 
   static final appBarTextColor = Color.fromARGB(255, 218, 216, 216);

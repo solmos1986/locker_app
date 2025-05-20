@@ -1,5 +1,6 @@
 import 'package:locker_app/config/database.dart';
 import 'package:locker_app/infrastructure/door_model.dart';
+import 'package:locker_app/infrastructure/door_total.dart';
 
 class DoorRepository {
   final db = LockeAppDatabase.instance;
@@ -45,12 +46,12 @@ class DoorRepository {
     }
   }
 
-  Future<List<DoorModel>> readDoorAvailable() async {
+  Future<List<DoorTotalModel>> readDoorAvailable(int doorSizeId) async {
     final db = await LockeAppDatabase.instance.database;
-    const query =
-        ' SELECT door.* from  door LEFT JOIN movement on door.door_id=movement.door_id WHERE (movement.delivered=1 or movement.delivered is NULL);';
+    String query =
+        "SELECT door.number, door.door_id, door_size.name FROM door INNER JOIN door_size on door.door_size_id = door_size.door_size_id LEFT JOIN movement on movement.door_id = door.door_id WHERE ( movement.delivered is NULL or movement.delivered > 0 ) and door_size.door_size_id=${doorSizeId.toString()};";
     final result = await db.rawQuery(query);
-    return result.map((json) => DoorModel.fromJson(json)).toList();
+    return result.map((json) => DoorTotalModel.fromJson(json)).toList();
   }
 
   Future<int> update(DoorModel doorSize) async {
