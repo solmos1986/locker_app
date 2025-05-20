@@ -3,7 +3,8 @@ import 'package:locker_app/config/theme.dart';
 import 'package:locker_app/presentation/provider/config_provider.dart';
 import 'package:locker_app/presentation/provider/reception_provider.dart';
 import 'package:locker_app/presentation/screens/client_screen.dart';
-import 'package:locker_app/presentation/screens/close_locker.dart';
+import 'package:locker_app/presentation/screens/confirm_delivery_screen.dart';
+import 'package:locker_app/presentation/screens/select_locker.dart';
 import 'package:locker_app/presentation/screens/config_screen.dart';
 import 'package:locker_app/presentation/screens/home_screen.dart';
 import 'package:locker_app/presentation/screens/password_screen.dart';
@@ -31,10 +32,11 @@ class MyApp extends StatelessWidget {
           "/home": (context) => HomeScreen(),
           "/client": (context) => ClientScreen(),
           "/reception": (context) => ReceptionScreen(),
-          "/close-locker": (context) => CloseLockerScreen(password: ''),
-          "/password": (context) => PasswordScreen(),
+          "/select-locker": (context) => SelectLockerScreen(password: ''),
+          "/password": (context) => Password(),
           "/qr-scan": (context) => QrScreen(),
           "/config": (context) => ConfigScreen(),
+          "/confirm-delivery": (context) => ConfirmDeliveryScreen(password: ''),
         },
         debugShowCheckedModeBanner: false,
       ),

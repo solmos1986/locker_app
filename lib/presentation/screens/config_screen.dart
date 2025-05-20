@@ -36,7 +36,9 @@ class ConfigScreen extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.all(0.0),
                       child: Text(
-                        configProvider.load ? 'Cargando...' : 'Actualizar database',
+                        configProvider.load
+                            ? 'Cargando...'
+                            : 'Actualizar database',
                         style: TextStyle(fontSize: 20),
                       ),
                     ),

@@ -23,7 +23,7 @@ class HomeScreen extends StatelessWidget {
           ),
         ],
         title: Text(
-          'Desing & Construction',
+          'SMART LOCKER',
           style: TextStyle(color: ConfigColor.appBarTextColor),
         ),
       ),
@@ -53,7 +53,7 @@ class HomeScreen extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  Padding(padding: EdgeInsets.all(20.0)),
+                  Padding(padding: EdgeInsets.all(15.0)),
                   SizedBox(
                     width: 400,
                     child: ElevatedButton(
@@ -71,7 +71,7 @@ class HomeScreen extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Padding(padding: EdgeInsets.all(20.0)),
+                  Padding(padding: EdgeInsets.all(15.0)),
                   // SizedBox(height: 30),
                   SizedBox(
                     width: 400,

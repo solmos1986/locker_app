@@ -3,7 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:locker_app/config/theme.dart';
-import 'package:locker_app/presentation/screens/close_locker.dart';
+import 'package:locker_app/presentation/screens/select_locker.dart';
 import 'package:qr_code_scanner_plus/qr_code_scanner_plus.dart';
 
 class QrScreen extends StatefulWidget {
@@ -51,7 +51,7 @@ class _QrScreenState extends State<QrScreen> {
               MaterialPageRoute(
                 builder:
                     (context) =>
-                        CloseLockerScreen(password: result!.code.toString()),
+                        SelectLockerScreen(password: result!.code.toString()),
               ),
             );
           }
