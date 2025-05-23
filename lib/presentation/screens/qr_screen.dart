@@ -3,7 +3,6 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:locker_app/config/theme.dart';
-import 'package:locker_app/presentation/screens/select_locker.dart';
 import 'package:qr_code_scanner_plus/qr_code_scanner_plus.dart';
 
 class QrScreen extends StatefulWidget {
@@ -46,14 +45,14 @@ class _QrScreenState extends State<QrScreen> {
           if (result != null) {
             controller.stopCamera();
             log('codigo detectado  ${result!.code.toString()}');
-            Navigator.push(
+            /* Navigator.push(
               context,
               MaterialPageRoute(
                 builder:
                     (context) =>
                         SelectLockerScreen(password: result!.code.toString()),
               ),
-            );
+            ); */
           }
         }
       });

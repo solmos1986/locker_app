@@ -1,18 +1,18 @@
-class ControllerModel {
+class ControllerEntity {
   int controllerId;
   int lockerId;
   String address485;
   DateTime createAt;
 
-  ControllerModel({
+  ControllerEntity({
     required this.controllerId,
     required this.lockerId,
     required this.address485,
     required this.createAt,
   });
 
-  factory ControllerModel.fromJson(Map<String, dynamic> json) =>
-      ControllerModel(
+  factory ControllerEntity.fromJson(Map<String, dynamic> json) =>
+      ControllerEntity(
         controllerId: json["controller_id"],
         lockerId: json["locker_id"],
         address485: json["address485"],
@@ -26,12 +26,12 @@ class ControllerModel {
     "create_at": createAt.toIso8601String(),
   };
 
-  ControllerModel copy({
+  ControllerEntity copy({
     int? controllerId,
     int? lockerId,
     String? address485,
     DateTime? createAt,
-  }) => ControllerModel(
+  }) => ControllerEntity(
     lockerId: lockerId ?? this.lockerId,
     createAt: createAt ?? this.createAt,
     controllerId: lockerId ?? this.lockerId,

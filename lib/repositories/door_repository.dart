@@ -1,11 +1,13 @@
+import 'dart:developer';
+
 import 'package:locker_app/config/database.dart';
-import 'package:locker_app/infrastructure/door_model.dart';
-import 'package:locker_app/infrastructure/door_total.dart';
+import 'package:locker_app/domain/entities/door_entity.dart';
+import 'package:locker_app/domain/entities/door_total.dart';
 
 class DoorRepository {
   final db = LockeAppDatabase.instance;
 
-  Future<int> createAll(List<DoorModel> doors) async {
+  Future<int> createAll(List<DoorEntity> doors) async {
     int count = 0;
     for (var door in doors) {
       await create(door);
@@ -14,20 +16,20 @@ class DoorRepository {
     return count;
   }
 
-  Future<DoorModel> create(DoorModel door) async {
+  Future<DoorEntity> create(DoorEntity door) async {
     final query = await db.database;
     final id = await query.insert(DoorSizeFields.tableName, door.toJson());
     return door.copy(doorId: id);
   }
 
-  Future<List<DoorModel>> readAll() async {
+  Future<List<DoorEntity>> readAll() async {
     final db = await LockeAppDatabase.instance.database;
     const orderBy = ' locker_id DESC';
     final result = await db.query(DoorSizeFields.tableName, orderBy: orderBy);
-    return result.map((json) => DoorModel.fromJson(json)).toList();
+    return result.map((json) => DoorEntity.fromJson(json)).toList();
   }
 
-  Future<DoorModel> read(int id) async {
+  Future<DoorEntity> read(int id) async {
     final db = await LockeAppDatabase.instance.database;
 
     List<String>? columns = ['id', 'lockerId', 'name', 'state'];
@@ -40,7 +42,7 @@ class DoorRepository {
     );
 
     if (maps.isNotEmpty) {
-      return DoorModel.fromJson(maps.first);
+      return DoorEntity.fromJson(maps.first);
     } else {
       throw Exception('ID $id not found');
     }
@@ -51,10 +53,11 @@ class DoorRepository {
     String query =
         "SELECT door.number, door.door_id, door_size.name FROM door INNER JOIN door_size on door.door_size_id = door_size.door_size_id LEFT JOIN movement on movement.door_id = door.door_id WHERE ( movement.delivered is NULL or movement.delivered > 0 ) and door_size.door_size_id=${doorSizeId.toString()};";
     final result = await db.rawQuery(query);
+    log('query readDoorAvailable ');
     return result.map((json) => DoorTotalModel.fromJson(json)).toList();
   }
 
-  Future<int> update(DoorModel doorSize) async {
+  Future<int> update(DoorEntity doorSize) async {
     final db = await LockeAppDatabase.instance.database;
     return db.update(
       DoorSizeFields.tableName,

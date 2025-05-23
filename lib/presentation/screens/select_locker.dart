@@ -1,28 +1,75 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:locker_app/config/theme.dart';
-import 'package:locker_app/presentation/provider/reception_provider.dart';
+import 'package:locker_app/helper/door_available.dart';
+import 'package:locker_app/infrastructure/models/movement_model.dart';
+import 'package:locker_app/presentation/provider/select_locker_provider.dart';
+import 'package:locker_app/widgets/reception/modal_content.dart';
 import 'package:provider/provider.dart';
-//import 'package:flutter/services.dart' show rootBundle;
 
 class SelectLockerScreen extends StatelessWidget {
-  const SelectLockerScreen({super.key, required this.password});
-  
-  final String password;
+  const SelectLockerScreen({super.key, this.movement});
+
+  final MovementModel? movement;
+
   /*  Future<String> loadAsset() async {
     return await rootBundle.loadString('assets/caja.png');
   } */
 
   @override
   Widget build(BuildContext context) {
-    final receptionProvider = context.watch<ReceptionProvider>();
+    final arguments =
+        ModalRoute.of(context)?.settings.arguments as MovementModel;
 
-    receptionProvider.getListAvailableDoors();
+    final selectLockerProvider = context.watch<SelectLockerProvider>();
+
+    selectLockerProvider.getListAvailableDoors();
+
+    void activateButton(bool valid, DoorAvailable door) {
+      if (valid) {
+        Navigator.pushNamed(
+          context,
+          '/confirm-delivery',
+          arguments: MovementModel(
+            doorId: door.doorId,
+            code: '',
+            nameSizeDoor: door.name,
+            nameUser: arguments.nameUser,
+            numberDoor: door.number,
+            userId: arguments.userId,
+          ),
+        );
+      }
+    }
+
+    void verifieDoor(DoorAvailable door) {
+      door.total > 0
+          ? (showDialog<String>(
+            context: context,
+            builder:
+                (BuildContext context) => ModalContent(
+                  onPress: (state) => {activateButton(state, door)},
+                  message:
+                      "¿Esta abierto el casillero numero # ${door.number}?",
+                ),
+          ))
+          : null;
+    }
+
+    Future<void> openDoor(DoorAvailable door) async {
+      if (door.total > 0) {
+        await selectLockerProvider.openDoor(
+          door,
+        );
+      }
+    }
 
     return Scaffold(
       appBar: AppBar(
         actions: [],
         title: Text(
-          'Selecciona un casillero ${password.toString()}',
+          'Selecciona un casillero ${arguments.nameUser.toString()}',
           style: TextStyle(color: ConfigColor.appBarTextColor),
         ),
       ),
@@ -67,7 +114,7 @@ class SelectLockerScreen extends StatelessWidget {
                                   child: Image.asset('assets/images/caja.png'),
                                 ),
                                 Text(
-                                  receptionProvider.doorSmall.name,
+                                  selectLockerProvider.doorSmall.name,
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                     color: Colors.white,
@@ -80,7 +127,7 @@ class SelectLockerScreen extends StatelessWidget {
                                   style: TextStyle(color: Colors.white),
                                 ), */
                                 Text(
-                                  'disponibles : ${receptionProvider.doorSmall.total}',
+                                  'disponibles : ${selectLockerProvider.doorSmall.total}',
                                   textAlign: TextAlign.center,
                                   style: TextStyle(color: Colors.white),
                                 ),
@@ -89,10 +136,13 @@ class SelectLockerScreen extends StatelessWidget {
                           ),
                         ),
                       ),
-                      onTap: () {
-                        Navigator.pushNamed(context, '/confirm-delivery');
-                        print("tapped on container");
-                      },
+                      onTap:
+                          () async => {
+                            await openDoor(
+                              selectLockerProvider.doorSmall,
+                            ),
+                            verifieDoor(selectLockerProvider.doorSmall),
+                          },
                     ),
                   ),
                   Padding(
@@ -103,6 +153,13 @@ class SelectLockerScreen extends StatelessWidget {
                       right: 5,
                     ),
                     child: InkWell(
+                      onTap:
+                          () async => {
+                            await openDoor(
+                              selectLockerProvider.doorMedium,
+                            ),
+                            verifieDoor(selectLockerProvider.doorMedium),
+                          },
                       child: SizedBox(
                         width: 200,
                         height: 200,
@@ -127,7 +184,7 @@ class SelectLockerScreen extends StatelessWidget {
                                   child: Image.asset('assets/images/caja.png'),
                                 ),
                                 Text(
-                                  receptionProvider.doorMedium.name,
+                                  selectLockerProvider.doorMedium.name,
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                     color: Colors.white,
@@ -140,7 +197,7 @@ class SelectLockerScreen extends StatelessWidget {
                                   style: TextStyle(color: Colors.white),
                                 ), */
                                 Text(
-                                  'disponibles: ${receptionProvider.doorMedium.total}',
+                                  'disponibles: ${selectLockerProvider.doorMedium.total}',
                                   textAlign: TextAlign.center,
                                   style: TextStyle(color: Colors.white),
                                 ),
@@ -149,10 +206,6 @@ class SelectLockerScreen extends StatelessWidget {
                           ),
                         ),
                       ),
-                      onTap: () {
-                        Navigator.pushNamed(context, '/confirm-delivery');
-                        print("tapped on container");
-                      },
                     ),
                   ),
                   Padding(
@@ -188,7 +241,7 @@ class SelectLockerScreen extends StatelessWidget {
                                 ),
                                 //Image.asset('assets/images/caja.png'),
                                 Text(
-                                  receptionProvider.doorBig.name,
+                                  selectLockerProvider.doorBig.name,
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                     color: Colors.white,
@@ -201,7 +254,7 @@ class SelectLockerScreen extends StatelessWidget {
                                   style: TextStyle(color: Colors.white),
                                 ), */
                                 Text(
-                                  'disponibles: ${receptionProvider.doorBig.total.toString()}',
+                                  'disponibles: ${selectLockerProvider.doorBig.total.toString()}',
                                   textAlign: TextAlign.center,
                                   style: TextStyle(color: Colors.white),
                                 ),
@@ -210,10 +263,13 @@ class SelectLockerScreen extends StatelessWidget {
                           ),
                         ),
                       ),
-                      onTap: () {
-                        Navigator.pushNamed(context, '/confirm-delivery');
-                        print("tapped on container");
-                      },
+                      onTap:
+                          () async => {
+                            await openDoor(
+                              selectLockerProvider.doorBig,
+                            ),
+                            verifieDoor(selectLockerProvider.doorBig),
+                          },
                     ),
                   ),
                   //SizedBox(height: 30),

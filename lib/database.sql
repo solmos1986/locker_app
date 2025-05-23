@@ -43,7 +43,7 @@ VALUES (2, '4464845233'),
 
 UPDATE movement set delivered = 1 WHERE movement.movement_id = 1
 
-SELECT door.*, door_size.name, movement.delivered
+SELECT door.number, door.door_id, door_size.name
 FROM
     door
     INNER JOIN door_size on door.door_size_id = door_size.door_size_id
@@ -52,3 +52,4 @@ WHERE (
         movement.delivered is NULL
         or movement.delivered > 0
     )
+    and door_size.door_size_id = 3

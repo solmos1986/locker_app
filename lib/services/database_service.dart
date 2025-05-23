@@ -1,13 +1,13 @@
 import 'package:dio/dio.dart';
 import 'package:locker_app/helper/env.dart';
-import 'package:locker_app/infrastructure/database_model.dart';
+import 'package:locker_app/domain/entities/database_entity.dart';
 
 class DatabaseService {
   final _dio = Dio();
 
-  Future<DataBaseModel> getAllDataBase() async {
+  Future<DataBaseEntity> getAllDataBase() async {
     final response = await _dio.get('${EnvConfig.baseUrl}/api/database');
 
-    return DataBaseModel.fromJson(response.data);
+    return DataBaseEntity.fromJson(response.data);
   }
 }

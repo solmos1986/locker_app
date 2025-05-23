@@ -1,8 +1,8 @@
 import 'package:locker_app/config/database.dart';
-import 'package:locker_app/infrastructure/movement_model.dart';
+import 'package:locker_app/domain/entities/movement_entity.dart';
 
 class MovementRepository {
-  Future<int> createAll(List<MovementModel> movements) async {
+  Future<int> createAll(List<MovementEntity> movements) async {
     int count = 0;
     for (var movement in movements) {
       await create(movement);
@@ -11,21 +11,22 @@ class MovementRepository {
     return count;
   }
 
-  Future<MovementModel> create(MovementModel client) async {
+  Future<MovementEntity> create(MovementEntity client) async {
     final db = await LockeAppDatabase.instance.database;
     final id = await db.insert(ClientFields.tableName, client.toJson());
     return client.copy(movementId: id);
   }
 
-  Future<void> createMovement(int doorId, String code) async {
+  Future<void> createMovement(int userId,int doorId, String code) async {
     final db = await LockeAppDatabase.instance.database;
-    await db.rawQuery("INSERT INTO movement (door_id,code) VALUES(?,?);", [
+    await db.rawQuery("INSERT INTO movement (user_id,door_id,code) VALUES(?,?,?);", [
+      userId,
       doorId,
       code,
     ]);
   }
 
-  Future<MovementModel> read(int id) async {
+  Future<MovementEntity> read(int id) async {
     final db = await LockeAppDatabase.instance.database;
 
     List<String>? columns = ['id', 'lockerId', 'name', 'state'];
@@ -38,20 +39,20 @@ class MovementRepository {
     );
 
     if (maps.isNotEmpty) {
-      return MovementModel.fromJson(maps.first);
+      return MovementEntity.fromJson(maps.first);
     } else {
       throw Exception('ID $id not found');
     }
   }
 
-  Future<List<MovementModel>> readAll() async {
+  Future<List<MovementEntity>> readAll() async {
     final db = await LockeAppDatabase.instance.database;
     const orderBy = ' id DESC';
     final result = await db.query(ClientFields.tableName, orderBy: orderBy);
-    return result.map((json) => MovementModel.fromJson(json)).toList();
+    return result.map((json) => MovementEntity.fromJson(json)).toList();
   }
 
-  Future<int> update(MovementModel movement) async {
+  Future<int> update(MovementEntity movement) async {
     final db = await LockeAppDatabase.instance.database;
     return db.update(
       ClientFields.tableName,

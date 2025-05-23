@@ -1,4 +1,4 @@
-class DoorModel {
+class DoorEntity {
   int doorId;
   int doorSizeId;
   int controllerId;
@@ -7,7 +7,7 @@ class DoorModel {
   int state;
   DateTime createAt;
 
-  DoorModel({
+  DoorEntity({
     required this.doorId,
     required this.doorSizeId,
     required this.controllerId,
@@ -17,7 +17,7 @@ class DoorModel {
     required this.createAt,
   });
 
-  factory DoorModel.fromJson(Map<String, dynamic> json) => DoorModel(
+  factory DoorEntity.fromJson(Map<String, dynamic> json) => DoorEntity(
     doorId: json["door_id"],
     doorSizeId: json["door_size_id"],
     controllerId: json["controller_id"],
@@ -37,7 +37,7 @@ class DoorModel {
     "create_at": createAt.toIso8601String(),
   };
 
-  DoorModel copy({
+  DoorEntity copy({
     int? doorId,
     int? doorSizeId,
     int? controllerId,
@@ -45,7 +45,7 @@ class DoorModel {
     String? channel,
     int? state,
     DateTime? createAt,
-  }) => DoorModel(
+  }) => DoorEntity(
     doorSizeId: doorSizeId ?? this.doorSizeId,
     doorId: doorId ?? this.doorId,
     controllerId: doorId ?? this.doorId,

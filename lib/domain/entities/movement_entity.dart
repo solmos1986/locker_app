@@ -1,20 +1,23 @@
-class MovementModel {
+class MovementEntity {
   int movementId;
+  int userId;
   int doorId;
   String code;
   int delivered;
   DateTime createAt;
 
-  MovementModel({
+  MovementEntity({
     required this.movementId,
+    required this.userId,
     required this.doorId,
     required this.code,
     required this.delivered,
     required this.createAt,
   });
 
-  factory MovementModel.fromJson(Map<String, dynamic> json) => MovementModel(
+  factory MovementEntity.fromJson(Map<String, dynamic> json) => MovementEntity(
     movementId: json["movement_id"],
+    userId: json["user_id"],
     doorId: json["door_id"],
     code: json["code"],
     delivered: json["delivered"],
@@ -23,20 +26,23 @@ class MovementModel {
 
   Map<String, dynamic> toJson() => {
     "movement_id": movementId,
+    "user_id": userId,
     "door_id": doorId,
     "code": code,
     "delivered": delivered,
     "create_at": createAt.toIso8601String(),
   };
 
-  MovementModel copy({
+  MovementEntity copy({
     int? movementId,
+    int? userId,
     int? doorId,
     String? code,
     int? delivered,
     DateTime? createAt,
-  }) => MovementModel(
+  }) => MovementEntity(
     movementId: movementId ?? this.movementId,
+    userId: userId ?? this.userId,
     doorId: doorId ?? this.doorId,
     code: code ?? this.code,
     delivered: delivered ?? this.delivered,

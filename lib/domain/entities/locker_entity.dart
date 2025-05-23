@@ -1,11 +1,11 @@
-class LockerModel {
+class LockerEntity {
   int lockerId;
   int clientId;
   String macAdd;
   int state;
   DateTime createAt;
 
-  LockerModel({
+  LockerEntity({
     required this.lockerId,
     required this.clientId,
     required this.macAdd,
@@ -13,7 +13,7 @@ class LockerModel {
     required this.createAt,
   });
 
-  factory LockerModel.fromJson(Map<String, dynamic> json) => LockerModel(
+  factory LockerEntity.fromJson(Map<String, dynamic> json) => LockerEntity(
     lockerId: json["locker_id"],
     clientId: json["client_id"],
     macAdd: json["macAdd"],
@@ -29,12 +29,12 @@ class LockerModel {
     "create_at": createAt.toIso8601String(),
   };
 
-  LockerModel copy({
+  LockerEntity copy({
     int? lockerId,
     int? clientId,
     String? macAdd,
     int? state,
-  }) => LockerModel(
+  }) => LockerEntity(
     lockerId: lockerId ?? this.lockerId,
     clientId: clientId ?? this.clientId,
     macAdd: macAdd ?? this.macAdd,

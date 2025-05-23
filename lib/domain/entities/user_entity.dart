@@ -1,21 +1,21 @@
-class UserModel {
+class UserEntity {
   int userId;
-  int lockerId;
+  int clientId;
   String name;
   int state;
   DateTime createAt;
 
-  UserModel({
+  UserEntity({
     required this.userId,
-    required this.lockerId,
+    required this.clientId,
     required this.name,
     required this.state,
     required this.createAt,
   });
 
-  factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
+  factory UserEntity.fromJson(Map<String, dynamic> json) => UserEntity(
     userId: json["user_id"],
-    lockerId: json["locker_id"],
+    clientId: json["client_id"],
     name: json["name"],
     state: json["state"],
     createAt: DateTime.parse(json["create_at"]),
@@ -23,16 +23,16 @@ class UserModel {
 
   Map<String, dynamic> toJson() => {
     "user_id": userId,
-    "locker_id": lockerId,
+    "client_id": clientId,
     "name": name,
     "state": state,
     "create_at": createAt.toIso8601String(),
   };
 
-  UserModel copy({int? userId, int? lockerId, String? name, int? state}) =>
-      UserModel(
+  UserEntity copy({int? userId, int? clientId, String? name, int? state}) =>
+      UserEntity(
         userId: userId ?? this.userId,
-        lockerId: lockerId ?? this.lockerId,
+        clientId: clientId ?? this.clientId,
         name: name ?? this.name,
         state: state ?? this.state,
         createAt: createAt,

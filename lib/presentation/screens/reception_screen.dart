@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:locker_app/config/theme.dart';
+import 'package:locker_app/infrastructure/models/movement_model.dart';
 import 'package:locker_app/presentation/provider/reception_provider.dart';
-import 'package:locker_app/presentation/screens/select_locker.dart';
 import 'package:provider/provider.dart';
 
 class ReceptionScreen extends StatelessWidget {
@@ -9,13 +9,12 @@ class ReceptionScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final userProvider = context.watch<ReceptionProvider>();
     final receptionProvider = context.watch<ReceptionProvider>();
 
-    userProvider.getListUsers();
-    receptionProvider.getListAvailableDoors();
+    receptionProvider.getListUsers();
+    //receptionProvider.getListAvailableDoors();
 
-    final users = userProvider.userList;
+    final users = receptionProvider.userList;
     //print('users: ${users.toString()}');
 
     List<Widget> widgets =
@@ -42,10 +41,18 @@ class ReceptionScreen extends StatelessWidget {
         itemBuilder: (BuildContext context, index) {
           return InkWell(
             onTap: () {
+              /* Parametro de entrada */
               Navigator.pushNamed(
                 context,
                 '/select-locker',
-                arguments: {'password': 'parametro extra'},
+                arguments: MovementModel(
+                  doorId: 0,
+                  userId: users[index].userId,
+                  nameUser: users[index].name,
+                  numberDoor: 0,
+                  nameSizeDoor: '',
+                  code: '',
+                ),
               );
               print("tapped on container");
             },

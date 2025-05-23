@@ -1,10 +1,10 @@
 import 'package:locker_app/config/database.dart';
-import 'package:locker_app/infrastructure/locker_model.dart';
+import 'package:locker_app/domain/entities/locker_entity.dart';
 
 class LockerRepository {
   final db = LockeAppDatabase.instance;
 
-  Future<int> createAll(List<LockerModel> lockers) async {
+  Future<int> createAll(List<LockerEntity> lockers) async {
     int count = 0;
     for (var locker in lockers) {
       await create(locker);
@@ -13,13 +13,13 @@ class LockerRepository {
     return count;
   }
 
-  Future<LockerModel> create(LockerModel locker) async {
+  Future<LockerEntity> create(LockerEntity locker) async {
     final query = await db.database;
     final id = await query.insert(LockerFields.tableName, locker.toJson());
     return locker.copy(lockerId: id);
   }
 
-  Future<LockerModel> read(int id) async {
+  Future<LockerEntity> read(int id) async {
     final db = await LockeAppDatabase.instance.database;
 
     List<String>? columns = ['id', 'lockerId', 'name', 'state'];
@@ -32,20 +32,20 @@ class LockerRepository {
     );
 
     if (maps.isNotEmpty) {
-      return LockerModel.fromJson(maps.first);
+      return LockerEntity.fromJson(maps.first);
     } else {
       throw Exception('ID $id not found');
     }
   }
 
-  Future<List<LockerModel>> readAll() async {
+  Future<List<LockerEntity>> readAll() async {
     final db = await LockeAppDatabase.instance.database;
     const orderBy = ' locker_id DESC';
     final result = await db.query(LockerFields.tableName, orderBy: orderBy);
-    return result.map((json) => LockerModel.fromJson(json)).toList();
+    return result.map((json) => LockerEntity.fromJson(json)).toList();
   }
 
-  Future<int> update(LockerModel note) async {
+  Future<int> update(LockerEntity note) async {
     final db = await LockeAppDatabase.instance.database;
     return db.update(
       LockerFields.tableName,

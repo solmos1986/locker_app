@@ -1,10 +1,10 @@
 import 'package:locker_app/config/database.dart';
-import 'package:locker_app/infrastructure/door_size_model.dart';
+import 'package:locker_app/domain/entities/door_size_entity.dart';
 
 class DoorSizeRepository {
   final db = LockeAppDatabase.instance;
 
-  Future<int> createAll(List<DoorSizeModel> clients) async {
+  Future<int> createAll(List<DoorSizeEntity> clients) async {
     int count = 0;
     for (var client in clients) {
       await create(client);
@@ -13,13 +13,13 @@ class DoorSizeRepository {
     return count;
   }
 
-  Future<DoorSizeModel> create(DoorSizeModel doorSize) async {
+  Future<DoorSizeEntity> create(DoorSizeEntity doorSize) async {
     final query = await db.database;
     final id = await query.insert(DoorSizeFields.tableName, doorSize.toJson());
     return doorSize.copy(doorSizeId: id);
   }
 
-  Future<DoorSizeModel> read(int id) async {
+  Future<DoorSizeEntity> read(int id) async {
     final db = await LockeAppDatabase.instance.database;
 
     List<String>? columns = ['id', 'lockerId', 'name', 'state'];
@@ -32,20 +32,20 @@ class DoorSizeRepository {
     );
 
     if (maps.isNotEmpty) {
-      return DoorSizeModel.fromJson(maps.first);
+      return DoorSizeEntity.fromJson(maps.first);
     } else {
       throw Exception('ID $id not found');
     }
   }
 
-  Future<List<DoorSizeModel>> readAll() async {
+  Future<List<DoorSizeEntity>> readAll() async {
     final db = await LockeAppDatabase.instance.database;
     const orderBy = ' id DESC';
     final result = await db.query(DoorSizeFields.tableName, orderBy: orderBy);
-    return result.map((json) => DoorSizeModel.fromJson(json)).toList();
+    return result.map((json) => DoorSizeEntity.fromJson(json)).toList();
   }
 
-  Future<int> update(DoorSizeModel doorSize) async {
+  Future<int> update(DoorSizeEntity doorSize) async {
     final db = await LockeAppDatabase.instance.database;
     return db.update(
       DoorSizeFields.tableName,

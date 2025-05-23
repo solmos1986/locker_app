@@ -1,10 +1,12 @@
+import 'dart:developer';
+
 import 'package:locker_app/config/database.dart';
-import 'package:locker_app/infrastructure/user_model.dart';
+import 'package:locker_app/domain/entities/user_entity.dart';
 
 class UserRepository {
   final db = LockeAppDatabase.instance;
 
-  Future<int> createAll(List<UserModel> users) async {
+  Future<int> createAll(List<UserEntity> users) async {
     int count = 0;
     for (var user in users) {
       await create(user);
@@ -13,16 +15,16 @@ class UserRepository {
     return count;
   }
 
-  Future<UserModel> create(UserModel user) async {
+  Future<UserEntity> create(UserEntity user) async {
     final query = await db.database;
     final id = await query.insert(UsersFields.tableName, user.toJson());
     return user.copy(userId: id);
   }
 
-  Future<UserModel> read(int id) async {
+  Future<UserEntity> read(int id) async {
     final db = await LockeAppDatabase.instance.database;
 
-    List<String>? columns = ['id', 'lockerId', 'name', 'state'];
+    List<String>? columns = ['id', 'client_id', 'name', 'state'];
 
     final maps = await db.query(
       UsersFields.tableName,
@@ -32,20 +34,21 @@ class UserRepository {
     );
 
     if (maps.isNotEmpty) {
-      return UserModel.fromJson(maps.first);
+      return UserEntity.fromJson(maps.first);
     } else {
       throw Exception('ID $id not found');
     }
   }
 
-  Future<List<UserModel>> readAll() async {
+  Future<List<UserEntity>> readAll() async {
     final db = await LockeAppDatabase.instance.database;
     const orderBy = ' user_id ASC';
     final result = await db.query(UsersFields.tableName, orderBy: orderBy);
-    return result.map((json) => UserModel.fromJson(json)).toList();
+    log("readAll user sqlite");
+    return result.map((json) => UserEntity.fromJson(json)).toList();
   }
 
-  Future<int> update(UserModel user) async {
+  Future<int> update(UserEntity user) async {
     final db = await LockeAppDatabase.instance.database;
     return db.update(
       UsersFields.tableName,

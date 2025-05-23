@@ -119,7 +119,7 @@ class LockeAppDatabase {
         CREATE TABLE client (
         client_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT ,
         name TEXT NOT NULL,
-        create_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        create_at TIMESTAMP DEFAULT (datetime('now','localtime'))
       )
         ''');
   }
@@ -131,7 +131,7 @@ class LockeAppDatabase {
         client_id INTEGER NOT NULL,
         macAdd TEXT NOT NULL,
         state TINYINT NOT NULL DEFAULT 1,
-        create_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        create_at TIMESTAMP DEFAULT (datetime('now','localtime')),
         FOREIGN KEY(client_id) REFERENCES client(client_id)
       )
         ''');
@@ -141,11 +141,11 @@ class LockeAppDatabase {
     await db.execute('''
         CREATE TABLE user (
         user_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-        locker_id INTEGER NOT NULL,
+        client_id INTEGER NOT NULL,
         name TEXT NOT NULL,
         state TINYINT NOT NULL DEFAULT 1,
-        create_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        FOREIGN KEY(locker_id) REFERENCES locker(locker_id)
+        create_at TIMESTAMP DEFAULT (datetime('now','localtime')),
+        FOREIGN KEY(client_id) REFERENCES client(client_id)
       )
         ''');
   }
@@ -156,7 +156,7 @@ class LockeAppDatabase {
         controller_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
         locker_id INTEGER  NOT NULL,
         address485 TEXT NOT NULL,
-        create_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        create_at TIMESTAMP DEFAULT (datetime('now','localtime')),
         FOREIGN KEY(locker_id) REFERENCES locker(locker_id)
       )
         ''');
@@ -167,7 +167,7 @@ class LockeAppDatabase {
         CREATE TABLE door_size (
         door_size_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
         name TEXT NOT NULL,
-        create_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        create_at TIMESTAMP DEFAULT (datetime('now','localtime'))
       )
         ''');
   }
@@ -181,7 +181,7 @@ class LockeAppDatabase {
         number INTEGER NOT NULL,
         channel TEXT NOT NULL,
         state TINYINT NOT NULL DEFAULT 1,
-        create_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        create_at TIMESTAMP DEFAULT (datetime('now','localtime')),
         FOREIGN KEY(door_size_id) REFERENCES door_size(door_size_id),
         FOREIGN KEY(controller_id) REFERENCES controller(controller_id)
       )
@@ -192,11 +192,13 @@ class LockeAppDatabase {
     await db.execute('''
         CREATE TABLE movement (
         movement_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+        user_id INTEGER NOT NULL,
         door_id INTEGER NOT NULL,
         code TEXT NOT NULL,
         delivered TINYINT NOT NULL DEFAULT 0,
-        create_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        FOREIGN KEY(door_id) REFERENCES door(door_id)
+        create_at TIMESTAMP DEFAULT (datetime('now','localtime')),
+        FOREIGN KEY(door_id) REFERENCES door(door_id),
+        FOREIGN KEY(user_id) REFERENCES user(user_id)
       )
         ''');
   }

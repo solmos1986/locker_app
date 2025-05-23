@@ -1,13 +1,43 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:locker_app/config/theme.dart';
+import 'package:locker_app/infrastructure/models/movement_model.dart';
+import 'package:locker_app/presentation/provider/movement_provider.dart';
+import 'package:locker_app/widgets/reception/modal_content.dart';
+import 'package:provider/provider.dart';
 
 class ConfirmDeliveryScreen extends StatelessWidget {
-  const ConfirmDeliveryScreen({super.key, required this.password});
-
-  final String password;
+  const ConfirmDeliveryScreen({super.key, required});
 
   @override
   Widget build(BuildContext context) {
+    final movementProvider = context.watch<MovementProvider>();
+
+    final arguments =
+        ModalRoute.of(context)?.settings.arguments as MovementModel;
+
+    void sendMovement(bool state) {
+      if (state) {
+        movementProvider.sendMovement(arguments);
+        Navigator.pushNamedAndRemoveUntil(context, '/home', (route) => false);
+      }
+    }
+
+    void verifiedMovement() {
+      showDialog<String>(
+        context: context,
+        builder:
+            (BuildContext context) => ModalContent(
+              onPress: (state) => sendMovement(state),
+              message: "¿Indrodusca y cierre la puerta?",
+            ),
+      );
+    }
+
+    Future<void> verifiedDoor() async {
+      await movementProvider.verifiedCloseDoor(arguments);
+    }
+
     return Scaffold(
       appBar: AppBar(
         actions: [],
@@ -52,7 +82,7 @@ class ConfirmDeliveryScreen extends StatelessWidget {
                             ),
                           ),
                           Text(
-                            'Departamento 1',
+                            arguments.nameUser,
                             style: TextStyle(
                               color: Colors.white,
                               height: 2,
@@ -73,7 +103,7 @@ class ConfirmDeliveryScreen extends StatelessWidget {
                             ),
                           ),
                           Text(
-                            'No. 1',
+                            arguments.numberDoor.toString(),
                             style: TextStyle(
                               color: Colors.white,
                               height: 2,
@@ -95,7 +125,7 @@ class ConfirmDeliveryScreen extends StatelessWidget {
                             ),
                           ),
                           Text(
-                            'Pequeño',
+                            arguments.nameSizeDoor.toString(),
                             style: TextStyle(
                               color: Colors.white,
                               height: 2,
@@ -112,6 +142,22 @@ class ConfirmDeliveryScreen extends StatelessWidget {
             Padding(
               padding: EdgeInsets.only(top: 5, bottom: 10, left: 40, right: 5),
             ),
+
+            /*  ElevatedButton(
+  onPressed: () {},
+  child: Text('Elevated Button'),
+),
+TextButton(
+  onPressed: () {},
+  child: Text('Text Button'),
+), OutlinedButton(
+  onPressed: () {},
+  child: Text('Outlined Button'),
+),*/
+            /* AbsorbPointer(
+              absorbing: true,
+              child: ElevatedButton(onPressed: () {}, child: Text('Button')),
+            ), */
             SizedBox(
               width: 100,
               height: 250,
@@ -122,17 +168,28 @@ class ConfirmDeliveryScreen extends StatelessWidget {
                 ),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
-
                   children: [
-                    SizedBox(
-                      height: 80,
-                      child: Image.asset('assets/images/cheque.png'),
+                    CupertinoButton(
+                      child: SizedBox(
+                        height: 80,
+                        child: Image.asset('assets/images/cheque.png'),
+                      ),
+                      onPressed: () async {
+                        await verifiedDoor();
+                        verifiedMovement();
+                      },
                     ),
-                    SizedBox(height: 40),
-                    //Expanded(child: SizedBox.shrink()),
-                    SizedBox(
-                      height: 80,
-                      child: Image.asset('assets/images/eliminar.png'),
+
+                    /* SizedBox(height: 40), */
+                    //Expanded(child: SizedBox.shrink())
+                    CupertinoButton(
+                      child: SizedBox(
+                        height: 80,
+                        child: Image.asset('assets/images/eliminar.png'),
+                      ),
+                      onPressed: () {
+                        Navigator.pushNamedAndRemoveUntil(context, '/home', (route) => false);
+                      },
                     ),
                   ],
                 ),
@@ -186,24 +243,4 @@ class ConfirmDeliveryScreen extends StatelessWidget {
       ),
     );
   }
-}
-
-pingeneretor() {
-  DateTime fechaActual = DateTime.now();
-  //final fechafinal = DateTime(2195 - 01 - 01); //utilice esta fecha para ver si varian la cantidad de digitos, no varian podemos usar hasta el año 2195
-  final multi = 100000; //variable para siempre tener 6 digitos
-  final depar = 301; //este dato lo obtendremos de la tabla users
-  final hora = fechaActual.hour;
-  final min = fechaActual.minute;
-  final seg = fechaActual.second;
-  final passcom = depar + hora + min + seg + multi;
-  print('passcomm:  $passcom');
-  final formatter = DateTime(
-    1990 - 01 - 01,
-  ); //fecha referencia para encontrar la diferencia ///STIVEEEN este valor es fijo no cambiaaa....
-  //final formattedDate = formatter.format(dateTime);
-  Duration miliactual = fechaActual.difference(formatter);
-  var diference = miliactual.inDays + passcom;
-  print('diferencia en dias: ${miliactual.inDays}');
-  print('pass final: $diference');
 }
