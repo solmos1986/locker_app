@@ -53,7 +53,7 @@ class DoorRepository {
     String query =
         "SELECT door.number, door.door_id, door_size.name FROM door INNER JOIN door_size on door.door_size_id = door_size.door_size_id LEFT JOIN movement on movement.door_id = door.door_id WHERE ( movement.delivered is NULL or movement.delivered > 0 ) and door_size.door_size_id=${doorSizeId.toString()};";
     final result = await db.rawQuery(query);
-    log('query readDoorAvailable ');
+    log('query readDoorAvailable para tamaño ${doorSizeId.toString()}');
     return result.map((json) => DoorTotalModel.fromJson(json)).toList();
   }
 

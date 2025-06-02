@@ -3,6 +3,9 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:locker_app/config/theme.dart';
+import 'package:locker_app/infrastructure/models/verified_code_model.dart';
+import 'package:locker_app/presentation/provider/verified_code_provider.dart';
+import 'package:provider/provider.dart';
 import 'package:qr_code_scanner_plus/qr_code_scanner_plus.dart';
 
 class QrScreen extends StatefulWidget {
@@ -30,14 +33,34 @@ class _QrScreenState extends State<QrScreen> {
     }
   }
 
-  void _onQRViewCreated(QRViewController controller) {
-    this.controller = controller;
-    /* Future.delayed(const Duration(seconds: 5)).then((val) {
+  @override
+  Widget build(BuildContext context) {
+    final verifiedCodeProvider = context.watch<VerifiedCodeProvider>();
+
+    void navigateConfirmate(VerifiedCodeModel verifiedcode) {
+      Navigator.pushNamed(
+        context,
+        '/confirm-reception',
+        arguments: verifiedcode,
+      );
+    }
+
+    void navigateRetry() {
+      Navigator.pushNamed(
+        context,
+        '/error-qr',
+        arguments: {"code": result!.code.toString()},
+      );
+    }
+
+    void onQRViewCreated(QRViewController controller) async {
+      this.controller = controller;
+      /* Future.delayed(const Duration(seconds: 5)).then((val) {
       Navigator.pop(context, false);
     }); */
+      await controller.flipCamera();
 
-    controller.scannedDataStream.listen((scanData) {
-      setState(() {
+      controller.scannedDataStream.listen((scanData) async {
         authenticado = true;
         result = scanData;
         if (result != null) {
@@ -45,22 +68,22 @@ class _QrScreenState extends State<QrScreen> {
           if (result != null) {
             controller.stopCamera();
             log('codigo detectado  ${result!.code.toString()}');
-            /* Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder:
-                    (context) =>
-                        SelectLockerScreen(password: result!.code.toString()),
-              ),
-            ); */
+            await verifiedCodeProvider.verifiedCode(result!.code.toString());
+            if (verifiedCodeProvider.valid) {
+              log('codigo correcto  ${verifiedCodeProvider.valid.toString()}');
+              navigateConfirmate(verifiedCodeProvider.movement);
+            } else {
+              log(
+                'codigo incorrecta  ${verifiedCodeProvider.valid.toString()}',
+              );
+              navigateRetry();
+            }
           }
         }
+        setState(() {});
       });
-    });
-  }
+    }
 
-  @override
-  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         actions: [],
@@ -73,7 +96,7 @@ class _QrScreenState extends State<QrScreen> {
         children: <Widget>[
           Expanded(
             flex: 6,
-            child: QRView(key: qrKey, onQRViewCreated: _onQRViewCreated),
+            child: QRView(key: qrKey, onQRViewCreated: onQRViewCreated),
           ),
           Expanded(
             flex: 1,

@@ -19,7 +19,7 @@ class ModalContent extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Text(message),
+                Center(child: Text(message, style: TextStyle(fontSize: 20))),
                 const SizedBox(height: 15),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -29,14 +29,14 @@ class ModalContent extends StatelessWidget {
                       onPressed: () {
                         onPress(true);
                       },
-                      child: const Text('Si'),
+                      child: const Text('Si', style: TextStyle(fontSize: 25)),
                     ),
                     TextButton(
                       onPressed: () {
                         onPress(false);
                         Navigator.pop(context);
                       },
-                      child: const Text('No'),
+                      child: const Text('No', style: TextStyle(fontSize: 25)),
                     ),
                   ],
                 ),

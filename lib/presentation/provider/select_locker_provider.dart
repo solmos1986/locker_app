@@ -5,6 +5,9 @@ import 'package:locker_app/helper/door_available.dart';
 import 'package:locker_app/repositories/door_repository.dart';
 
 class SelectLockerProvider extends ChangeNotifier {
+  SelectLockerProvider(){
+   getListAvailableDoors();
+  }
   final doorRepository = DoorRepository();
 
   DoorAvailable doorSmall = DoorAvailable(

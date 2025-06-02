@@ -28,33 +28,33 @@ class HomeScreen extends StatelessWidget {
         ),
       ),
       body: Center(
-        child: Column(
-          //shrinkWrap: true,
-          //padding: const EdgeInsets.all(20.0),
-          children: <Widget>[
-            Expanded(
-              flex: 3, // 30%
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Padding(padding: EdgeInsets.all(0.0)),
-                  Image.network(
-                    'https://holdinghome.com.bo/web-publica/img/logo-hh.png',
-                    fit: BoxFit.contain,
-                    height: 80,
-                    color: Colors.white,
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Center(
+                child: Padding(
+                  padding: EdgeInsets.all(20),
+                  child: SizedBox(
+                    height: 150,
+                    child: Image.network(
+                      'https://holdinghome.com.bo/web-publica/img/logo-hh.png',
+                      fit: BoxFit.contain,
+                      height: 80,
+                      color: Colors.white,
+                    ),
                   ),
-                ],
+                ),
               ),
-            ),
-            Expanded(
-              flex: 3, // 70%
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Padding(padding: EdgeInsets.all(15.0)),
-                  SizedBox(
+              Center(
+                // 70%
+                child: Padding(
+                  padding: EdgeInsets.only(
+                    bottom: 5,
+                    left: 20,
+                    right: 20,
+                    top: 20,
+                  ),
+                  child: SizedBox(
                     width: 400,
                     child: ElevatedButton(
                       onPressed:
@@ -62,18 +62,17 @@ class HomeScreen extends StatelessWidget {
                       child: Text('Entregar'),
                     ),
                   ),
-                  //SizedBox(height: 30),
-                ],
+                ),
               ),
-            ),
-            Expanded(
-              flex: 3, // 70%
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Padding(padding: EdgeInsets.all(15.0)),
-                  // SizedBox(height: 30),
-                  SizedBox(
+              Center(
+                child: Padding(
+                  padding: EdgeInsets.only(
+                    bottom: 20,
+                    left: 20,
+                    right: 20,
+                    top: 5,
+                  ),
+                  child: SizedBox(
                     width: 400,
                     child: ElevatedButton(
                       onPressed:
@@ -88,14 +87,11 @@ class HomeScreen extends StatelessWidget {
                       child: Text('Recoger'),
                     ),
                   ),
-                ],
+                ),
               ),
-            ),
-            Expanded(
-              flex: 2, // 70%
-              child: Column(),
-            ),
-          ],
+              Padding(padding: EdgeInsets.all(30)),
+            ],
+          ),
         ),
       ),
     );

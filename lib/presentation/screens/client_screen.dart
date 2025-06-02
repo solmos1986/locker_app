@@ -1,35 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:local_auth/local_auth.dart'
-    show AuthenticationOptions, LocalAuthentication;
 import 'package:locker_app/config/theme.dart';
-import 'package:locker_app/main.dart';
+
 import 'package:locker_app/presentation/screens/password_screen.dart';
 import 'package:locker_app/presentation/screens/qr_screen.dart';
-import 'package:flutter_screen_lock/flutter_screen_lock.dart';
-import 'package:local_auth/local_auth.dart';
-
 class ClientScreen extends StatelessWidget {
   const ClientScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    Future<void> localAuth(BuildContext context) async {
-      final localAuth = LocalAuthentication();
-      final didAuthenticate = await localAuth.authenticate(
-        localizedReason: 'Please authenticate',
-        options: const AuthenticationOptions(biometricOnly: true),
-      );
-
-      if (didAuthenticate && context.mounted) {
-        Navigator.pop(context);
-      }
-    }
 
     return Scaffold(
       appBar: AppBar(
         actions: [],
         title: Text(
-          'Autenticación',
+          'Metodos de autenticación',
           style: TextStyle(color: ConfigColor.appBarTextColor),
         ),
       ),

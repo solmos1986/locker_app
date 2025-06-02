@@ -10,8 +10,8 @@ class ReceptionScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final receptionProvider = context.watch<ReceptionProvider>();
-
-    receptionProvider.getListUsers();
+    //final receptionProvider = Provider.of(context)<ReceptionProvider>(context);
+    //receptionProvider.getListUsers();
     //receptionProvider.getListAvailableDoors();
 
     final users = receptionProvider.userList;

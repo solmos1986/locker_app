@@ -52,4 +52,6 @@ WHERE (
         movement.delivered is NULL
         or movement.delivered > 0
     )
-    and door_size.door_size_id = 3
+    and door_size.door_size_id = 3;
+
+ SELECT door.number, door_size.name, movement.movement_id, movement.create_at, movement.code FROM movement INNER JOIN door on door.door_id=movement.door_id INNER JOIN door_size on door_size.door_size_id=door.door_size_id WHERE movement.code='113762' and movement.delivered=0

@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:locker_app/config/theme.dart';
 import 'package:locker_app/presentation/provider/config_provider.dart';
+import 'package:locker_app/presentation/provider/confirm_reception_provider.dart';
 import 'package:locker_app/presentation/provider/movement_provider.dart';
 import 'package:locker_app/presentation/provider/reception_provider.dart';
 import 'package:locker_app/presentation/provider/select_locker_provider.dart';
+import 'package:locker_app/presentation/provider/verified_code_provider.dart';
 import 'package:locker_app/presentation/screens/client_screen.dart';
 import 'package:locker_app/presentation/screens/confirm_delivery_screen.dart';
+import 'package:locker_app/presentation/screens/confirm_reception_screen.dart';
+import 'package:locker_app/presentation/screens/error_qr_screen.dart';
 import 'package:locker_app/presentation/screens/select_locker.dart';
 import 'package:locker_app/presentation/screens/config_screen.dart';
 import 'package:locker_app/presentation/screens/home_screen.dart';
@@ -24,9 +28,8 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => ConfigProvider()),
-        ChangeNotifierProvider(create: (_) => ReceptionProvider()),
         ChangeNotifierProvider(create: (_) => MovementProvider()),
-        ChangeNotifierProvider(create: (_) => SelectLockerProvider()),
+        ChangeNotifierProvider(create: (_) => VerifiedCodeProvider()),
       ],
       child: MaterialApp(
         title: 'Lock App',
@@ -35,12 +38,29 @@ class MyApp extends StatelessWidget {
         routes: {
           "/home": (context) => HomeScreen(),
           "/client": (context) => ClientScreen(),
-          "/reception": (context) => ReceptionScreen(),
-          "/select-locker": (context) => SelectLockerScreen(),
-          "/password": (context) => Password(),
+          "/reception":
+              (context) => ChangeNotifierProvider(
+                create: (context) => ReceptionProvider(),
+                builder: (context, child) => const ReceptionScreen(),
+              ),
+          "/select-locker":
+              (context) => ChangeNotifierProvider(
+                create: (context) => SelectLockerProvider(),
+                builder: (context, child) => const SelectLockerScreen(),
+              ),
+          "/password": (context) => ChangeNotifierProvider(
+                create: (context) => VerifiedCodeProvider(),
+                builder: (context, child) => Password(),
+              ),
           "/qr-scan": (context) => QrScreen(),
           "/config": (context) => ConfigScreen(),
           "/confirm-delivery": (context) => ConfirmDeliveryScreen(),
+          "/confirm-reception":
+              (context) => ChangeNotifierProvider(
+                create: (context) => ConfirmReceptionProvider(),
+                builder: (context, child) => const ConfirmReceptionScreen(),
+              ),
+          "/error-qr": (context) => ErrorQrScreen(),
         },
         debugShowCheckedModeBanner: false,
       ),

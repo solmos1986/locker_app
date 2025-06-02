@@ -1,7 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:locker_app/helper/env.dart';
 import 'package:locker_app/infrastructure/models/status_model.dart';
-import 'package:locker_app/domain/entities/user_entity.dart';
 
 class MovementService {
   final _dio = Dio();
@@ -16,16 +15,13 @@ class MovementService {
     return status;
   }
 
-  /* Future<List<UserModel>> updateMovement(int movementId) async {
-    final response = await _dio.post(
+  Future<StatusModel> updateMovement(int movementId) async {
+    final response = await _dio.put(
       '${EnvConfig.baseUrl}/api/movement',
       data: {"movement_id": movementId},
     );
 
-    List<UserModel> users =
-        (response.data as List)
-            .map((data) => UserModel.fromJson(data))
-            .toList();
-    return users;
-  } */
+    StatusModel status = StatusModel.fromJson(response.data);
+    return status;
+  }
 }

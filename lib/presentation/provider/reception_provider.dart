@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:locker_app/domain/entities/user_entity.dart';
@@ -6,6 +5,10 @@ import 'package:locker_app/repositories/users_migration.dart';
 
 class ReceptionProvider extends ChangeNotifier {
   final userRepository = UserRepository();
+
+  ReceptionProvider() {
+    getListUsers();
+  }
 
   List<UserEntity> userList = [];
 
@@ -15,6 +18,6 @@ class ReceptionProvider extends ChangeNotifier {
     final users = await userRepository.readAll();
 
     userList = users;
-    //notifyListeners();
+    notifyListeners();
   }
 }
