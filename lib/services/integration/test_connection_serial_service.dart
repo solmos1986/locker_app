@@ -14,7 +14,8 @@ class ConectionSerialTest2 {
     List<DeviceInfo> availableDevices =
         await _flutterSerialCommunicationPlugin.getAvailableDevices();
     for (var device in availableDevices) {
-      log('device ${device.deviceName} ${device.deviceId}');
+      log('deviceName ${device.deviceName} deviceId ${device.deviceId}');
+      log('serialNumber ${device.serialNumber} productName ${device.productName}');
     }
   }
 
