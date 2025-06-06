@@ -41,6 +41,9 @@ dependencies:
   flutter_screen_lock: ^9.2.1+1
   local_auth: ^2.3.0
   responsive_builder: ^0.7.1
+  flutter_serial_communication: ^0.2.8
+  flutter_serial: ^0.0.3
+  libserialport: ^0.3.0+1
   #qrscan: ^0.3.3
 
 dev_dependencies:

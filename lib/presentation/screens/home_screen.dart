@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:locker_app/config/theme.dart';
-import 'package:locker_app/presentation/provider/config_provider.dart';
 import 'package:locker_app/presentation/screens/client_screen.dart';
-import 'package:provider/provider.dart';
+import 'package:locker_app/services/integration/test_3.dart';
+import 'package:locker_app/services/integration/test_connection_serial_service.dart';
+
+import 'package:locker_app/services/integration/test_connection_serivice.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final configProvider = context.watch<ConfigProvider>();
-    configProvider.inizializeDataBase();
-
+    final data = ConectionSerial();
+    final test2 = ConectionSerialTest2();
+    final test3 = Test3();
     return Scaffold(
       appBar: AppBar(
         actions: [
@@ -57,8 +59,13 @@ class HomeScreen extends StatelessWidget {
                   child: SizedBox(
                     width: 400,
                     child: ElevatedButton(
-                      onPressed:
-                          () => {Navigator.pushNamed(context, '/reception')},
+                      onPressed: () async {
+                        //await data.getPorts();
+                        /* data.inizialize();
+                        await data.setMessage(); */
+                        test2.sendMessage();
+                        /* Navigator.pushNamed(context, '/reception') */
+                      },
                       child: Text('Entregar'),
                     ),
                   ),
