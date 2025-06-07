@@ -32,15 +32,14 @@ class ConectionSerial {
 
   Future<void> setMessage() async {
     log(" inicializadando setMessage");
-    final serialList = await flutterSerial.getAvailablePorts();
-    log(" inicializadando serialList ${serialList!.first}");
-    log(" inicializadando baudRateList ${flutterSerial.baudRateList.toString()}");
+    FlutterSerial flutterSerial = FlutterSerial();
 
     await flutterSerial.openPort(
       dataFormat: DataFormat.HEX_STRING,
       serialPort: '/dev/ttyS0',
-      baudRate: flutterSerial.baudRateList.first,
+      baudRate: 9600,
     );
+
     final result = await flutterSerial.sendCommand(message: "8A 01 01 11 9B");
     log(" inicializadando result ${result.toString()}");
 

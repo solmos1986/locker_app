@@ -61,10 +61,10 @@ class HomeScreen extends StatelessWidget {
                     child: ElevatedButton(
                       onPressed: () async {
                         //await data.getPorts();
-                        /* data.inizialize();
-                        await data.setMessage(); */
-                        test2.inizialize();
-                        test2.sendMessage();
+                        data.inizialize();
+                        await data.setMessage();
+                        /* test2.inizialize();
+                        test2.sendMessage(); */
                         /* Navigator.pushNamed(context, '/reception') */
                       },
                       child: Text('Entregar'),
