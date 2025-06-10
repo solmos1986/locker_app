@@ -12,7 +12,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final data = ConectionSerial();
-/*     final test2 = ConectionSerialTest2();
+    /*     final test2 = ConectionSerialTest2();
     final test3 = Test3(); */
     return Scaffold(
       appBar: AppBar(
@@ -62,9 +62,10 @@ class HomeScreen extends StatelessWidget {
                       onPressed: () async {
                         //await data.getPorts();
                         //data.inizialize();
-                        await data.getPorts();
-                        /* test2.inizialize();
-                        test2.sendMessage(); */
+
+                        //test2.inizialize();
+                        //await data.getPorts();
+                        await data.setMessage();
                         /* Navigator.pushNamed(context, '/reception') */
                       },
                       child: Text('Entregar'),
