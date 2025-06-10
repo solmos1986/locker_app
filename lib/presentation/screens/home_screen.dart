@@ -66,7 +66,7 @@ class HomeScreen extends StatelessWidget {
                         //test2.inizialize();
                         //await data.getPorts();
                         await data.setMessage();
-                        /* Navigator.pushNamed(context, '/reception') */
+                        //Navigator.pushNamed(context, '/reception');
                       },
                       child: Text('Entregar'),
                     ),

@@ -37,16 +37,16 @@ class ConectionSerial {
   }
 
   void _updateConnectionStatus(SerialResponse? result) {
-    log("logChannel ${result!.logChannel ?? ""}");
-    log("readChannel ${result.readChannel ?? ""}");
+    /* log("logChannel ${result!.logChannel}"); */
+    log("readChannel ${result!.readChannel ?? ""}");
   }
 
   Future<void> setMessage() async {
     log(" inicializadando setMessage");
-
-    final result = await flutterSerial.sendCommand(message: "8A0101119B");
-    log(" inicializadando result ${result.toString()}");
-
-    //flutterSerial.closePort();
+    await flutterSerial.clearLog();
+    await flutterSerial.clearRead();
+    await flutterSerial.closePort();
+    final result = await flutterSerial.sendCommand(message: "80010633b4");
+    log(" result message ${result!}");
   }
 }
