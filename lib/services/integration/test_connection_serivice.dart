@@ -14,7 +14,7 @@ class ConectionSerial {
 
   Future<void> getPorts() async {
     log(" inicializadando getAvailablePorts");
-    final serialList = await flutterSerial.getAvailablePorts();
+    await flutterSerial.getAvailablePorts();
 
     await flutterSerial.openPort(
       dataFormat: DataFormat.HEX_STRING,
