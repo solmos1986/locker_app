@@ -12,8 +12,8 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final data = ConectionSerial();
-    final test2 = ConectionSerialTest2();
-    final test3 = Test3();
+/*     final test2 = ConectionSerialTest2();
+    final test3 = Test3(); */
     return Scaffold(
       appBar: AppBar(
         actions: [
@@ -61,8 +61,8 @@ class HomeScreen extends StatelessWidget {
                     child: ElevatedButton(
                       onPressed: () async {
                         //await data.getPorts();
-                        data.inizialize();
-                        await data.setMessage();
+                        //data.inizialize();
+                        await data.getPorts();
                         /* test2.inizialize();
                         test2.sendMessage(); */
                         /* Navigator.pushNamed(context, '/reception') */
