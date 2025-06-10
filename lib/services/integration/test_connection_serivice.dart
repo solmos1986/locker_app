@@ -43,7 +43,7 @@ class ConectionSerial {
       baudRate: 9600,
     );
     log(" openPort");
-    final result = await flutterSerial.sendCommand(message: "8A 01 01 11 9B");
+    final result = await flutterSerial.sendCommand(message: "7A 31 31 33");
     log(" inicializadando result ${result.toString()}");
 
     //flutterSerial.closePort();
