@@ -13,6 +13,8 @@ class SelectLockerProvider extends ChangeNotifier {
   final connectSerial = ConnectSerial();
   final doorRepository = DoorRepository();
   final requestComandRepository = RequestComandRepository();
+  //props
+  bool isValid = false;
 
   DoorAvailable doorSmall = DoorAvailable(
     name: 'Pequeño',
@@ -63,12 +65,16 @@ class SelectLockerProvider extends ChangeNotifier {
 
   Future<void> openDoor(DoorAvailable door) async {
     log('openDoor del casillero ${door.doorId}');
+
     final comands = await requestComandRepository.getCodeForDoor(
       door.doorId,
       "abrir",
     );
+    connectSerial.comand = comands.first.requestComand;
     log('enviar code => ${comands.first.requestComand}');
-    connectSerial.setMessage(comands.first.requestComand);
-  
+    await connectSerial.setMessage(comands.first.requestComand);
+
+    log('enviar code response => ${connectSerial.comandResponse}');
+    log('comando ejecutado => ');
   }
 }
