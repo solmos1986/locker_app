@@ -24,6 +24,8 @@ class ResetRepository {
     await resetDoorSize();
     await resetDoor();
     await resetMovement();
+    await resetRequestComand();
+    await resetResponseComand();
     //insert
     await db.createClient(query);
     await db.createLocker(query);
@@ -32,6 +34,8 @@ class ResetRepository {
     await db.createDoorSize(query);
     await db.createDoor(query);
     await db.createMovement(query);
+    await db.createRequestComand(query);
+    await db.createResponseComand(query);
   }
 
   Future<void> resetClient() async {
@@ -80,6 +84,20 @@ class ResetRepository {
     final query = await db.database;
     await query.execute('''
         DROP TABLE IF EXISTS movement;
+     ''');
+  }
+
+  Future<void> resetRequestComand() async {
+    final query = await db.database;
+    await query.execute('''
+        DROP TABLE IF EXISTS request_comand;
+     ''');
+  }
+
+  Future<void> resetResponseComand() async {
+    final query = await db.database;
+    await query.execute('''
+        DROP TABLE IF EXISTS response_comand;
      ''');
   }
 }

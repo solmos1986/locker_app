@@ -2,7 +2,7 @@ import 'dart:developer';
 
 import 'package:locker_app/config/database.dart';
 import 'package:locker_app/domain/entities/door_entity.dart';
-import 'package:locker_app/domain/entities/door_total.dart';
+import 'package:locker_app/infrastructure/models/door_total.dart';
 
 class DoorRepository {
   final db = LockeAppDatabase.instance;

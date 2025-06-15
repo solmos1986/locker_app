@@ -47,7 +47,7 @@ class PasswordFieldBox extends StatelessWidget {
                     print('password es  ${textController.text.toString()}'),
                     onSubmitted(textController.text),
                   },
-              child: Text('Abrir casillero', style: TextStyle(fontSize: 15)),
+              child: Text('example', style: TextStyle(fontSize: 15)),
             ),
           ),
         ),

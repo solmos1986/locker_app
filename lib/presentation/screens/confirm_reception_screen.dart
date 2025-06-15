@@ -19,7 +19,8 @@ class ConfirmReceptionScreen extends StatelessWidget {
     }
 
     Future<void> verifiedMovement() async {
-      showDialog<String>(
+      await movementProvider.updateMovement(arguments);
+      /* showDialog<String>(
         context: context,
         builder:
             (BuildContext context) => ModalContent(
@@ -30,7 +31,7 @@ class ConfirmReceptionScreen extends StatelessWidget {
                   },
               message: "¿Abrio la puerta?",
             ),
-      );
+      ); */
     }
 
     return Scaffold(

@@ -1,4 +1,5 @@
 class VerifiedCodeModel {
+  int doorId;
   int movementId;
   String code;
   int numberDoor;
@@ -6,6 +7,7 @@ class VerifiedCodeModel {
   DateTime createAt;
 
   VerifiedCodeModel({
+    required this.doorId,
     required this.movementId,
     required this.code,
     required this.numberDoor,
@@ -15,6 +17,7 @@ class VerifiedCodeModel {
 
   factory VerifiedCodeModel.fromJson(Map<String, dynamic> json) =>
       VerifiedCodeModel(
+        doorId: json["door_id"],
         movementId: json["movement_id"],
         code: json["code"],
         numberDoor: json["number"],

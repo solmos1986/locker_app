@@ -7,6 +7,7 @@ class VerifiedCodeProvider extends ChangeNotifier {
   bool valid = false;
 
   VerifiedCodeModel movement = VerifiedCodeModel(
+    doorId: -1,
     code: '',
     movementId: -1,
     numberDoor: -1,
@@ -24,6 +25,7 @@ class VerifiedCodeProvider extends ChangeNotifier {
       valid = false;
     } else {
       valid = true;
+      movement.doorId = result.first.doorId;
       movement.code = result.first.code;
       movement.movementId = result.first.movementId;
       movement.nameSizeDoor = result.first.nameSizeDoor;

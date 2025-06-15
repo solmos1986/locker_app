@@ -4,14 +4,14 @@ import 'package:locker_app/presentation/screens/client_screen.dart';
 import 'package:locker_app/services/integration/test_3.dart';
 import 'package:locker_app/services/integration/test_connection_serial_service.dart';
 
-import 'package:locker_app/services/integration/test_connection_serivice.dart';
+import 'package:locker_app/services/integration/connect_serial.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final data = ConectionSerial();
+    //final data = ConectionSerial();
     /*     final test2 = ConectionSerialTest2();
     final test3 = Test3(); */
     return Scaffold(
@@ -65,8 +65,8 @@ class HomeScreen extends StatelessWidget {
 
                         //test2.inizialize();
                         //await data.getPorts();
-                        await data.setMessage();
-                        //Navigator.pushNamed(context, '/reception');
+                        //await data.setMessage();
+                        Navigator.pushNamed(context, '/reception');
                       },
                       child: Text('Entregar'),
                     ),

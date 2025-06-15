@@ -3,12 +3,16 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:locker_app/helper/door_available.dart';
 import 'package:locker_app/repositories/door_repository.dart';
+import 'package:locker_app/repositories/request_comand_repository.dart';
+import 'package:locker_app/services/integration/connect_serial.dart';
 
 class SelectLockerProvider extends ChangeNotifier {
-  SelectLockerProvider(){
-   getListAvailableDoors();
+  SelectLockerProvider() {
+    getListAvailableDoors();
   }
+  final connectSerial = ConnectSerial();
   final doorRepository = DoorRepository();
+  final requestComandRepository = RequestComandRepository();
 
   DoorAvailable doorSmall = DoorAvailable(
     name: 'Pequeño',
@@ -59,5 +63,12 @@ class SelectLockerProvider extends ChangeNotifier {
 
   Future<void> openDoor(DoorAvailable door) async {
     log('openDoor del casillero ${door.doorId}');
+    final comands = await requestComandRepository.getCodeForDoor(
+      door.doorId,
+      "abrir",
+    );
+    log('enviar code => ${comands.first.requestComand}');
+    connectSerial.setMessage(comands.first.requestComand);
+  
   }
 }

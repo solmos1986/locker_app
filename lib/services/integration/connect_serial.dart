@@ -1,19 +1,18 @@
 import 'dart:developer';
-
 import 'package:flutter_serial/flutter_serial.dart';
 
-class ConectionSerial {
+class ConnectSerial {
   FlutterSerial flutterSerial = FlutterSerial();
 
-  ConectionSerial() {
-    log("clase ConectionSerial");
+  ConnectSerial() {
+    log("ConnectSerial");
 
     getPorts();
     inizialize();
   }
 
   Future<void> getPorts() async {
-    log(" inicializadando getAvailablePorts");
+    log("ConnectSerial getPorts()");
     await flutterSerial.getAvailablePorts();
 
     await flutterSerial.openPort(
@@ -21,32 +20,32 @@ class ConectionSerial {
       serialPort: '/dev/ttyS0',
       baudRate: 9600,
     );
-    /*  if (serialList!.isNotEmpty) {
-      serialList.forEach((a) {
-        log(' serialList  $a');
-      });
-    } else {
-      log('serialList esta en blanco');
-    } */
   }
 
   Future<void> inizialize() async {
-    log("inizialize listen");
-
+    log("ConnectSerial inizialize()");
+    flutterSerial.startSerial().listen(_updateConnectionStatus);
     flutterSerial.startSerial().listen(_updateConnectionStatus);
   }
 
   void _updateConnectionStatus(SerialResponse? result) {
     /* log("logChannel ${result!.logChannel}"); */
-    log("readChannel ${result!.readChannel ?? ""}");
+    log("ConnectSerial _updateConnectionStatus ${result!.readChannel ?? ""}");
   }
 
-  Future<void> setMessage() async {
-    log(" inicializadando setMessage");
+  Future<void> setMessage(String code) async {
+    log("ConnectSerial setMessage($code)");
     await flutterSerial.clearLog();
     await flutterSerial.clearRead();
     await flutterSerial.closePort();
-    final result = await flutterSerial.sendCommand(message: "80010633b4");
-    log(" result message ${result!}");
+    final result = await flutterSerial.sendCommand(message: code);
+    log("ConnectSerial result ${result!}");
+
+    //flutterSerial.closePort();
+  }
+
+  Future<void> closePort() async {
+    log("ConnectSerial closePort()");
+    await flutterSerial.closePort();
   }
 }

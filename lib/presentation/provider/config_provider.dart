@@ -5,8 +5,10 @@ import 'package:locker_app/repositories/controller_repository.dart';
 import 'package:locker_app/repositories/door_repository.dart';
 import 'package:locker_app/repositories/door_size_repository.dart';
 import 'package:locker_app/repositories/movement_repository.dart';
-import 'package:locker_app/repositories/reset_repositoty.dart';
+import 'package:locker_app/repositories/request_comand_repository.dart';
+import 'package:locker_app/repositories/reset_repository.dart';
 import 'package:locker_app/repositories/locker_repository.dart';
+import 'package:locker_app/repositories/response_comand_repository.dart';
 import 'package:locker_app/repositories/users_migration.dart';
 import 'package:locker_app/services/database_service.dart';
 
@@ -21,6 +23,8 @@ class ConfigProvider extends ChangeNotifier {
   final doorSizeRepository = DoorSizeRepository();
   final doorRepository = DoorRepository();
   final movementRepository = MovementRepository();
+  final requestComandRepository = RequestComandRepository();
+  final responseComandRepository = ResponseComandRepository();
   bool load = false;
 
   Future<void> inizializeDataBase() async {
@@ -40,6 +44,8 @@ class ConfigProvider extends ChangeNotifier {
     await doorSizeRepository.createAll(fecthDatabase.doorSizes);
     await doorRepository.createAll(fecthDatabase.doors);
     await movementRepository.createAll(fecthDatabase.movements);
+    await requestComandRepository.createAll(fecthDatabase.requestComand);
+    await responseComandRepository.createAll(fecthDatabase.responseComand);
 
     load = false;
     notifyListeners();
