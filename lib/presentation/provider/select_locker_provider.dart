@@ -81,21 +81,22 @@ class SelectLockerProvider extends ChangeNotifier {
       if (value == comands.first.responseComand) {
         log('abrio puerta');
         isValid = true;
+        log('isValid ${isValid.toString()}');
         notifyListeners();
         //destruir la conexion
-        await connectSerial.closePort();
+        //await connectSerial.closePort();
       }
     });
 
-    connectSerial.getListenSerialFake().listen((int result) {
+    log('enviar code => ${comands.first.requestComand}');
+    connectSerial.setMessage(comands.first.requestComand);
+
+    /* connectSerial.getListenSerialFake().listen((int result) {
       log('leendo getListenSerialFake  => $result');
       if (result == 3) {
         isValid = true;
         notifyListeners();
       }
-    });
-
-    log('enviar code => ${comands.first.requestComand}');
-    await connectSerial.setMessage(comands.first.requestComand);
+    }); */
   }
 }

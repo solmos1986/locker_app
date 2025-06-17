@@ -27,21 +27,23 @@ class SelectLockerScreen extends StatelessWidget {
 
     //selectLockerProvider.getListAvailableDoors();
 
-    void activateButton(bool valid, DoorAvailable door) {
-      if (valid) {
-        Navigator.pushNamed(
-          context,
-          '/confirm-delivery',
-          arguments: MovementModel(
-            doorId: door.doorId,
-            code: '',
-            nameSizeDoor: door.name,
-            nameUser: arguments.nameUser,
-            numberDoor: door.number,
-            userId: arguments.userId,
-          ),
-        );
-      }
+    void activateButtonNavigate(bool valid, DoorAvailable door) {
+      Navigator.pushNamed(
+        context,
+        '/confirm-delivery',
+        arguments: MovementModel(
+          doorId: door.doorId,
+          code: '',
+          nameSizeDoor: door.name,
+          nameUser: arguments.nameUser,
+          numberDoor: door.number,
+          userId: arguments.userId,
+        ),
+      );
+    }
+
+    Future<void> activateButtonRepeat(bool valid, DoorAvailable door) async {
+      await openDoor(door);
     }
 
     void verifieDoor(DoorAvailable door) {
@@ -50,9 +52,10 @@ class SelectLockerScreen extends StatelessWidget {
             context: context,
             builder:
                 (BuildContext context) => ModalContent(
-                  onPress: (state) => {activateButton(state, door)},
+                  onPressOk: (state) => {activateButtonNavigate(state, door)},
+                  onPressCancel: (state) => {activateButtonRepeat(state, door)},
                   message:
-                      "¿Esta abierto el casillero numero # ${door.number}?",
+                      "¿Esta abierto el casillero numero # ${door.number} ?",
                 ),
           ))
           : null;
@@ -62,6 +65,9 @@ class SelectLockerScreen extends StatelessWidget {
       if (door.total > 0) {
         log('SelectLockerScreen verificando');
         await selectLockerProvider.openDoor(door);
+        log(
+          'SelectLockerScreen a sido! ${selectLockerProvider.isValid.toString()}',
+        );
         if (selectLockerProvider.isValid) {
           verifieDoor(door);
         }

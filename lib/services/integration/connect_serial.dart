@@ -10,7 +10,7 @@ class ConnectSerial {
   ConnectSerial() {
     log("ConnectSerial");
     getPorts();
-    //inizialize();
+    inizialize();
   }
 
   Future<void> getPorts() async {
@@ -32,16 +32,18 @@ class ConnectSerial {
 
   void _updateConnectionStatus(SerialResponse? result) {
     final value = getLogReponse.getLogsResponse(result!.readChannel!);
-    log("ConnectSerial result $value");
+    //log("ConnectSerial result $value");
   }
 
-  Future<void> setMessage(String code) async {
+  void setMessage(String code) {
     log("ConnectSerial setMessage($comand)");
-    final result = await flutterSerial.sendCommand(message: code);
-    log("ConnectSerial result ${result!}");
-    await flutterSerial.clearLog();
-    await flutterSerial.clearRead();
-    flutterSerial.closePort();
+    final result = flutterSerial.sendCommand(message: code);
+    log("ConnectSerial result ${result}");
+
+    //throw Exception('Error');
+    /* await flutterSerial.clearLog();
+    await flutterSerial.clearRead(); */
+    //flutterSerial.closePort();
   }
 
   Future<void> closePort() async {
@@ -52,7 +54,7 @@ class ConnectSerial {
   ////////get listen/////////
   Stream<SerialResponse> getListenSerial() {
     log("ConnectSerial getListenSerial()");
-    return flutterSerial.startSerial().take(1);
+    return flutterSerial.startSerial();
   }
 
   //strema fake
