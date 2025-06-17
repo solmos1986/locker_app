@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:locker_app/config/theme.dart';
 import 'package:locker_app/helper/door_available.dart';
@@ -58,7 +60,11 @@ class SelectLockerScreen extends StatelessWidget {
 
     Future<void> openDoor(DoorAvailable door) async {
       if (door.total > 0) {
+        log('SelectLockerScreen verificando');
         await selectLockerProvider.openDoor(door);
+        if (selectLockerProvider.isValid) {
+          verifieDoor(door);
+        }
       }
     }
 

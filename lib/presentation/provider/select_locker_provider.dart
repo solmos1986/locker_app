@@ -1,15 +1,18 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_serial/flutter_serial.dart';
 import 'package:locker_app/helper/door_available.dart';
 import 'package:locker_app/repositories/door_repository.dart';
 import 'package:locker_app/repositories/request_comand_repository.dart';
 import 'package:locker_app/services/integration/connect_serial.dart';
+import 'package:locker_app/utils/get_log_reponse.dart';
 
 class SelectLockerProvider extends ChangeNotifier {
   SelectLockerProvider() {
     getListAvailableDoors();
   }
+  final getLogReponse = GetLogReponse();
   final connectSerial = ConnectSerial();
   final doorRepository = DoorRepository();
   final requestComandRepository = RequestComandRepository();
@@ -70,11 +73,29 @@ class SelectLockerProvider extends ChangeNotifier {
       door.doorId,
       "abrir",
     );
-    connectSerial.comand = comands.first.requestComand;
+
+    connectSerial.getListenSerial().listen((SerialResponse? result) async {
+      final value = getLogReponse.getLogsResponse(result!.readChannel!);
+      log('codigo leido => $value');
+      log('comparar => $value y ${comands.first.responseComand}');
+      if (value == comands.first.responseComand) {
+        log('abrio puerta');
+        isValid = true;
+        notifyListeners();
+        //destruir la conexion
+        await connectSerial.closePort();
+      }
+    });
+
+    connectSerial.getListenSerialFake().listen((int result) {
+      log('leendo getListenSerialFake  => $result');
+      if (result == 3) {
+        isValid = true;
+        notifyListeners();
+      }
+    });
+
     log('enviar code => ${comands.first.requestComand}');
     await connectSerial.setMessage(comands.first.requestComand);
-
-    log('enviar code response => ${connectSerial.comandResponse}');
-    log('comando ejecutado => ');
   }
 }

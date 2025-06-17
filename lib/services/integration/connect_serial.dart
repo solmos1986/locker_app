@@ -1,16 +1,16 @@
 import 'dart:developer';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_serial/flutter_serial.dart';
+import 'package:locker_app/utils/get_log_reponse.dart';
 
 class ConnectSerial {
   FlutterSerial flutterSerial = FlutterSerial();
+  final getLogReponse = GetLogReponse();
   String comand = "";
   String comandResponse = "";
   ConnectSerial() {
     log("ConnectSerial");
-
     getPorts();
-    inizialize();
+    //inizialize();
   }
 
   Future<void> getPorts() async {
@@ -31,36 +31,13 @@ class ConnectSerial {
   }
 
   void _updateConnectionStatus(SerialResponse? result) {
-    /* log("logChannel ${result!.logChannel}"); */
-    //log("ConnectSerial escuchando.. ${result!.readChannel ?? ""}");
-
-    final logs =
-        result!.readChannel!
-            //.replaceAll("\n", "-")
-            .split("\n")
-            .map((String text) => text)
-            .toList();
-
-    /*  for (var val in logs) {
-      log("ConnectSerial escuchando.. $val");
-    } */
-
-    if (logs.length > 1) {
-      final value = logs[logs.length - 2];
-
-      final nuevo = value.replaceAll("/dev/ttyS0/hex read：", "");
-      comandResponse = nuevo;
-      log("ultimo valor $nuevo");
-    }
+    final value = getLogReponse.getLogsResponse(result!.readChannel!);
+    log("ConnectSerial result $value");
   }
 
   Future<void> setMessage(String code) async {
-    //log("ConnectSerial setMessage($code)");
     log("ConnectSerial setMessage($comand)");
-    //await flutterSerial.clearLog();
-    //await flutterSerial.clearRead();
-    //await flutterSerial.closePort();
-    final result = await flutterSerial.sendCommand(message: comand);
+    final result = await flutterSerial.sendCommand(message: code);
     log("ConnectSerial result ${result!}");
     await flutterSerial.clearLog();
     await flutterSerial.clearRead();
@@ -70,5 +47,19 @@ class ConnectSerial {
   Future<void> closePort() async {
     log("ConnectSerial closePort()");
     await flutterSerial.closePort();
+  }
+
+  ////////get listen/////////
+  Stream<SerialResponse> getListenSerial() {
+    log("ConnectSerial getListenSerial()");
+    return flutterSerial.startSerial().take(1);
+  }
+
+  //strema fake
+  Stream<int> getListenSerialFake() {
+    log("ConnectSerial getListenSerial()");
+    return Stream.periodic(const Duration(seconds: 1), (value) {
+      return value;
+    }).take(5);
   }
 }
