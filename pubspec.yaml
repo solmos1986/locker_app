@@ -44,6 +44,7 @@ dependencies:
   flutter_serial_communication: ^0.2.8
   flutter_serial: ^0.0.3
   libserialport: ^0.3.0+1
+  just_audio: ^0.10.4
   #qrscan: ^0.3.3
 
 dev_dependencies:

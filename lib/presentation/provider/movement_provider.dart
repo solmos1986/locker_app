@@ -10,8 +10,10 @@ import 'package:locker_app/services/integration/connect_serial.dart';
 import 'package:locker_app/services/movement_service.dart';
 import 'package:locker_app/utils/detect_stream.dart';
 import 'package:locker_app/utils/generate_code.dart';
+import 'package:locker_app/utils/sonido.dart';
 
 class MovementProvider extends ChangeNotifier {
+  final sonido = Sonido();
   final detectStream = DetectStream();
   final movementService = MovementService();
   final connectSerial = ConnectSerial();
@@ -65,11 +67,13 @@ class MovementProvider extends ChangeNotifier {
     final close = comands[0].requestComand;
     if (data == '1') {
       // data ==
+      log('si hay  respuesta');
       isValid = true;
       notifyListeners();
     }
     if (data == '0') {
       //reproducir sonido
+      log('no hay respuesta');
     }
 
     connectSerial.sendMessage(comands.first.requestComand);
