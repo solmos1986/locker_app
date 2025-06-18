@@ -8,14 +8,17 @@ import 'package:locker_app/repositories/movement_repository.dart';
 import 'package:locker_app/repositories/request_comand_repository.dart';
 import 'package:locker_app/services/integration/connect_serial.dart';
 import 'package:locker_app/services/movement_service.dart';
+import 'package:locker_app/utils/detect_stream.dart';
 import 'package:locker_app/utils/generate_code.dart';
 
 class MovementProvider extends ChangeNotifier {
+  final detectStream = DetectStream();
   final movementService = MovementService();
   final connectSerial = ConnectSerial();
   final movementRepository = MovementRepository();
   final requestComandRepository = RequestComandRepository();
-
+  //PROPS
+  bool isValid = false;
   List<UserEntity> userList = [];
   List<DoorEntity> doorList = [];
 
@@ -44,14 +47,39 @@ class MovementProvider extends ChangeNotifier {
   }
 
   Future<void> verifiedCloseDoor(MovementModel movement) async {
-    log('verifiedCloseDoor ${movement.doorId}');
+    log('MovementProvider verifiedCloseDoor ${movement.doorId}');
     final comands = await requestComandRepository.getCodeForDoor(
       movement.doorId,
-      "abrir",
+      "lectura",
     );
+
+    var data = await detectStream.detectStreamLog(
+      connectSerial.getListenSerialFake(),
+      '1',
+    );
+
+    /* comands.forEach((e) {
+      log('comando ${e.responseComand} ${e.nameResponse}');
+    }); */
+    final open = comands[0].requestComand;
+    final close = comands[0].requestComand;
+    if (data == '1') {
+      // data ==
+      isValid = true;
+      notifyListeners();
+    }
+    if (data == '0') {
+      //reproducir sonido
+    }
+
+    connectSerial.sendMessage(comands.first.requestComand);
     log('enviar code => ${comands.first.requestComand}');
-    //await connectSerial.setMessage(comands.first.requestComand);
-    log('okk');
     notifyListeners();
+  }
+
+  Future<void> retry(MovementModel movement) async {
+    isValid = false;
+    notifyListeners();
+    await verifiedCloseDoor(movement);
   }
 }

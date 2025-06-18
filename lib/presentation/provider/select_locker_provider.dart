@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
@@ -6,12 +7,14 @@ import 'package:locker_app/helper/door_available.dart';
 import 'package:locker_app/repositories/door_repository.dart';
 import 'package:locker_app/repositories/request_comand_repository.dart';
 import 'package:locker_app/services/integration/connect_serial.dart';
+import 'package:locker_app/utils/detect_stream.dart';
 import 'package:locker_app/utils/get_log_reponse.dart';
 
 class SelectLockerProvider extends ChangeNotifier {
   SelectLockerProvider() {
     getListAvailableDoors();
   }
+  final detectStream = DetectStream();
   final getLogReponse = GetLogReponse();
   final connectSerial = ConnectSerial();
   final doorRepository = DoorRepository();
@@ -74,7 +77,7 @@ class SelectLockerProvider extends ChangeNotifier {
       "abrir",
     );
 
-    connectSerial.getListenSerial().listen((SerialResponse? result) async {
+    /* connectSerial.getListenSerial().listen((SerialResponse? result) async {
       final value = getLogReponse.getLogsResponse(result!.readChannel!);
       log('codigo leido => $value');
       log('comparar => $value y ${comands.first.responseComand}');
@@ -86,17 +89,42 @@ class SelectLockerProvider extends ChangeNotifier {
         //destruir la conexion
         //await connectSerial.closePort();
       }
-    });
-
-    log('enviar code => ${comands.first.requestComand}');
-    connectSerial.setMessage(comands.first.requestComand);
-
-    /* connectSerial.getListenSerialFake().listen((int result) {
-      log('leendo getListenSerialFake  => $result');
-      if (result == 3) {
-        isValid = true;
-        notifyListeners();
-      }
     }); */
+
+    /* connectSerial.getListenSerialFake().listen(
+      (String result) async {
+        log('leendo getListenSerialFake  => $result');
+        if (result == '3') {
+          log('abrir puerta');
+          isValid = !isValid;
+          notifyListeners();
+          return;
+        }
+      },
+      onDone: () {
+        log('leendo getListenSerialFake  => Stream finalizado');
+      },
+      onError: (error) {
+        log('leendo getListenSerialFake  => Stream error');
+      },
+    ); */
+
+    var data = await detectStream.detectStreamLog(
+      connectSerial.getListenSerialFake(),
+      '1',
+    );
+
+    if (data == '1') {
+      isValid = true;
+      notifyListeners();
+    }
+    log('codigo detectado => $data');
+    connectSerial.sendMessage(comands.first.requestComand);
+  }
+
+  Future<void> retry(DoorAvailable door) async {
+    isValid = false;
+    notifyListeners();
+    await openDoor(door);
   }
 }

@@ -28,7 +28,13 @@ class ConfirmDeliveryScreen extends StatelessWidget {
         context: context,
         builder:
             (BuildContext context) => ModalContent(
-              onPress: (state) => sendMovement(state),
+              onPressOk: (state) => sendMovement(state),
+              onPressCancel: (state) async {
+                await movementProvider.retry(arguments);
+                if (movementProvider.isValid) {
+                  verifiedMovement();
+                }
+              },
               message: "¿Indrodusca y cierre la puerta?",
             ),
       );
@@ -36,6 +42,9 @@ class ConfirmDeliveryScreen extends StatelessWidget {
 
     Future<void> verifiedDoor() async {
       await movementProvider.verifiedCloseDoor(arguments);
+      if (movementProvider.isValid) {
+        verifiedMovement();
+      }
     }
 
     return Scaffold(
@@ -176,7 +185,6 @@ TextButton(
                       ),
                       onPressed: () async {
                         await verifiedDoor();
-                        verifiedMovement();
                       },
                     ),
 
@@ -188,7 +196,11 @@ TextButton(
                         child: Image.asset('assets/images/eliminar.png'),
                       ),
                       onPressed: () {
-                        Navigator.pushNamedAndRemoveUntil(context, '/home', (route) => false);
+                        Navigator.pushNamedAndRemoveUntil(
+                          context,
+                          '/home',
+                          (route) => false,
+                        );
                       },
                     ),
                   ],

@@ -25,8 +25,6 @@ class SelectLockerScreen extends StatelessWidget {
 
     final selectLockerProvider = context.watch<SelectLockerProvider>();
 
-    //selectLockerProvider.getListAvailableDoors();
-
     void activateButtonNavigate(bool valid, DoorAvailable door) {
       Navigator.pushNamed(
         context,
@@ -42,10 +40,6 @@ class SelectLockerScreen extends StatelessWidget {
       );
     }
 
-    Future<void> activateButtonRepeat(bool valid, DoorAvailable door) async {
-      await openDoor(door);
-    }
-
     void verifieDoor(DoorAvailable door) {
       door.total > 0
           ? (showDialog<String>(
@@ -53,7 +47,12 @@ class SelectLockerScreen extends StatelessWidget {
             builder:
                 (BuildContext context) => ModalContent(
                   onPressOk: (state) => {activateButtonNavigate(state, door)},
-                  onPressCancel: (state) => {activateButtonRepeat(state, door)},
+                  onPressCancel: (state) async {
+                    await selectLockerProvider.retry(door);
+                    if (selectLockerProvider.isValid) {
+                      verifieDoor(door);
+                    }
+                  },
                   message:
                       "¿Esta abierto el casillero numero # ${door.number} ?",
                 ),
@@ -63,11 +62,7 @@ class SelectLockerScreen extends StatelessWidget {
 
     Future<void> openDoor(DoorAvailable door) async {
       if (door.total > 0) {
-        log('SelectLockerScreen verificando');
         await selectLockerProvider.openDoor(door);
-        log(
-          'SelectLockerScreen a sido! ${selectLockerProvider.isValid.toString()}',
-        );
         if (selectLockerProvider.isValid) {
           verifieDoor(door);
         }
@@ -95,7 +90,6 @@ class SelectLockerScreen extends StatelessWidget {
                           onTap:
                               () async => {
                                 await openDoor(selectLockerProvider.doorSmall),
-                                verifieDoor(selectLockerProvider.doorSmall),
                               },
                           child: Container(
                             decoration: BoxDecoration(
@@ -149,7 +143,6 @@ class SelectLockerScreen extends StatelessWidget {
                           onTap:
                               () async => {
                                 await openDoor(selectLockerProvider.doorMedium),
-                                verifieDoor(selectLockerProvider.doorMedium),
                               },
                           child: Container(
                             decoration: BoxDecoration(
@@ -203,7 +196,6 @@ class SelectLockerScreen extends StatelessWidget {
                           onTap:
                               () async => {
                                 await openDoor(selectLockerProvider.doorBig),
-                                verifieDoor(selectLockerProvider.doorBig),
                               },
                           child: Container(
                             decoration: BoxDecoration(

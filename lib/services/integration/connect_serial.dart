@@ -35,10 +35,10 @@ class ConnectSerial {
     //log("ConnectSerial result $value");
   }
 
-  void setMessage(String code) {
-    log("ConnectSerial setMessage($comand)");
-    final result = flutterSerial.sendCommand(message: code);
-    log("ConnectSerial result ${result}");
+  void sendMessage(String code) {
+    log("ConnectSerial sendMessage($comand)");
+    flutterSerial.sendCommand(message: code);
+    //log("ConnectSerial result ${result}");
 
     //throw Exception('Error');
     /* await flutterSerial.clearLog();
@@ -58,10 +58,10 @@ class ConnectSerial {
   }
 
   //strema fake
-  Stream<int> getListenSerialFake() {
+  Stream<String> getListenSerialFake() {
     log("ConnectSerial getListenSerial()");
     return Stream.periodic(const Duration(seconds: 1), (value) {
-      return value;
-    }).take(5);
+      return value.toString();
+    }).take(10);
   }
 }
