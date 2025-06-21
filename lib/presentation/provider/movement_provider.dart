@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_serial/flutter_serial.dart';
 import 'package:locker_app/domain/entities/door_entity.dart';
 import 'package:locker_app/infrastructure/models/movement_model.dart';
 import 'package:locker_app/domain/entities/user_entity.dart';
@@ -10,11 +11,13 @@ import 'package:locker_app/services/integration/connect_serial.dart';
 import 'package:locker_app/services/movement_service.dart';
 import 'package:locker_app/utils/detect_stream.dart';
 import 'package:locker_app/utils/generate_code.dart';
+import 'package:locker_app/utils/get_log_reponse.dart';
 import 'package:locker_app/utils/sonido.dart';
 
 class MovementProvider extends ChangeNotifier {
   final sonido = Sonido();
   final detectStream = DetectStream();
+  final getLogReponse = GetLogReponse();
   final movementService = MovementService();
   final connectSerial = ConnectSerial();
   final movementRepository = MovementRepository();
@@ -55,17 +58,18 @@ class MovementProvider extends ChangeNotifier {
       "lectura",
     );
 
-    var data = await detectStream.detectStreamLog(
-      connectSerial.getListenSerialFake(),
-      '1',
-    );
+    /*  var data = await detectStream.detectStreamLog(
+      connectSerial.getListenSerial(),
+      comands.first.requestComand,
+    ); */
 
-    /* comands.forEach((e) {
-      log('comando ${e.responseComand} ${e.nameResponse}');
-    }); */
-    final open = comands[0].requestComand;
-    final close = comands[0].requestComand;
-    if (data == '1') {
+    comands.forEach((e) {
+      log('comandos ${e.responseComand} ${e.nameResponse}');
+    });
+    final open = comands[1].responseComand;
+    final close = comands[0].responseComand;
+    log('codigo abierto  => $open    cerrado => $close');
+    /*  if (data == '1') {
       // data ==
       log('si hay  respuesta');
       isValid = true;
@@ -74,7 +78,25 @@ class MovementProvider extends ChangeNotifier {
     if (data == '0') {
       //reproducir sonido
       log('no hay respuesta');
-    }
+    } */
+
+    connectSerial.getListenSerial().listen((SerialResponse? result) async {
+      final value = getLogReponse.getLogsResponse(result!.readChannel!);
+
+      log('comparar => $value y $close');
+      if (value == close) {
+        isValid = false;
+        notifyListeners();
+        //enviar pedido
+        await sendMovement(movement);
+        //destruir la conexion
+        //await connectSerial.closePort();
+      } else {
+        isValid = true;
+        log('isValid ${isValid.toString()}');
+        notifyListeners();
+      }
+    });
 
     connectSerial.sendMessage(comands.first.requestComand);
     log('enviar code => ${comands.first.requestComand}');

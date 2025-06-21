@@ -77,7 +77,7 @@ class SelectLockerProvider extends ChangeNotifier {
       "abrir",
     );
 
-    /* connectSerial.getListenSerial().listen((SerialResponse? result) async {
+    connectSerial.getListenSerial().listen((SerialResponse? result) async {
       final value = getLogReponse.getLogsResponse(result!.readChannel!);
       log('codigo leido => $value');
       log('comparar => $value y ${comands.first.responseComand}');
@@ -89,7 +89,7 @@ class SelectLockerProvider extends ChangeNotifier {
         //destruir la conexion
         //await connectSerial.closePort();
       }
-    }); */
+    });
 
     /* connectSerial.getListenSerialFake().listen(
       (String result) async {
@@ -109,16 +109,16 @@ class SelectLockerProvider extends ChangeNotifier {
       },
     ); */
 
-    var data = await detectStream.detectStreamLog(
-      connectSerial.getListenSerialFake(),
-      '1',
+    /* var data = await detectStream.detectStreamLog(
+      connectSerial.getListenSerial(),
+      comands.first.requestComand,
     );
 
-    if (data == '1') {
+    if (data == comands.first.responseComand) {
       isValid = true;
       notifyListeners();
     }
-    log('codigo detectado => $data');
+    log('codigo detectado => $data'); */
     connectSerial.sendMessage(comands.first.requestComand);
   }
 

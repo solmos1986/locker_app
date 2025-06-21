@@ -28,14 +28,16 @@ class ConfirmDeliveryScreen extends StatelessWidget {
         context: context,
         builder:
             (BuildContext context) => ModalContent(
-              onPressOk: (state) => sendMovement(state),
-              onPressCancel: (state) async {
+              onPressOk: (state) async {
                 await movementProvider.retry(arguments);
                 if (movementProvider.isValid) {
                   verifiedMovement();
                 }
               },
-              message: "¿Indrodusca y cierre la puerta?",
+              onPressCancel: (state) async {
+                sendMovement(state);
+              },
+              message: "Porfavor cierre la puerta!",
             ),
       );
     }

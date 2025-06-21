@@ -1,20 +1,23 @@
 import 'dart:developer';
 
+import 'package:flutter_serial/flutter_serial.dart';
+
 class DetectStream {
   Future<String> detectStreamLog(
-    Stream<String> stream,
+    Stream<SerialResponse> stream,
     String verificar,
   ) async {
     var result = '';
     try {
       await for (final value in stream) {
         log('valor $value comparar $verificar');
-        if (verificar == value) {
-          result = value;
+        if (verificar == value.toString()) {
+          result = value.toString();
           throw Exception('Intentional exception');
         }
       }
     } catch (e) {
+      log('error $e');
       return result;
     }
     return result;
