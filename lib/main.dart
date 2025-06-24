@@ -52,7 +52,10 @@ class MyApp extends StatelessWidget {
                 create: (context) => VerifiedCodeProvider(),
                 builder: (context, child) => Password(),
               ),
-          "/qr-scan": (context) => QrScreen(),
+          "/qr-scan": (context) => ChangeNotifierProvider(
+                create: (context) => VerifiedCodeProvider(),
+                builder: (context, child) =>const QrScreen(),
+              ),
           "/config": (context) => ConfigScreen(),
           "/confirm-delivery": (context) => ConfirmDeliveryScreen(),
           "/confirm-reception":

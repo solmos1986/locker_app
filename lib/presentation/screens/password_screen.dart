@@ -79,7 +79,7 @@ class OtpScreen extends StatelessWidget {
 
       log("value ${value.toString()}");
       await verifiedCodeProvider.verifiedCode(value);
-      if (verifiedCodeProvider.valid) {
+      if (verifiedCodeProvider.isValid) {
         //verifiedMovement();
         log("data ${verifiedCodeProvider.movement.numberDoor}");
         navigateConfirmate(verifiedCodeProvider.movement);
@@ -429,7 +429,7 @@ class OtpScreen extends StatelessWidget {
       appBar: AppBar(
         actions: [],
         title: Text(
-          'QR no valido',
+          'QR no isValido',
           style: TextStyle(color: ConfigColor.appBarTextColor),
         ),
       ),

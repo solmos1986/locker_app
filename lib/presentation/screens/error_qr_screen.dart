@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:locker_app/config/theme.dart';
+import 'package:locker_app/infrastructure/models/verified_code_model.dart';
 
 class ErrorQrScreen extends StatelessWidget {
   const ErrorQrScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final arguments =
+        ModalRoute.of(context)?.settings.arguments as VerifiedCodeModel;
+
     return Scaffold(
       appBar: AppBar(
         actions: [],
