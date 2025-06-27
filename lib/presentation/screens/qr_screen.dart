@@ -146,12 +146,14 @@ class QrScreen extends StatelessWidget {
 
     Future<void> verificateCode(KeyEvent event) async {
       await verifiedCodeProvider.detectCodeQr(event.character.toString());
-      if (verifiedCodeProvider.isValid) {
-        verifiedCodeProvider.codeQR = '';
-        navigateConfirmate(verifiedCodeProvider.movement);
-      } else {
-        verifiedCodeProvider.codeQR = '';
-        navigateRetry(verifiedCodeProvider.movement);
+      if (verifiedCodeProvider.codeQR.length >= 6) {
+        await verifiedCodeProvider.verifiedCode(verifiedCodeProvider.codeQR);
+        log(" isValid ${verifiedCodeProvider.isValid}");
+        if (verifiedCodeProvider.isValid) {
+          navigateConfirmate(verifiedCodeProvider.movement);
+        } else {
+          navigateRetry(verifiedCodeProvider.movement);
+        }
       }
     }
 

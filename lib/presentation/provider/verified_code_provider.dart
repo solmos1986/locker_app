@@ -24,25 +24,30 @@ class VerifiedCodeProvider extends ChangeNotifier {
 
   Future<void> detectCodeQr(String code) async {
     codeQR += code.replaceAll('null', '');
-    if (codeQR.contains('\n')) {
-      await verifiedCode(codeQR);
-      log('codigo acumulado $codeQR');
-      notifyListeners();
-    }
+    log('codigo acumulado $code');
+    log('codigo codeQR $codeQR');
+
+    notifyListeners();
   }
 
   Future<void> verifiedCode(String code) async {
+    log('verifiedCode $code');
     final result = await movementRepository.verifiedCode(code);
+    log('verifiedCode result ${result.isEmpty}');
     if (result.isEmpty) {
+      log('puerta  invalida');
       isValid = false;
+      codeQR = '';
     } else {
       isValid = true;
+      log('puerta  valida');
       movement.doorId = result.first.doorId;
       movement.code = result.first.code;
       movement.movementId = result.first.movementId;
       movement.nameSizeDoor = result.first.nameSizeDoor;
       movement.numberDoor = result.first.numberDoor;
       movement.createAt = result.first.createAt;
+      codeQR = '';
     }
     notifyListeners();
   }
