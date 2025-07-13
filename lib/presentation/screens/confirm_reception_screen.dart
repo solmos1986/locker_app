@@ -18,7 +18,8 @@ class ConfirmReceptionScreen extends StatelessWidget {
       Navigator.pop(context);
     }
 
-    void activateButtonNavigate() {
+    Future<void> activateButtonNavigate() async {
+      await movementProvider.confirmeReception(arguments);
       Navigator.pushNamed(context, '/home');
     }
 
@@ -28,20 +29,24 @@ class ConfirmReceptionScreen extends StatelessWidget {
         builder:
             (BuildContext context) => ModalContent(
               message: "¿Abrio la puerta?",
-              onPressOk: (state) => {activateButtonNavigate()},
+              onPressOk: (state) async {
+                await activateButtonNavigate();
+              },
+              nameButonOk: 'Si',
               onPressCancel: (state) async {
                 await movementProvider.retry(verified);
                 if (movementProvider.isValid) {
                   openModal(verified);
                 }
               },
+              nameButonCancel: 'No',
             ),
       );
     }
 
     Future<void> verifiedMovement() async {
       await movementProvider.updateMovement(arguments);
-      if (movementProvider.isValid) {
+      if (!movementProvider.isValid) {
       } else {
         openModal(arguments);
       }

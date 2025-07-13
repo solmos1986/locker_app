@@ -2,14 +2,19 @@ import 'package:flutter/material.dart';
 
 class ModalContent extends StatelessWidget {
   final void Function(bool state) onPressOk;
-  final void Function(bool state) onPressCancel;
+  final void Function(bool state)? onPressCancel;
   final String message;
+
+  final String nameButonOk;
+  final String nameButonCancel;
 
   const ModalContent({
     super.key,
-    required this.onPressCancel,
+    this.onPressCancel,
     required this.onPressOk,
     required this.message,
+    required this.nameButonOk,
+    required this.nameButonCancel,
   });
 
   @override
@@ -35,14 +40,17 @@ class ModalContent extends StatelessWidget {
                       onPressed: () {
                         onPressOk(true);
                       },
-                      child: const Text('Si', style: TextStyle(fontSize: 25)),
+                      child: Text(nameButonOk, style: TextStyle(fontSize: 25)),
                     ),
                     TextButton(
                       onPressed: () {
-                        onPressCancel(false);
+                        onPressCancel!(false);
                         Navigator.pop(context);
                       },
-                      child: const Text('No', style: TextStyle(fontSize: 25)),
+                      child: Text(
+                        nameButonCancel,
+                        style: TextStyle(fontSize: 25),
+                      ),
                     ),
                   ],
                 ),

@@ -34,9 +34,11 @@ class ConfirmDeliveryScreen extends StatelessWidget {
                   verifiedMovement();
                 }
               },
+              nameButonOk: '',
               onPressCancel: (state) async {
-                sendMovement(state);
+                //sendMovement(state);
               },
+              nameButonCancel: 'Ok',
               message: "Porfavor cierre la puerta!",
             ),
       );
@@ -44,8 +46,10 @@ class ConfirmDeliveryScreen extends StatelessWidget {
 
     Future<void> verifiedDoor() async {
       await movementProvider.verifiedCloseDoor(arguments);
-      if (movementProvider.isValid) {
+      if (!movementProvider.isValid) {
         verifiedMovement();
+      } else {
+        sendMovement(true);
       }
     }
 

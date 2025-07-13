@@ -53,7 +53,7 @@ class MovementProvider extends ChangeNotifier {
 
   Future<void> verifiedCloseDoor(MovementModel movement) async {
     log('MovementProvider verifiedCloseDoor ${movement.doorId}');
-    await sendMovement(movement);
+
     final comands = await requestComandRepository.getCodeForDoor(
       movement.doorId,
       "lectura",
@@ -61,17 +61,23 @@ class MovementProvider extends ChangeNotifier {
     final open = comands[1].responseComand;
     final close = comands[0].responseComand;
     log('codigo abierto  => $open    cerrado => $close');
-    isValid = true;
-    notifyListeners();
+    /*  isValid = true;
+    notifyListeners(); */
     connectSerial.getListenSerial().listen((SerialResponse? result) async {
       final value = getLogReponse.getLogsResponse(result!.readChannel!);
-      //log('comparar => $value y $close');
+      log('comparar => $value y $close');
       if (value == close) {
-        isValid = false;
+        log('esta cerrada');
+
+        isValid = true;
         notifyListeners();
         //enviar pedido
-        await sendMovement(movement);
-      } else {}
+        //await sendMovement(movement);
+      } else {
+        log('no esta cerrada');
+        isValid = false;
+        notifyListeners();
+      }
     });
 
     connectSerial.sendMessage(comands.first.requestComand);

@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:locker_app/config/theme.dart';
 import 'package:locker_app/helper/door_available.dart';
@@ -41,12 +40,14 @@ class SelectLockerScreen extends StatelessWidget {
             builder:
                 (BuildContext context) => ModalContent(
                   onPressOk: (state) => {activateButtonNavigate(state, door)},
+                  nameButonOk: 'Si',
                   onPressCancel: (state) async {
                     await selectLockerProvider.retry(door);
                     if (selectLockerProvider.isValid) {
                       verifieDoor(door);
                     }
                   },
+                  nameButonCancel: 'No',
                   message:
                       "¿Esta abierto el casillero numero # ${door.number} ?",
                 ),

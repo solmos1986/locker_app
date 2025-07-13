@@ -39,16 +39,9 @@ class ConfirmReceptionProvider extends ChangeNotifier {
         notifyListeners();
       }
     });
-    
-    connectSerial.sendMessage(comands.first.requestComand);
-    await movementRepository.updateMovement(verifiedCodeModel.movementId);
 
+    connectSerial.sendMessage(comands.first.requestComand);
     message = 'No olvide cerrar el casillero';
-    try {
-      await serviceRepository.updateMovement(verifiedCodeModel.movementId);
-    } catch (e) {
-      log("error en la conexion");
-    }
     notifyListeners();
   }
 
@@ -56,5 +49,9 @@ class ConfirmReceptionProvider extends ChangeNotifier {
     isValid = false;
     notifyListeners();
     await updateMovement(verifiedCodeModel);
+  }
+
+  Future<void> confirmeReception(VerifiedCodeModel verifiedCodeModel) async {
+    await movementRepository.updateMovement(verifiedCodeModel.movementId);
   }
 }
