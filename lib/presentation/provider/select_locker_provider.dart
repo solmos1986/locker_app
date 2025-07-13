@@ -71,7 +71,6 @@ class SelectLockerProvider extends ChangeNotifier {
 
   Future<void> openDoor(DoorAvailable door) async {
     log('openDoor del casillero ${door.doorId}');
-
     final comands = await requestComandRepository.getCodeForDoor(
       door.doorId,
       "abrir",
@@ -79,46 +78,16 @@ class SelectLockerProvider extends ChangeNotifier {
 
     connectSerial.getListenSerial().listen((SerialResponse? result) async {
       final value = getLogReponse.getLogsResponse(result!.readChannel!);
-      log('codigo leido => $value');
-      log('comparar => $value y ${comands.first.responseComand}');
       if (value == comands.first.responseComand) {
-        log('abrio puerta');
         isValid = true;
-        log('isValid ${isValid.toString()}');
         notifyListeners();
-        //destruir la conexion
-        //await connectSerial.closePort();
       }
     });
+    
+    //test
+    isValid = true;
+    notifyListeners();
 
-    /* connectSerial.getListenSerialFake().listen(
-      (String result) async {
-        log('leendo getListenSerialFake  => $result');
-        if (result == '3') {
-          log('abrir puerta');
-          isValid = !isValid;
-          notifyListeners();
-          return;
-        }
-      },
-      onDone: () {
-        log('leendo getListenSerialFake  => Stream finalizado');
-      },
-      onError: (error) {
-        log('leendo getListenSerialFake  => Stream error');
-      },
-    ); */
-
-    /* var data = await detectStream.detectStreamLog(
-      connectSerial.getListenSerial(),
-      comands.first.requestComand,
-    );
-
-    if (data == comands.first.responseComand) {
-      isValid = true;
-      notifyListeners();
-    }
-    log('codigo detectado => $data'); */
     connectSerial.sendMessage(comands.first.requestComand);
   }
 

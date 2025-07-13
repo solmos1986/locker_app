@@ -53,53 +53,28 @@ class MovementProvider extends ChangeNotifier {
 
   Future<void> verifiedCloseDoor(MovementModel movement) async {
     log('MovementProvider verifiedCloseDoor ${movement.doorId}');
+    await sendMovement(movement);
     final comands = await requestComandRepository.getCodeForDoor(
       movement.doorId,
       "lectura",
     );
-
-    /*  var data = await detectStream.detectStreamLog(
-      connectSerial.getListenSerial(),
-      comands.first.requestComand,
-    ); */
-
-    comands.forEach((e) {
-      log('comandos ${e.responseComand} ${e.nameResponse}');
-    });
     final open = comands[1].responseComand;
     final close = comands[0].responseComand;
     log('codigo abierto  => $open    cerrado => $close');
-    /*  if (data == '1') {
-      // data ==
-      log('si hay  respuesta');
-      isValid = true;
-      notifyListeners();
-    }
-    if (data == '0') {
-      //reproducir sonido
-      log('no hay respuesta');
-    } */
-
+    isValid = true;
+    notifyListeners();
     connectSerial.getListenSerial().listen((SerialResponse? result) async {
       final value = getLogReponse.getLogsResponse(result!.readChannel!);
-
-      log('comparar => $value y $close');
+      //log('comparar => $value y $close');
       if (value == close) {
         isValid = false;
         notifyListeners();
         //enviar pedido
         await sendMovement(movement);
-        //destruir la conexion
-        //await connectSerial.closePort();
-      } else {
-        isValid = true;
-        log('isValid ${isValid.toString()}');
-        notifyListeners();
-      }
+      } else {}
     });
 
     connectSerial.sendMessage(comands.first.requestComand);
-    log('enviar code => ${comands.first.requestComand}');
     notifyListeners();
   }
 

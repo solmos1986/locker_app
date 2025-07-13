@@ -34,20 +34,15 @@ class ConfirmReceptionProvider extends ChangeNotifier {
 
     connectSerial.getListenSerial().listen((SerialResponse? result) async {
       final value = getLogReponse.getLogsResponse(result!.readChannel!);
-      log('codigo leido => $value');
-      log('comparar => $value y ${comands.first.responseComand}');
       if (value == comands.first.responseComand) {
-        log('abrio puerta');
         isValid = true;
-        log('isValid ${isValid.toString()}');
         notifyListeners();
-        //destruir la conexion
-        //await connectSerial.closePort();
       }
     });
+    
     connectSerial.sendMessage(comands.first.requestComand);
     await movementRepository.updateMovement(verifiedCodeModel.movementId);
-    //isValid = true;
+
     message = 'No olvide cerrar el casillero';
     try {
       await serviceRepository.updateMovement(verifiedCodeModel.movementId);

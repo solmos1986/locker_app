@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:locker_app/config/theme.dart';
@@ -11,12 +10,7 @@ import 'package:responsive_builder/responsive_builder.dart';
 
 class SelectLockerScreen extends StatelessWidget {
   const SelectLockerScreen({super.key, this.movement});
-
   final MovementModel? movement;
-
-  /*  Future<String> loadAsset() async {
-    return await rootBundle.loadString('assets/caja.png');
-  } */
 
   @override
   Widget build(BuildContext context) {
