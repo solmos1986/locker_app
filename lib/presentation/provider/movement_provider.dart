@@ -72,7 +72,7 @@ class MovementProvider extends ChangeNotifier {
         isValid = true;
         notifyListeners();
         //enviar pedido
-        //await sendMovement(movement);
+        await sendMovement(movement);
       } else {
         log('no esta cerrada');
         isValid = false;

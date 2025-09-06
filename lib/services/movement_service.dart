@@ -17,7 +17,7 @@ class MovementService {
 
   Future<StatusModel> updateMovement(int movementId) async {
     final response = await _dio.put(
-      '${EnvConfig.baseUrl}/api/movement',
+      '${EnvConfig.baseUrl}/api/movement/${movementId.toString()}',
       data: {"movement_id": movementId},
     );
 

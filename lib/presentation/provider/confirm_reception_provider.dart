@@ -13,7 +13,7 @@ import 'package:locker_app/utils/get_log_reponse.dart';
 class ConfirmReceptionProvider extends ChangeNotifier {
   final movementRepository = MovementRepository();
   final requestComandRepository = RequestComandRepository();
-  final serviceRepository = MovementService();
+  final movementService = MovementService();
   final connectSerial = ConnectSerial();
   final getLogReponse = GetLogReponse();
 
@@ -53,5 +53,6 @@ class ConfirmReceptionProvider extends ChangeNotifier {
 
   Future<void> confirmeReception(VerifiedCodeModel verifiedCodeModel) async {
     await movementRepository.updateMovement(verifiedCodeModel.movementId);
+    await movementService.updateMovement(verifiedCodeModel.movementId);
   }
 }
