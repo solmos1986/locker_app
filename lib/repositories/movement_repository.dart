@@ -21,6 +21,7 @@ class MovementRepository {
   Future<void> updateDoorForMovement(int state, int doorId) async {
     final db = await LockeAppDatabase.instance.database;
     await db.rawQuery("UPDATE door set state = ? WHERE door.door_id = ?", [
+      state,
       doorId,
     ]);
   }

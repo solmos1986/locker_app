@@ -51,7 +51,7 @@ class DoorRepository {
   Future<List<DoorTotalModel>> readDoorAvailable(int doorSizeId) async {
     final db = await LockeAppDatabase.instance.database;
     String query =
-        "SELECT door.number, door.door_id, door_size.name FROM door INNER JOIN door_size on door.door_size_id = door_size.door_size_id LEFT JOIN movement on movement.door_id = door.door_id WHERE door.state=1 and door_size.door_size_id=${doorSizeId.toString()};";
+        "SELECT door.number, door.door_id, door_size.name FROM door INNER JOIN door_size on door.door_size_id = door_size.door_size_id WHERE door.state=1 and door_size.door_size_id=${doorSizeId.toString()};";
     final result = await db.rawQuery(query);
     log('query readDoorAvailable para tamaño ${doorSizeId.toString()}');
     return result.map((json) => DoorTotalModel.fromJson(json)).toList();

@@ -33,7 +33,7 @@ class MovementProvider extends ChangeNotifier {
     final generateCode = GenerateCode();
     var code = generateCode.generateCode(movement.nameUser);
     log('AÑADIENDO MOVIMIENTO A SQLITE');
-    await movementRepository.updateDoorForMovement(1, movement.doorId);
+    await movementRepository.updateDoorForMovement(0, movement.doorId);
     await movementRepository.createMovement(
       movement.userId,
       movement.doorId,
