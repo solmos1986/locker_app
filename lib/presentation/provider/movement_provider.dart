@@ -3,8 +3,10 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_serial/flutter_serial.dart';
 import 'package:locker_app/domain/entities/door_entity.dart';
+import 'package:locker_app/domain/entities/locker_entity.dart';
 import 'package:locker_app/infrastructure/models/movement_model.dart';
 import 'package:locker_app/domain/entities/user_entity.dart';
+import 'package:locker_app/repositories/locker_repository.dart';
 import 'package:locker_app/repositories/movement_repository.dart';
 import 'package:locker_app/repositories/request_comand_repository.dart';
 import 'package:locker_app/services/integration/connect_serial.dart';
@@ -29,7 +31,8 @@ class MovementProvider extends ChangeNotifier {
 
   Future<void> sendMovement(MovementModel movement) async {
     final generateCode = GenerateCode();
-    var code = generateCode.generateCode(movement.nameUser);
+    var code = generateCode.generateCode(movement.);
+    log('AÑADIENDO MOVIMIENTO A SQLITE');
 
     await movementRepository.createMovement(
       movement.userId,
@@ -37,8 +40,7 @@ class MovementProvider extends ChangeNotifier {
       code,
     );
 
-    notifyListeners();
-
+    log('AÑADIENDO MOVIMIENTO A WEB SERVER');
     try {
       final status = await movementService.storeMovement(
         movement.userId,
@@ -49,6 +51,7 @@ class MovementProvider extends ChangeNotifier {
     } catch (e) {
       log('Error en la api');
     }
+    //notifyListeners();
   }
 
   Future<void> verifiedCloseDoor(MovementModel movement) async {
@@ -63,7 +66,7 @@ class MovementProvider extends ChangeNotifier {
     log('codigo abierto  => $open    cerrado => $close');
     /*  isValid = true;
     notifyListeners(); */
-    connectSerial.getListenSerial().take(1).listen((SerialResponse? result) async {
+    connectSerial.getListenSerial().listen((SerialResponse? result) async {
       final value = getLogReponse.getLogsResponse(result!.readChannel!);
       log('comparar => $value y $close');
       if (value == close) {
@@ -72,16 +75,16 @@ class MovementProvider extends ChangeNotifier {
         isValid = true;
         notifyListeners();
         //enviar pedido
-        await sendMovement(movement);
+        //await sendMovement(movement);
       } else {
         log('no esta cerrada');
         isValid = false;
-        notifyListeners();
+        //notifyListeners();
       }
     });
 
     connectSerial.sendMessage(comands.first.requestComand);
-    notifyListeners();
+    //notifyListeners();
   }
 
   Future<void> retry(MovementModel movement) async {

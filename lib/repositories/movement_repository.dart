@@ -18,6 +18,13 @@ class MovementRepository {
     return client.copy(movementId: id);
   }
 
+  Future<void> updateDoorForMovement(int doorId) async {
+    final db = await LockeAppDatabase.instance.database;
+    await db.rawQuery("UPDATE door set state = 1 WHERE doordoor.door_id = ?", [
+      doorId,
+    ]);
+  }
+
   Future<void> createMovement(int userId, int doorId, String code) async {
     final db = await LockeAppDatabase.instance.database;
     await db.rawQuery(

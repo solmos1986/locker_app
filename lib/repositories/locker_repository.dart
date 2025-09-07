@@ -45,13 +45,13 @@ class LockerRepository {
     return result.map((json) => LockerEntity.fromJson(json)).toList();
   }
 
-  Future<int> update(LockerEntity note) async {
+  Future<int> update(LockerEntity door) async {
     final db = await LockeAppDatabase.instance.database;
     return db.update(
       LockerFields.tableName,
-      note.toJson(),
+      door.toJson(),
       where: '${LockerFields.id} = ?',
-      whereArgs: [note.lockerId],
+      whereArgs: [door.lockerId],
     );
   }
 

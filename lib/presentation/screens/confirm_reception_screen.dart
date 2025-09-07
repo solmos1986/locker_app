@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:locker_app/config/theme.dart';
 import 'package:locker_app/infrastructure/models/verified_code_model.dart';
@@ -46,8 +48,10 @@ class ConfirmReceptionScreen extends StatelessWidget {
 
     Future<void> verifiedMovement() async {
       await movementProvider.updateMovement(arguments);
-      if (!movementProvider.isValid) {
+      if (movementProvider.isValid) {
+        log('confimando que si recibio');
       } else {
+        log('casillero no abierto');
         openModal(arguments);
       }
     }

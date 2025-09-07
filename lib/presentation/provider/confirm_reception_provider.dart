@@ -32,17 +32,22 @@ class ConfirmReceptionProvider extends ChangeNotifier {
     );
     log('enviar code => ${comands.first.requestComand}');
 
-    connectSerial.getListenSerial().take(1).listen((SerialResponse? result) async {
+    connectSerial.getListenSerial().listen((SerialResponse? result) async {
       final value = getLogReponse.getLogsResponse(result!.readChannel!);
+      log('${value} == ${comands.first.responseComand} ');
       if (value == comands.first.responseComand) {
         isValid = true;
         notifyListeners();
+      } else {
+        isValid = false;
+        notifyListeners();
       }
     });
-
+    //Stream data=connectSerial.getListenSerial().last;
+    log("ConfirmReceptionProvider updateMovement");
     connectSerial.sendMessage(comands.first.requestComand);
     message = 'No olvide cerrar el casillero';
-    notifyListeners();
+    //notifyListeners();
   }
 
   Future<void> retry(VerifiedCodeModel verifiedCodeModel) async {
@@ -52,7 +57,9 @@ class ConfirmReceptionProvider extends ChangeNotifier {
   }
 
   Future<void> confirmeReception(VerifiedCodeModel verifiedCodeModel) async {
+    log('MODIFCANDO MOVIMIENTO A SQLITE');
     await movementRepository.updateMovement(verifiedCodeModel.movementId);
+    log('MODIFCANDO MOVIMIENTO A WEB SERVER');
     await movementService.updateMovement(verifiedCodeModel.movementId);
   }
 }
