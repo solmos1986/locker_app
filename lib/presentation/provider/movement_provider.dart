@@ -31,9 +31,9 @@ class MovementProvider extends ChangeNotifier {
 
   Future<void> sendMovement(MovementModel movement) async {
     final generateCode = GenerateCode();
-    var code = generateCode.generateCode(movement.);
+    var code = generateCode.generateCode(movement.nameUser);
     log('AÑADIENDO MOVIMIENTO A SQLITE');
-
+    await movementRepository.updateDoorForMovement(1, movement.doorId);
     await movementRepository.createMovement(
       movement.userId,
       movement.doorId,

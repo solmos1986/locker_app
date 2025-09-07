@@ -58,6 +58,7 @@ class ConfirmReceptionProvider extends ChangeNotifier {
 
   Future<void> confirmeReception(VerifiedCodeModel verifiedCodeModel) async {
     log('MODIFCANDO MOVIMIENTO A SQLITE');
+    await movementRepository.updateDoorForMovement(1, verifiedCodeModel.doorId);
     await movementRepository.updateMovement(verifiedCodeModel.movementId);
     log('MODIFCANDO MOVIMIENTO A WEB SERVER');
     await movementService.updateMovement(verifiedCodeModel.movementId);
