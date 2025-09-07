@@ -63,7 +63,7 @@ class MovementProvider extends ChangeNotifier {
     log('codigo abierto  => $open    cerrado => $close');
     /*  isValid = true;
     notifyListeners(); */
-    connectSerial.getListenSerial().listen((SerialResponse? result) async {
+    connectSerial.getListenSerial().take(1).listen((SerialResponse? result) async {
       final value = getLogReponse.getLogsResponse(result!.readChannel!);
       log('comparar => $value y $close');
       if (value == close) {

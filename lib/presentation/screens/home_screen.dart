@@ -1,10 +1,9 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:locker_app/config/theme.dart';
 import 'package:locker_app/presentation/screens/client_screen.dart';
-import 'package:locker_app/services/integration/test_3.dart';
-import 'package:locker_app/services/integration/test_connection_serial_service.dart';
-
-import 'package:locker_app/services/integration/connect_serial.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -62,10 +61,15 @@ class HomeScreen extends StatelessWidget {
                       onPressed: () async {
                         //await data.getPorts();
                         //data.inizialize();
-
+                        DateTime now = DateTime.now();
                         //test2.inizialize();
                         //await data.getPorts();
                         //await data.setMessage();
+                        String formattedDate = DateFormat(
+                          'MMMM dd, yyyy Hms',
+                        ).format(now);
+
+                        log(formattedDate);
                         Navigator.pushNamed(context, '/reception');
                       },
                       child: Text('Entregar'),

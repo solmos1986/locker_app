@@ -76,7 +76,7 @@ class SelectLockerProvider extends ChangeNotifier {
       "abrir",
     );
 
-    connectSerial.getListenSerial().listen((SerialResponse? result) async {
+    connectSerial.getListenSerial().take(1).listen((SerialResponse? result) async {
       final value = getLogReponse.getLogsResponse(result!.readChannel!);
       if (value == comands.first.responseComand) {
         isValid = true;

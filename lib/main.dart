@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:locker_app/config/theme.dart';
 import 'package:locker_app/presentation/provider/config_provider.dart';
 import 'package:locker_app/presentation/provider/confirm_reception_provider.dart';
@@ -18,7 +19,17 @@ import 'package:locker_app/presentation/screens/qr_screen.dart';
 import 'package:locker_app/presentation/screens/reception_screen.dart';
 import 'package:provider/provider.dart';
 
-void main() => runApp(MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // Force Portrait Mode
+  await SystemChrome.setPreferredOrientations([
+    DeviceOrientation.landscapeLeft, // Normal Portrait
+    DeviceOrientation.landscapeRight, // Upside-Down Portrait
+  ]);
+
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});

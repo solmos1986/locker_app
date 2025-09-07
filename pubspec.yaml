@@ -46,6 +46,7 @@ dependencies:
   libserialport: ^0.3.0+1
   just_audio: ^0.10.4
   keyboard_detection: ^0.8.0
+  intl: ^0.20.2
   #qrscan: ^0.3.3
 
 dev_dependencies:
