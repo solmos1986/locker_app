@@ -16,13 +16,13 @@ class ConfirmReceptionScreen extends StatelessWidget {
     final arguments =
         ModalRoute.of(context)?.settings.arguments as VerifiedCodeModel;
 
-    void closedModal() {
+    /* void closedModal() {
       Navigator.pop(context);
-    }
+    } */
 
     Future<void> activateButtonNavigate() async {
       await movementProvider.confirmeReception(arguments);
-      Navigator.pushNamed(context, '/home');
+      Navigator.pushNamedAndRemoveUntil(context, '/home', (route) => false);
     }
 
     void openModal(VerifiedCodeModel verified) {
