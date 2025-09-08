@@ -56,99 +56,105 @@ class ConfirmReceptionScreen extends StatelessWidget {
       }
     }
 
-    return Scaffold(
-      appBar: AppBar(
-        actions: [],
-        title: Text(
-          'Casillero abierto',
-          style: TextStyle(color: ConfigColor.appBarTextColor),
+    return Padding(
+      padding: EdgeInsets.only(top: 220, bottom: 200),
+      child: Scaffold(
+        appBar: AppBar(
+          actions: [],
+          title: Text(
+            'Casillero abierto',
+            style: TextStyle(color: ConfigColor.appBarTextColor),
+          ),
         ),
-      ),
-      body: ListView(
-        children: [
-          Padding(
-            padding: EdgeInsets.all(10),
-            child: Container(
-              decoration: BoxDecoration(
-                color: Color.fromARGB(115, 77, 76, 76),
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Padding(
-                padding: EdgeInsets.all(30),
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.only(top: 0, bottom: 10),
-                      child: Text(
-                        movementProvider.message,
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 20,
-                          fontWeight: FontWeight.normal,
+        body: ListView(
+          children: [
+            Padding(
+              padding: EdgeInsets.only(top: 200),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Color.fromARGB(115, 77, 76, 76),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Padding(
+                  padding: EdgeInsets.all(30),
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(top: 0, bottom: 10),
+                        child: Text(
+                          movementProvider.message,
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 20,
+                            fontWeight: FontWeight.normal,
+                          ),
                         ),
                       ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(top: 0, bottom: 0),
-                      child: Row(
-                        children: [
-                          Text(
-                            'Casillero: ',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
+                      Padding(
+                        padding: EdgeInsets.only(top: 0, bottom: 0),
+                        child: Row(
+                          children: [
+                            Text(
+                              'Casillero: ',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
-                          ),
-                          Text(
-                            '#${arguments.numberDoor}',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 20,
-                              fontWeight: FontWeight.normal,
+                            Text(
+                              '#${arguments.numberDoor}',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 20,
+                                fontWeight: FontWeight.normal,
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(top: 0, bottom: 0),
-                      child: Row(
-                        children: [
-                          Text(
-                            'Tamaño de casillero: ',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
+                      Padding(
+                        padding: EdgeInsets.only(top: 0, bottom: 0),
+                        child: Row(
+                          children: [
+                            Text(
+                              'Tamaño de casillero: ',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
-                          ),
-                          Text(
-                            arguments.nameSizeDoor,
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 20,
-                              fontWeight: FontWeight.normal,
+                            Text(
+                              arguments.nameSizeDoor,
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 20,
+                                fontWeight: FontWeight.normal,
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
-          Center(
-            child: ElevatedButton(
-              onPressed: () async {
-                await verifiedMovement();
-                //await movementProvider.updateMovement(arguments.movementId);
-              },
-              child: Text('Abrir casillero'),
+            Center(
+              child: Padding(
+                padding: EdgeInsets.all(10),
+                child: ElevatedButton(
+                  onPressed: () async {
+                    await verifiedMovement();
+                    //await movementProvider.updateMovement(arguments.movementId);
+                  },
+                  child: Text('Abrir casillero'),
+                ),
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

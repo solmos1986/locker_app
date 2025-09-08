@@ -27,51 +27,88 @@ class ReceptionScreen extends StatelessWidget {
             )
             .toList();
 
-    return Scaffold(
-      appBar: AppBar(
-        actions: [],
-        title: Text(
-          'Selecciona un departamento',
-          style: TextStyle(color: ConfigColor.appBarTextColor),
+    return Padding(
+      padding: EdgeInsets.only(top: 220, bottom: 200),
+      child: Scaffold(
+        appBar: AppBar(
+          actions: [],
+          title: Text(
+            'Selecciona un departamento',
+            style: TextStyle(color: ConfigColor.appBarTextColor),
+          ),
         ),
-      ),
-      body: ListView.separated(
-        padding: const EdgeInsets.all(20),
-        itemCount: users.length,
-        itemBuilder: (BuildContext context, index) {
-          return InkWell(
-            onTap: () {
-              /* Parametro de entrada */
-              Navigator.pushNamed(
-                context,
-                '/select-locker',
-                arguments: MovementModel(
-                  doorId: 0,
-                  userId: users[index].userId,
-                  nameUser: users[index].name,
-                  numberDoor: 0,
-                  nameSizeDoor: '',
-                  code: '',
+        body: /* Column(
+          children: List.generate(users.length, (index) {
+            return InkWell(
+              onTap: () {
+                /* Parametro de entrada */
+                Navigator.pushNamed(
+                  context,
+                  '/select-locker',
+                  arguments: MovementModel(
+                    doorId: 0,
+                    userId: users[index].userId,
+                    nameUser: users[index].name,
+                    numberDoor: 0,
+                    nameSizeDoor: '',
+                    code: '',
+                  ),
+                );
+                print("tapped on container");
+              },
+              child: SizedBox(
+                width: 50,
+                height: 50,
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Color.fromARGB(115, 77, 76, 76),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+      
+                  //color: const Color.fromARGB(115, 77, 76, 76),
+                  child: Center(child: widgets[index]),
                 ),
-              );
-              print("tapped on container");
-            },
-            child: SizedBox(
-              width: 50,
-              height: 50,
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Color.fromARGB(115, 77, 76, 76),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-
-                //color: const Color.fromARGB(115, 77, 76, 76),
-                child: Center(child: widgets[index]),
               ),
-            ),
-          );
-        },
-        separatorBuilder: (BuildContext context, index) => const Divider(),
+            );
+          }),
+        ) */ ListView.separated(
+          padding: const EdgeInsets.only(bottom: 30, top: 10),
+          itemCount: users.length,
+          itemBuilder: (BuildContext context, index) {
+            return InkWell(
+              onTap: () {
+                /* Parametro de entrada */
+                Navigator.pushNamed(
+                  context,
+                  '/select-locker',
+                  arguments: MovementModel(
+                    doorId: 0,
+                    userId: users[index].userId,
+                    nameUser: users[index].name,
+                    numberDoor: 0,
+                    nameSizeDoor: '',
+                    code: '',
+                  ),
+                );
+                print("tapped on container");
+              },
+              child: SizedBox(
+                width: 50,
+                height: 50,
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Color.fromARGB(115, 77, 76, 76),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+
+                  //color: const Color.fromARGB(115, 77, 76, 76),
+                  child: Center(child: widgets[index]),
+                ),
+              ),
+            );
+          },
+          separatorBuilder: (BuildContext context, index) => const Divider(),
+        ),
       ),
     );
   }

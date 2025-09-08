@@ -164,30 +164,33 @@ class QrScreen extends StatelessWidget {
         //print('High-priority ESC pressed. ${event.character}');
         return KeyEventResult.handled;
       },
-      child: Scaffold(
-        appBar: AppBar(
-          actions: [],
-          title: Text(
-            'QR ${verifiedCodeProvider.codeQR}',
-            style: TextStyle(color: ConfigColor.appBarTextColor),
+      child: Padding(
+        padding: EdgeInsets.only(top: 220, bottom: 200),
+        child: Scaffold(
+          appBar: AppBar(
+            actions: [],
+            title: Text(
+              'QR ${verifiedCodeProvider.codeQR}',
+              style: TextStyle(color: ConfigColor.appBarTextColor),
+            ),
           ),
-        ),
-        body: Column(
-          children: <Widget>[
-            /*  Expanded(
-              flex: 6,
-              child: QRView(key: qrKey, onQRViewCreated: onQRViewCreated),
-            ), */
-            Expanded(
-              flex: 1,
-              child: Center(
-                child: Text(
-                  'Escaneando... ${verifiedCodeProvider.codeQR}',
-                  style: TextStyle(color: ConfigColor.appBarTextColor),
+          body: Column(
+            children: <Widget>[
+              /*  Expanded(
+                flex: 6,
+                child: QRView(key: qrKey, onQRViewCreated: onQRViewCreated),
+              ), */
+              Expanded(
+                flex: 1,
+                child: Center(
+                  child: Text(
+                    'Escaneando... ${verifiedCodeProvider.codeQR}',
+                    style: TextStyle(color: ConfigColor.appBarTextColor),
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

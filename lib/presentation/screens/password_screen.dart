@@ -397,31 +397,34 @@ class OtpScreen extends StatelessWidget {
       );
     }
  */
-    return Scaffold(
-      appBar: AppBar(
-        actions: [],
-        title: Text(
-          'Ingresa tu contraseña',
-          style: TextStyle(color: ConfigColor.appBarTextColor),
+    return Padding(
+      padding: EdgeInsets.only(top: 220, bottom: 200),
+      child: Scaffold(
+        appBar: AppBar(
+          actions: [],
+          title: Text(
+            'Ingresa tu contraseña',
+            style: TextStyle(color: ConfigColor.appBarTextColor),
+          ),
         ),
-      ),
-      body: ResponsiveBuilder(
-        builder:
-            (context, sizingInformation) => Center(
-              child: SingleChildScrollView(
-                child:
-                //buildExitButton(),
-                Column(
-                  children: [
-                    buildPinRow(),
-                    Padding(
-                      padding: EdgeInsets.only(top: 40),
-                      child: buildNumberPad(),
-                    ),
-                  ],
+        body: ResponsiveBuilder(
+          builder:
+              (context, sizingInformation) => Center(
+                child: SingleChildScrollView(
+                  child:
+                  //buildExitButton(),
+                  Column(
+                    children: [
+                      buildPinRow(),
+                      Padding(
+                        padding: EdgeInsets.only(top: 40),
+                        child: buildNumberPad(),
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ),
+        ),
       ),
     );
 
