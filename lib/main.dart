@@ -25,10 +25,10 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   // Force Portrait Mode
-  SystemChrome.setPreferredOrientations([
+  /* SystemChrome.setPreferredOrientations([
     DeviceOrientation.landscapeRight, // Normal Portrait
     //DeviceOrientation.landscapeRight, // Upside-Down Portrait
-  ]);
+  ]); */
 
   runApp(MyApp());
 }

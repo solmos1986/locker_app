@@ -7,7 +7,7 @@
         android:enableOnBackInvokedCallback="true">
         <activity
             android:name=".MainActivity"
-            android:screenOrientation="landscape"
+            
             android:exported="true"
             android:launchMode="singleTop"
             android:taskAffinity=""
