@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:locker_app/config/theme.dart';
@@ -24,7 +26,7 @@ void main() async {
 
   // Force Portrait Mode
   SystemChrome.setPreferredOrientations([
-    DeviceOrientation.landscapeLeft, // Normal Portrait
+    DeviceOrientation.landscapeRight, // Normal Portrait
     //DeviceOrientation.landscapeRight, // Upside-Down Portrait
   ]);
 
@@ -42,41 +44,46 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => MovementProvider()),
         ChangeNotifierProvider(create: (_) => VerifiedCodeProvider()),
       ],
-      child: MaterialApp(
-        title: 'Lock App',
-        theme: AppTheme().theme(),
-        initialRoute: '/home',
-        routes: {
-          "/home": (context) => HomeScreen(),
-          "/client": (context) => ClientScreen(),
-          "/reception":
-              (context) => ChangeNotifierProvider(
-                create: (context) => ReceptionProvider(),
-                builder: (context, child) => const ReceptionScreen(),
-              ),
-          "/select-locker":
-              (context) => ChangeNotifierProvider(
-                create: (context) => SelectLockerProvider(),
-                builder: (context, child) => const SelectLockerScreen(),
-              ),
-          "/password": (context) => ChangeNotifierProvider(
-                create: (context) => VerifiedCodeProvider(),
-                builder: (context, child) => Password(),
-              ),
-          "/qr-scan": (context) => ChangeNotifierProvider(
-                create: (context) => VerifiedCodeProvider(),
-                builder: (context, child) =>const QrScreen(),
-              ),
-          "/config": (context) => ConfigScreen(),
-          "/confirm-delivery": (context) => ConfirmDeliveryScreen(),
-          "/confirm-reception":
-              (context) => ChangeNotifierProvider(
-                create: (context) => ConfirmReceptionProvider(),
-                builder: (context, child) => const ConfirmReceptionScreen(),
-              ),
-          "/error-qr": (context) => ErrorQrScreen(),
-        },
-        debugShowCheckedModeBanner: false,
+      child: Transform.rotate(
+        angle: pi / 2,
+        child: MaterialApp(
+          title: 'Lock App',
+          theme: AppTheme().theme(),
+          initialRoute: '/home',
+          routes: {
+            "/home": (context) => HomeScreen(),
+            "/client": (context) => ClientScreen(),
+            "/reception":
+                (context) => ChangeNotifierProvider(
+                  create: (context) => ReceptionProvider(),
+                  builder: (context, child) => const ReceptionScreen(),
+                ),
+            "/select-locker":
+                (context) => ChangeNotifierProvider(
+                  create: (context) => SelectLockerProvider(),
+                  builder: (context, child) => const SelectLockerScreen(),
+                ),
+            "/password":
+                (context) => ChangeNotifierProvider(
+                  create: (context) => VerifiedCodeProvider(),
+                  builder: (context, child) => Password(),
+                ),
+            "/qr-scan":
+                (context) => ChangeNotifierProvider(
+                  create: (context) => VerifiedCodeProvider(),
+                  builder: (context, child) => const QrScreen(),
+                ),
+            "/config": (context) => ConfigScreen(),
+            "/confirm-delivery": (context) => ConfirmDeliveryScreen(),
+            "/confirm-reception":
+                (context) => ChangeNotifierProvider(
+                  create: (context) => ConfirmReceptionProvider(),
+                  builder: (context, child) => const ConfirmReceptionScreen(),
+                ),
+            "/error-qr": (context) => ErrorQrScreen(),
+          },
+          debugShowCheckedModeBanner: false,
+        ),
       ),
     );
   }
