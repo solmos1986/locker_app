@@ -1,3 +1,6 @@
 {
-     "BASE_URL":"https://lock-app.boliviasoft.com"
+  "BASE_URL": "https://lock-app.boliviasoft.com",
+  "LOCKER_ID": 1,
+  "BUILDING_ID": 1,
+  "TOKEN": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0L2xvY2tlcl9hcHBfd2ViL3B1YmxpYy9hcGkvY3JlYXRlLXRva2VuIiwiaWF0IjoxNzYxNjAxMDA4LCJleHAiOjE5MTkyODEwMDgsIm5iZiI6MTc2MTYwMTAwOCwianRpIjoiWFkzUnhScVFFVXZPaUZESCIsInN1YiI6IjEiLCJwcnYiOiJjZGEyYzkxYjI4ZWRjMmY1NjEzMDM4NzE2MTVjMmYyNzA4YWE1MTg4IiwibG9ja2VyX2lkIjoxLCJidWlsZGluZ19pZCI6MSwibmFtZSI6IkxvY2tlciAxIiwiYWRkcmVzcyI6IkF2LiBzYW4gbWFydGluIGNhbGxlICM3IiwidHlwZV9sb2NrZXJfaWQiOjEsInN0YXRlIjoxfQ.7A3O8mqcmiqnofK6RfS4Fb1Xo3vQICWwbN86jU4l8DQ"
 }

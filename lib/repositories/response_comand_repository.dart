@@ -17,14 +17,6 @@ class ResponseComandRepository {
     return client.copy(responseComandId: id);
   }
 
-  /* Future<void> createMovement(int userId, int doorId, String code) async {
-    final db = await LockeAppDatabase.instance.database;
-    await db.rawQuery(
-      "INSERT INTO response_comand (user_id,door_id,code) VALUES(?,?,?);",
-      [userId, doorId, code],
-    );
-  } */
-
   Future<void> updateMovement(int movementId) async {
     final db = await LockeAppDatabase.instance.database;
     await db.rawQuery(

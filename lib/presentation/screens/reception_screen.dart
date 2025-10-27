@@ -83,9 +83,9 @@ class ReceptionScreen extends StatelessWidget {
                   '/select-locker',
                   arguments: MovementModel(
                     doorId: 0,
-                    userId: users[index].userId,
+                    departmentId: users[index].departmentId,
                     nameUser: users[index].name,
-                    numberDoor: 0,
+                    numberDoor: '',
                     nameSizeDoor: '',
                     code: '',
                   ),

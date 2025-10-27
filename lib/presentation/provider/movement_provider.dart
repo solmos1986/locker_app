@@ -15,8 +15,11 @@ import 'package:locker_app/utils/detect_stream.dart';
 import 'package:locker_app/utils/generate_code.dart';
 import 'package:locker_app/utils/get_log_reponse.dart';
 import 'package:locker_app/utils/sonido.dart';
+import 'package:uuid/uuid.dart';
 
 class MovementProvider extends ChangeNotifier {
+  String idRef = Uuid().v4();
+
   final sonido = Sonido();
   final detectStream = DetectStream();
   final getLogReponse = GetLogReponse();
@@ -34,18 +37,20 @@ class MovementProvider extends ChangeNotifier {
     var code = generateCode.generateCode(movement.nameUser);
     log('AÑADIENDO MOVIMIENTO A SQLITE');
     await movementRepository.updateDoorForMovement(0, movement.doorId);
-    await movementRepository.createMovement(
-      movement.userId,
+    await movementRepository.pendingMovement(
+      movement.departmentId,
       movement.doorId,
       code,
+      idRef,
     );
 
     log('AÑADIENDO MOVIMIENTO A WEB SERVER');
     try {
       final status = await movementService.storeMovement(
-        movement.userId,
+        movement.departmentId,
         movement.doorId,
         code,
+        idRef,
       );
       if (status.status == "ok") {}
     } catch (e) {

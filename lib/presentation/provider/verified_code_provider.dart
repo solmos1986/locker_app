@@ -15,6 +15,9 @@ class VerifiedCodeProvider extends ChangeNotifier {
     numberDoor: -1,
     nameSizeDoor: '',
     createAt: DateTime.now(),
+    departmentId: -1,
+    idRef: '',
+    name: ''
   );
 
   VerifiedCodeProvider() {
@@ -53,7 +56,7 @@ class VerifiedCodeProvider extends ChangeNotifier {
   }
 
   Future<void> updateMovement(int movementId) async {
-    await movementRepository.updateMovement(movementId);
+    //await movementRepository.updateMovement(movementId);
     isValid = true;
     notifyListeners();
   }

@@ -51,7 +51,7 @@ class LockeAppDatabase {
       )
         '''); */
 
-    await createClient(db);
+    await createDepartment(db);
     await createLocker(db);
     await createUser(db);
     await createController(db);
@@ -116,12 +116,15 @@ class LockeAppDatabase {
         '''); */
   }
 
-  Future<void> createClient(Database db) async {
+  Future<void> createDepartment(Database db) async {
     await db.execute('''
-        CREATE TABLE client (
-        client_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT ,
+        CREATE TABLE department (
+        department_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT ,
+        building_id INTEGER NOT NULL,
         name TEXT NOT NULL,
-        create_at TIMESTAMP DEFAULT (datetime('now','localtime'))
+        state INTEGER NOT NULL,
+        create_at TIMESTAMP DEFAULT (datetime('now','localtime')),
+        update_at TIMESTAMP DEFAULT (datetime('now','localtime'))
       )
         ''');
   }
@@ -130,11 +133,12 @@ class LockeAppDatabase {
     await db.execute('''
         CREATE TABLE locker (
         locker_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT ,
-        client_id INTEGER NOT NULL,
-        macAdd TEXT NOT NULL,
+        building_id INTEGER NOT NULL,
+        name TEXT NOT NULL,
+        address TEXT NOT NULL,
+        type_locker_id INTEGER NOT NULL,
         state TINYINT NOT NULL DEFAULT 1,
-        create_at TIMESTAMP DEFAULT (datetime('now','localtime')),
-        FOREIGN KEY(client_id) REFERENCES client(client_id)
+        create_at TIMESTAMP DEFAULT (datetime('now','localtime'))
       )
         ''');
   }
@@ -157,7 +161,7 @@ class LockeAppDatabase {
         CREATE TABLE controller (
         controller_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
         locker_id INTEGER  NOT NULL,
-        address485 TEXT NOT NULL,
+        serie TEXT NOT NULL,
         name TEXT NOT NULL,
         create_at TIMESTAMP DEFAULT (datetime('now','localtime')),
         FOREIGN KEY(locker_id) REFERENCES locker(locker_id)
@@ -181,8 +185,8 @@ class LockeAppDatabase {
         door_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
         door_size_id INTEGER NOT NULL,
         controller_id INTEGER NOT NULL,
-        number INTEGER NOT NULL,
-        channel TEXT NOT NULL,
+        `order` INTEGER NOT NULL,
+        name TEXT NOT NULL,
         state TINYINT NOT NULL DEFAULT 1,
         create_at TIMESTAMP DEFAULT (datetime('now','localtime')),
         FOREIGN KEY(door_size_id) REFERENCES door_size(door_size_id),
@@ -195,16 +199,21 @@ class LockeAppDatabase {
     await db.execute('''
         CREATE TABLE movement (
         movement_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-        user_id INTEGER NOT NULL,
         door_id INTEGER NOT NULL,
+        department_id INTEGER NOT NULL,
+        building_id INTEGER NOT NULL,
         code TEXT NOT NULL,
-        delivered TINYINT NOT NULL DEFAULT 0,
+        type_movement_id INTEGER NOT NULL,
+        id_ref TEXT NOT NULL,
+        status_integrate TINYINT NOT NULL DEFAULT 0,
+        status_notificate TINYINT NOT NULL DEFAULT 0,
         create_at TIMESTAMP DEFAULT (datetime('now','localtime')),
         FOREIGN KEY(door_id) REFERENCES door(door_id),
-        FOREIGN KEY(user_id) REFERENCES user(user_id)
+        FOREIGN KEY(department_id) REFERENCES department(department_id)
       )
         ''');
   }
+
   Future<void> createRequestComand(Database db) async {
     await db.execute('''
         CREATE TABLE request_comand (
@@ -217,6 +226,7 @@ class LockeAppDatabase {
       )
         ''');
   }
+
   Future<void> createResponseComand(Database db) async {
     await db.execute('''
         CREATE TABLE response_comand (

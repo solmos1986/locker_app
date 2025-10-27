@@ -1,14 +1,14 @@
 class MovementModel {
   int doorId;
-  int userId;
+  int departmentId;
   String nameUser;
-  int numberDoor;
+  String numberDoor;
   String nameSizeDoor;
   String code;
 
   MovementModel({
     required this.doorId,
-    required this.userId,
+    required this.departmentId,
     required this.nameUser,
     required this.numberDoor,
     required this.nameSizeDoor,

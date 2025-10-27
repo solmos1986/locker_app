@@ -1,23 +1,25 @@
 
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
-import 'package:locker_app/domain/entities/user_entity.dart';
-import 'package:locker_app/repositories/users_migration.dart';
+import 'package:locker_app/domain/entities/departament_entity.dart';
+import 'package:locker_app/repositories/department_repository.dart';
 
 class ReceptionProvider extends ChangeNotifier {
-  final userRepository = UserRepository();
+  final departmentRepository = DepartmentRepository();
 
   ReceptionProvider() {
     getListUsers();
   }
 
-  List<UserEntity> userList = [];
+  List<DepartmentEntity> userList = [];
 
   Future<void> sendMovement(String text) async {}
 
   Future<void> getListUsers() async {
-    final users = await userRepository.readAll();
-
-    userList = users;
+    final departament = await departmentRepository.readAll();
+    log("departament ${departament.length}");
+    userList = departament;
     notifyListeners();
   }
 }

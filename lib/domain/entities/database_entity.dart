@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:locker_app/domain/entities/cliente_entity.dart';
+import 'package:locker_app/domain/entities/departament_entity.dart';
 import 'package:locker_app/domain/entities/controller_entity.dart';
 import 'package:locker_app/domain/entities/door_entity.dart';
 import 'package:locker_app/domain/entities/door_size_entity.dart';
@@ -10,9 +10,9 @@ import 'package:locker_app/domain/entities/response_comand_entity.dart';
 import 'package:locker_app/domain/entities/user_entity.dart';
 
 class DataBaseEntity {
-  List<ClientEntity> clients;
+  List<DepartmentEntity> departments;
   List<LockerEntity> lockers;
-  List<UserEntity> users;
+  //List<UserEntity> users;
   List<ControllerEntity> controllers;
   List<DoorSizeEntity> doorSizes;
   List<DoorEntity> doors;
@@ -21,9 +21,9 @@ class DataBaseEntity {
   List<ResponseComandEntity> responseComand;
 
   DataBaseEntity({
-    required this.clients,
+    required this.departments,
     required this.lockers,
-    required this.users,
+    //required this.users,
     required this.controllers,
     required this.doorSizes,
     required this.doors,
@@ -33,15 +33,15 @@ class DataBaseEntity {
   });
 
   factory DataBaseEntity.fromJson(Map<String, dynamic> json) => DataBaseEntity(
-    clients: List<ClientEntity>.from(
-      json["clients"].map((x) => ClientEntity.fromJson(x)),
+    departments: List<DepartmentEntity>.from(
+      json["department"].map((x) => DepartmentEntity.fromJson(x)),
     ),
     lockers: List<LockerEntity>.from(
       json["lockers"].map((x) => LockerEntity.fromJson(x)),
     ),
-    users: List<UserEntity>.from(
+   /*  users: List<UserEntity>.from(
       json["users"].map((x) => UserEntity.fromJson(x)),
-    ),
+    ), */
     controllers: List<ControllerEntity>.from(
       json["controllers"].map((x) => ControllerEntity.fromJson(x)),
     ),
@@ -63,9 +63,9 @@ class DataBaseEntity {
   );
 
   Map<String, dynamic> toJson() => {
-    "clients": List<dynamic>.from(clients.map((x) => x.toJson())),
+    "departments": List<dynamic>.from(departments.map((x) => x.toJson())),
     "lockers": List<dynamic>.from(lockers.map((x) => x.toJson())),
-    "users": List<dynamic>.from(users.map((x) => x.toJson())),
+    //"users": List<dynamic>.from(users.map((x) => x.toJson())),
     "controllers": List<dynamic>.from(controllers.map((x) => x.toJson())),
     "door_sizes": List<dynamic>.from(doorSizes.map((x) => x.toJson())),
     "doors": List<dynamic>.from(doors.map((x) => x.toJson())),

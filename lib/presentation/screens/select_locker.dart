@@ -25,10 +25,10 @@ class SelectLockerScreen extends StatelessWidget {
         arguments: MovementModel(
           doorId: door.doorId,
           code: '',
-          nameSizeDoor: door.name,
+          nameSizeDoor: door.nameSize,
           nameUser: arguments.nameUser,
-          numberDoor: door.number,
-          userId: arguments.userId,
+          numberDoor: door.name,
+          departmentId: arguments.departmentId,
         ),
       );
     }
@@ -49,7 +49,7 @@ class SelectLockerScreen extends StatelessWidget {
                   },
                   nameButonCancel: 'No',
                   message:
-                      "¿Esta abierto el casillero numero # ${door.number} ?",
+                      "¿Esta abierto el casillero numero # ${door.name} ?",
                 ),
           ))
           : null;

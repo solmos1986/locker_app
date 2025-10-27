@@ -1,30 +1,30 @@
 class DoorTotalModel {
-  int number;
-  int doorId;
   String name;
+  int doorId;
+  String nameSize;
 
   DoorTotalModel({
     required this.name,
     required this.doorId,
-    required this.number,
+    required this.nameSize,
   });
 
   factory DoorTotalModel.fromJson(Map<String, dynamic> json) => DoorTotalModel(
-    number: json["number"],
-    doorId: json["door_id"],
     name: json["name"],
+    doorId: json["door_id"],
+    nameSize: json["name_size"],
   );
 
   Map<String, dynamic> toJson() => {
-    "number": number,
-    "door_id": doorId,
     "name": name,
+    "door_id": doorId,
+    "name_size": nameSize,
   };
 
-  DoorTotalModel copy({int? number, int? doorId, String? name}) =>
+  DoorTotalModel copy({String? name, int? doorId, String? nameSize}) =>
       DoorTotalModel(
         doorId: doorId ?? this.doorId,
-        number: number ?? this.number,
         name: name ?? this.name,
+        nameSize: nameSize ?? this.nameSize,
       );
 }

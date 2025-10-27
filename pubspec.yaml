@@ -47,6 +47,7 @@ dependencies:
   just_audio: ^0.10.4
   keyboard_detection: ^0.8.0
   intl: ^0.20.2
+  uuid: ^4.5.1
   #qrscan: ^0.3.3
 
 dev_dependencies:

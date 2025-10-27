@@ -1,7 +1,7 @@
 class ControllerEntity {
   int controllerId;
   int lockerId;
-  String address485;
+  String serie;
   String name;
   DateTime createAt;
 
@@ -9,7 +9,7 @@ class ControllerEntity {
     required this.controllerId,
     required this.lockerId,
     required this.name,
-    required this.address485,
+    required this.serie,
     required this.createAt,
   });
 
@@ -18,7 +18,7 @@ class ControllerEntity {
         controllerId: json["controller_id"],
         lockerId: json["locker_id"],
         name: json["name"],
-        address485: json["address485"],
+        serie: json["serie"],
         createAt: DateTime.parse(json["create_at"]),
       );
 
@@ -26,14 +26,14 @@ class ControllerEntity {
     "controller_id": controllerId,
     "locker_id": lockerId,
     "name": name,
-    "address485": address485,
+    "serie": serie,
     "create_at": createAt.toIso8601String(),
   };
 
   ControllerEntity copy({
     int? controllerId,
     int? lockerId,
-    String? address485,
+    String? serie,
     String? name,
     DateTime? createAt,
   }) => ControllerEntity(
@@ -41,6 +41,6 @@ class ControllerEntity {
     name: name ?? this.name,
     createAt: createAt ?? this.createAt,
     controllerId: lockerId ?? this.lockerId,
-    address485: address485 ?? this.address485,
+    serie: serie ?? this.serie,
   );
 }

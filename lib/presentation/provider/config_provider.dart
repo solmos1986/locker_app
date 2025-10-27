@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:locker_app/config/database.dart';
-import 'package:locker_app/repositories/client_repository.dart';
+import 'package:locker_app/repositories/department_repository.dart';
 import 'package:locker_app/repositories/controller_repository.dart';
 import 'package:locker_app/repositories/door_repository.dart';
 import 'package:locker_app/repositories/door_size_repository.dart';
@@ -16,7 +16,7 @@ class ConfigProvider extends ChangeNotifier {
   final dataBaseService = DatabaseService();
   final lockeAppDatabase = LockeAppDatabase.instance;
   final resetRepository = ResetRepository();
-  final clientRepository = ClientRepository();
+  final departmentRepository = DepartmentRepository();
   final userRepository = UserRepository();
   final lockerRepository = LockerRepository();
   final controllerRepository = ControllerRepository();
@@ -37,9 +37,9 @@ class ConfigProvider extends ChangeNotifier {
     final fecthDatabase = await dataBaseService.getAllDataBase();
     await resetRepository.resetDataBase();
 
-    await clientRepository.createAll(fecthDatabase.clients);
+    await departmentRepository.createAll(fecthDatabase.departments);
     await lockerRepository.createAll(fecthDatabase.lockers);
-    await userRepository.createAll(fecthDatabase.users);
+    //await userRepository.createAll(fecthDatabase.users);
     await controllerRepository.createAll(fecthDatabase.controllers);
     await doorSizeRepository.createAll(fecthDatabase.doorSizes);
     await doorRepository.createAll(fecthDatabase.doors);

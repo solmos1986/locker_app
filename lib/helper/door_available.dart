@@ -1,5 +1,5 @@
 class DoorAvailable {
-  int number;
+  String nameSize;
   int doorId;
   String name;
   int total;
@@ -7,28 +7,28 @@ class DoorAvailable {
   DoorAvailable({
     required this.name,
     required this.doorId,
-    required this.number,
+    required this.nameSize,
     required this.total,
   });
 
   factory DoorAvailable.fromJson(Map<String, dynamic> json) => DoorAvailable(
-    number: json["number"],
+    nameSize: json["name_size"],
     doorId: json["door_id"],
     name: json["name"],
     total: json["total"],
   );
 
   Map<String, dynamic> toJson() => {
-    "number": number,
+    "name_size": nameSize,
     "door_id": doorId,
     "name": name,
     "total": total,
   };
 
-  DoorAvailable copy({int? number, int? doorId, String? name, int? total}) =>
+  DoorAvailable copy({String? nameSize, int? doorId, String? name, int? total}) =>
       DoorAvailable(
         doorId: doorId ?? this.doorId,
-        number: number ?? this.number,
+        nameSize: nameSize ?? this.nameSize,
         name: name ?? this.name,
         total: total ?? this.total,
       );

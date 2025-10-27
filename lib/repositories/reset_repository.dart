@@ -17,7 +17,7 @@ class ResetRepository {
     await query.execute('''
         DELETE from locker;
      '''); */
-    await resetClient();
+    await resetDepartment();
     await resetLocker();
     await resetUser();
     await resetController();
@@ -27,7 +27,7 @@ class ResetRepository {
     await resetRequestComand();
     await resetResponseComand();
     //insert
-    await db.createClient(query);
+    await db.createDepartment(query);
     await db.createLocker(query);
     await db.createUser(query);
     await db.createController(query);
@@ -38,10 +38,10 @@ class ResetRepository {
     await db.createResponseComand(query);
   }
 
-  Future<void> resetClient() async {
+  Future<void> resetDepartment() async {
     final query = await db.database;
     await query.execute('''
-        DROP TABLE IF EXISTS client;
+        DROP TABLE IF EXISTS department;
      ''');
   }
 
