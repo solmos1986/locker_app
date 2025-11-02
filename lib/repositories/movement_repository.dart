@@ -4,8 +4,6 @@ import 'package:locker_app/helper/env.dart';
 import 'package:locker_app/infrastructure/models/verified_code_model.dart';
 
 class MovementRepository {
-
-
   Future<int> createAll(List<MovementEntity> movements) async {
     int count = 0;
     for (var movement in movements) {
@@ -29,15 +27,25 @@ class MovementRepository {
     ]);
   }
 
-  Future<void> pendingMovement(int departmentId, int doorId, String code, String idRef) async {
+  Future<void> pendingMovement(
+    int departmentId,
+    int doorId,
+    String code,
+    String idRef,
+  ) async {
     final db = await LockeAppDatabase.instance.database;
     await db.rawQuery(
-      "INSERT INTO movement (user_id, door_id, code, building_id, type_movement_id, id_ref) VALUES(?, ?, ?, ?, ?, ?);",
+      "INSERT INTO movement (department_id, door_id, code, building_id, type_movement_id, id_ref) VALUES(?, ?, ?, ?, ?, ?);",
       [departmentId, doorId, code, EnvConfig.buildingId, 1, idRef],
     );
   }
 
-  Future<void> receivedMovement(int departmentId, int doorId, String code, String idRef) async {
+  Future<void> receivedMovement(
+    int departmentId,
+    int doorId,
+    String code,
+    String idRef,
+  ) async {
     final db = await LockeAppDatabase.instance.database;
      await db.rawQuery(
       "INSERT INTO movement (department_id, door_id, code, building_id, type_movement_id, id_ref) VALUES(?, ?, ?, ?, ?, ?);",
