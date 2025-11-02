@@ -81,7 +81,7 @@ class OtpScreen extends StatelessWidget {
       await verifiedCodeProvider.verifiedCode(value);
       if (verifiedCodeProvider.isValid) {
         //verifiedMovement();
-        log("data ${verifiedCodeProvider.movement.numberDoor}");
+        log("data ${verifiedCodeProvider.movement.idRef}");
         navigateConfirmate(verifiedCodeProvider.movement);
         /* await verifiedCodeProvider.updateMovement(
           verifiedCodeProvider.movement.movementId,

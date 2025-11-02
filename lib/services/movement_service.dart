@@ -29,12 +29,11 @@ class MovementService {
 
   Future<StatusModel> updateMovement(
     int departamentId,
-    int userId,
     int doorId,
     String code,
     String idRef,
   ) async {
-    final response = await _dio.put(
+    final response = await _dio.post(
       '${EnvConfig.baseUrl}/api/movement/received',
       options: Options(headers: {'Authorization': 'Bearer ${EnvConfig.token}'}),
       data: {
@@ -42,7 +41,7 @@ class MovementService {
         "door_id": doorId,
         "code": code,
         "id_ref": idRef,
-        "create_at": DateTime.now(),
+        "create_at": DateTime.now().toString(),
       },
     );
 

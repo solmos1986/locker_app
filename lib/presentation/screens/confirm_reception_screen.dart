@@ -103,7 +103,7 @@ class ConfirmReceptionScreen extends StatelessWidget {
                               ),
                             ),
                             Text(
-                              '#${arguments.numberDoor}',
+                              '#${arguments.nameDoor}',
                               style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 20,

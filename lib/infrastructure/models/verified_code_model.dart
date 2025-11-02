@@ -3,8 +3,7 @@ class VerifiedCodeModel {
   int departmentId;
   int movementId;
   String code;
-  int numberDoor;
-  String name;
+  String nameDoor;
   String nameSizeDoor;
   String idRef;
   DateTime createAt;
@@ -14,8 +13,7 @@ class VerifiedCodeModel {
     required this.departmentId,
     required this.movementId,
     required this.code,
-    required this.numberDoor,
-    required this.name,
+    required this.nameDoor,
     required this.nameSizeDoor,
     required this.idRef,
     required this.createAt,
@@ -27,8 +25,7 @@ class VerifiedCodeModel {
         departmentId: json["department_id"],
         movementId: json["movement_id"],
         code: json["code"],
-        numberDoor: json["number"],
-        name: json["name"],
+        nameDoor: json["name_door"],
         nameSizeDoor: json["name_size"],
         idRef: json["id_ref"],
         createAt: DateTime.parse(json["create_at"]),

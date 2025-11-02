@@ -40,7 +40,7 @@ class MovementRepository {
   Future<void> receivedMovement(int departmentId, int doorId, String code, String idRef) async {
     final db = await LockeAppDatabase.instance.database;
      await db.rawQuery(
-      "INSERT INTO movement (user_id, door_id, code, building_id, type_movement_id, id_ref) VALUES(?, ?, ?, ?, ?, ?);",
+      "INSERT INTO movement (department_id, door_id, code, building_id, type_movement_id, id_ref) VALUES(?, ?, ?, ?, ?, ?);",
       [departmentId, doorId, code, EnvConfig.buildingId, 2, idRef],
     );
   }
@@ -74,7 +74,7 @@ class MovementRepository {
   Future<List<VerifiedCodeModel>> verifiedCode(String code) async {
     final db = await LockeAppDatabase.instance.database;
     String query =
-        "SELECT door.door_id, movement.department_id, movement.id_ref, door.name, door_size.name, movement.movement_id, movement.create_at, movement.code, movement.id_ref FROM movement INNER JOIN door on door.door_id=movement.door_id INNER JOIN door_size on door_size.door_size_id=door.door_size_id WHERE movement.code='${code.toString()}' and movement.type_movement_id=1";
+        "SELECT door.door_id, movement.department_id, movement.id_ref, door.name as name_door, door_size.name as name_size, movement.movement_id, movement.create_at, movement.code FROM movement INNER JOIN door on door.door_id=movement.door_id INNER JOIN door_size on door_size.door_size_id=door.door_size_id WHERE movement.code='${code.toString()}' and movement.type_movement_id=1";
     final result = await db.rawQuery(query);
     return result.map((json) => VerifiedCodeModel.fromJson(json)).toList();
   }

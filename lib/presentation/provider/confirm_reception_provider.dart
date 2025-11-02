@@ -57,10 +57,33 @@ class ConfirmReceptionProvider extends ChangeNotifier {
   }
 
   Future<void> confirmeReception(VerifiedCodeModel verifiedCodeModel) async {
-    log('MODIFCANDO MOVIMIENTO A SQLITE movement ${verifiedCodeModel.movementId}');
+    log(
+      'MODIFCANDO MOVIMIENTO A SQLITE movementId ${verifiedCodeModel.movementId}',
+    );
+    log('MODIFCANDO MOVIMIENTO A SQLITE doorId ${verifiedCodeModel.doorId}');
+    log('MODIFCANDO MOVIMIENTO A SQLITE idRef ${verifiedCodeModel.idRef}');
+    log(
+      'MODIFCANDO MOVIMIENTO A SQLITE departmentId ${verifiedCodeModel.departmentId}',
+    );
+    log(
+      'MODIFCANDO MOVIMIENTO A SQLITE nameDoor ${verifiedCodeModel.nameDoor}',
+    );
+    log(
+      'MODIFCANDO MOVIMIENTO A SQLITE nameSizeDoor ${verifiedCodeModel.nameSizeDoor}',
+    );
     await movementRepository.updateDoorForMovement(1, verifiedCodeModel.doorId);
-    //await movementRepository.receivedMovement(verifiedCodeModel.movementId);
+    await movementRepository.receivedMovement(
+      verifiedCodeModel.departmentId,
+      verifiedCodeModel.doorId,
+      verifiedCodeModel.code,
+      verifiedCodeModel.idRef,
+    );
     log('MODIFCANDO MOVIMIENTO A WEB SERVER');
-    //await movementService.updateMovement(verifiedCodeModel.movementId);
+    await movementService.updateMovement(
+      verifiedCodeModel.departmentId,
+      verifiedCodeModel.doorId,
+      verifiedCodeModel.code,
+      verifiedCodeModel.idRef,
+    );
   }
 }

@@ -12,12 +12,11 @@ class VerifiedCodeProvider extends ChangeNotifier {
     doorId: -1,
     code: '',
     movementId: -1,
-    numberDoor: -1,
+    nameDoor: '',
     nameSizeDoor: '',
     createAt: DateTime.now(),
     departmentId: -1,
     idRef: '',
-    name: ''
   );
 
   VerifiedCodeProvider() {
@@ -46,9 +45,11 @@ class VerifiedCodeProvider extends ChangeNotifier {
       log('puerta  valida');
       movement.doorId = result.first.doorId;
       movement.code = result.first.code;
+      movement.departmentId = result.first.departmentId;
+      movement.idRef = result.first.idRef;
       movement.movementId = result.first.movementId;
       movement.nameSizeDoor = result.first.nameSizeDoor;
-      movement.numberDoor = result.first.numberDoor;
+      movement.nameDoor = result.first.nameDoor;
       movement.createAt = result.first.createAt;
       codeQR = '';
     }
