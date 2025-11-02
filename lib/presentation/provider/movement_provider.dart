@@ -46,6 +46,10 @@ class MovementProvider extends ChangeNotifier {
 
     log('AÑADIENDO MOVIMIENTO A WEB SERVER');
     try {
+      log("storeMovement servicio web ${movement.departmentId}");
+      log("storeMovement servicio web ${movement.doorId}");
+      log("storeMovement servicio web $code");
+      log("storeMovement servicio web $idRef");
       final status = await movementService.storeMovement(
         movement.departmentId,
         movement.doorId,
@@ -54,7 +58,7 @@ class MovementProvider extends ChangeNotifier {
       );
       if (status.status == "ok") {}
     } catch (e) {
-      log('Error en la api');
+      log('Error en la api ${e.toString()}');
     }
     //notifyListeners();
   }

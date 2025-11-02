@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dio/dio.dart';
 import 'package:locker_app/helper/env.dart';
 import 'package:locker_app/infrastructure/models/status_model.dart';
@@ -11,15 +13,16 @@ class MovementService {
     String code,
     String idRef,
   ) async {
+    log("storeMovement servicio web ${DateTime.now().toString()}");
     final response = await _dio.post(
       '${EnvConfig.baseUrl}/api/movement/pending',
       options: Options(headers: {'Authorization': 'Bearer ${EnvConfig.token}'}),
       data: {
-        "departament_id": departamentId,
+        "department_id": departamentId,
         "door_id": doorId,
         "code": code,
         "id_ref": idRef,
-        "create_at": DateTime.now(),
+        "create_at": DateTime.now().toString(),
       },
     );
 
