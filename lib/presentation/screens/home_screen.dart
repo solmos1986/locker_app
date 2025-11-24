@@ -1,8 +1,4 @@
-import 'dart:developer';
-import 'dart:math';
-
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:locker_app/config/theme.dart';
 import 'package:locker_app/presentation/screens/client_screen.dart';
 
@@ -11,9 +7,7 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //final data = ConectionSerial();
-    /*     final test2 = ConectionSerialTest2();
-    final test3 = Test3(); */
+
     return Transform.rotate(
       angle: 0,
       child: Padding(

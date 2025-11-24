@@ -48,6 +48,9 @@ dependencies:
   keyboard_detection: ^0.8.0
   intl: ^0.20.2
   uuid: ^4.5.1
+  dart_amqp: ^0.3.1
+  background_task: ^0.2.0+2
+  workmanager: ^0.7.0
   #qrscan: ^0.3.3
 
 dev_dependencies:
