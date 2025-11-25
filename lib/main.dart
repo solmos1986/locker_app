@@ -71,6 +71,8 @@ void main() async {
 
   UtilRabbtiMqProvider rabbtiMqProvider = UtilRabbtiMqProvider();
   await rabbtiMqProvider.connecRabbit();
+
+  log("DateTime : ${DateTime.now().toString()}");
   runApp(MyApp());
 }
 
