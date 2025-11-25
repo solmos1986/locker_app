@@ -31,7 +31,7 @@ class MovementService {
   }
 
   Future<StatusModel> updateMovement(
-    int departamentId,
+    int departmentId,
     int doorId,
     String code,
     String idRef,
@@ -40,7 +40,7 @@ class MovementService {
       '${EnvConfig.baseUrl}/api/movement/received',
       options: Options(headers: {'Authorization': 'Bearer ${EnvConfig.token}'}),
       data: {
-        "departamentId": departamentId,
+        "department_id": departmentId,
         "door_id": doorId,
         "code": code,
         "id_ref": idRef,

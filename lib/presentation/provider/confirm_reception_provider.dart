@@ -79,11 +79,15 @@ class ConfirmReceptionProvider extends ChangeNotifier {
       verifiedCodeModel.idRef,
     );
     log('MODIFCANDO MOVIMIENTO A WEB SERVER');
-    await movementService.updateMovement(
-      verifiedCodeModel.departmentId,
-      verifiedCodeModel.doorId,
-      verifiedCodeModel.code,
-      verifiedCodeModel.idRef,
-    );
+    try {
+      await movementService.updateMovement(
+        verifiedCodeModel.departmentId,
+        verifiedCodeModel.doorId,
+        verifiedCodeModel.code,
+        verifiedCodeModel.idRef,
+      );
+    } catch (e) {
+      log('ERROR AL ENVIAR AL SERVER');
+    }
   }
 }
