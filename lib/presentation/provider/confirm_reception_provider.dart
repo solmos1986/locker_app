@@ -51,9 +51,10 @@ class ConfirmReceptionProvider extends ChangeNotifier {
   }
 
   Future<void> retry(VerifiedCodeModel verifiedCodeModel) async {
+    log("ConfirmReceptionProvider retry ");
     isValid = false;
     notifyListeners();
-    await updateMovement(verifiedCodeModel);
+    //await updateMovement(verifiedCodeModel);
   }
 
   Future<void> confirmeReception(VerifiedCodeModel verifiedCodeModel) async {

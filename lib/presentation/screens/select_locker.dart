@@ -48,8 +48,7 @@ class SelectLockerScreen extends StatelessWidget {
                     }
                   },
                   nameButonCancel: 'No',
-                  message:
-                      "¿Esta abierto el casillero numero # ${door.name} ?",
+                  message: "¿Esta abierto el casillero numero # ${door.name} ?",
                 ),
           ))
           : null;
@@ -112,7 +111,7 @@ class SelectLockerScreen extends StatelessWidget {
                                       ),
                                     ),
                                     Text(
-                                      selectLockerProvider.doorSmall.name,
+                                      selectLockerProvider.doorSmall.nameSize,
                                       textAlign: TextAlign.center,
                                       style: TextStyle(
                                         color: Colors.white,
@@ -167,7 +166,7 @@ class SelectLockerScreen extends StatelessWidget {
                                       ),
                                     ),
                                     Text(
-                                      selectLockerProvider.doorMedium.name,
+                                      selectLockerProvider.doorMedium.nameSize,
                                       textAlign: TextAlign.center,
                                       style: TextStyle(
                                         color: Colors.white,
@@ -215,7 +214,7 @@ class SelectLockerScreen extends StatelessWidget {
                                   children: [
                                     Image.asset('assets/images/caja.png'),
                                     Text(
-                                      selectLockerProvider.doorBig.name,
+                                      selectLockerProvider.doorBig.nameSize,
                                       textAlign: TextAlign.center,
                                       style: TextStyle(
                                         color: Colors.white,
