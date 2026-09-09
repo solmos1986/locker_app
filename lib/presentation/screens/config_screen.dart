@@ -14,39 +14,42 @@ class ConfigScreen extends StatelessWidget {
       await configProvider.getDataBase();
     }
 
-    return Scaffold(
-      appBar: AppBar(
-        actions: [],
-        title: Text(
-          'Configuracion',
-          style: TextStyle(color: ConfigColor.appBarTextColor),
+    return Padding(
+      padding: EdgeInsets.only(top: 220, bottom: 200),
+      child: Scaffold(
+        appBar: AppBar(
+          actions: [],
+          title: Text(
+            'Configuracion',
+            style: TextStyle(color: ConfigColor.appBarTextColor),
+          ),
         ),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          //crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(10),
-              child: ElevatedButton(
-                onPressed: () => {onPressUpdateDataBase()},
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(0.0),
-                      child: Text(
-                        configProvider.load
-                            ? 'Cargando...'
-                            : 'Actualizar database',
-                        style: TextStyle(fontSize: 20),
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            //crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(10),
+                child: ElevatedButton(
+                  onPressed: () => {onPressUpdateDataBase()},
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(0.0),
+                        child: Text(
+                          configProvider.load
+                              ? 'Cargando...'
+                              : 'Actualizar database',
+                          style: TextStyle(fontSize: 20),
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
