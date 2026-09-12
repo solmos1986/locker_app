@@ -106,3 +106,5 @@ serial descrita arriba.
   puerta y luego hace `POST /api/movement/received`.
 
 La autenticación con el backend es `Authorization: Bearer <EnvConfig.token>` en cada petición.
+
+

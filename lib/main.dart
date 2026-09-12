@@ -12,7 +12,9 @@ import 'package:locker_app/presentation/provider/rabbitmq_provider.dart';
 import 'package:locker_app/presentation/provider/rabbitmq_reception.dart';
 import 'package:locker_app/presentation/provider/reception_provider.dart';
 import 'package:locker_app/presentation/provider/select_locker_provider.dart';
+import 'package:locker_app/presentation/provider/socket_provider.dart';
 import 'package:locker_app/presentation/provider/verified_code_provider.dart';
+import 'package:locker_app/services/socket_service.dart';
 import 'package:locker_app/presentation/screens/client_screen.dart';
 import 'package:locker_app/presentation/screens/confirm_delivery_screen.dart';
 import 'package:locker_app/presentation/screens/confirm_reception_screen.dart';
@@ -72,12 +74,45 @@ void main() async {
   UtilRabbtiMqProvider rabbtiMqProvider = UtilRabbtiMqProvider();
   await rabbtiMqProvider.connecRabbit();
 
+  // Conexión Socket.IO única: se abre acá y vive durante toda la app,
+  // procesando los eventos `open-door` aunque el usuario cambie de pantalla.
+  UtilSocketProvider.instance.listen();
+
   log("DateTime : ${DateTime.now().toString()}");
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
+/// Permite navegar desde fuera del árbol de widgets (p. ej. desde un evento
+/// de Socket.IO recibido mientras se está en otra pantalla).
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    // Al volver de segundo plano el socket puede haber quedado dormido.
+    if (state == AppLifecycleState.resumed) {
+      SocketService.instance.reconnect();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -87,11 +122,13 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => ConfigProvider()),
         ChangeNotifierProvider(create: (_) => MovementProvider()),
         ChangeNotifierProvider(create: (_) => VerifiedCodeProvider()),
+        ChangeNotifierProvider(create: (_) => SocketProvider()),
       ],
       child: Transform.rotate(
         angle: math.pi / 2,
         child: MaterialApp(
           title: 'Lock App',
+          navigatorKey: navigatorKey,
           theme: AppTheme().theme(),
           initialRoute: '/home',
           routes: {

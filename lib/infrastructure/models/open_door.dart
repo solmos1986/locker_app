@@ -10,10 +10,16 @@ class OpenDoorModel {
   });
 
   factory OpenDoorModel.fromJson(Map<dynamic, dynamic> json) => OpenDoorModel(
-    name: json["name"],
-    doorId: json["door_id"],
-    doorSizeId: json["door_size_id"],
+    name: (json["name"] ?? "").toString(),
+    doorId: _toInt(json["door_id"]),
+    doorSizeId: _toInt(json["door_size_id"]),
   );
+
+  static int _toInt(dynamic value) {
+    if (value is int) return value;
+    if (value is num) return value.toInt();
+    return int.tryParse(value?.toString() ?? "") ?? 0;
+  }
 
   Map<String, dynamic> toJson() => {
     "name": name,
