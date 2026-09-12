@@ -68,17 +68,7 @@ class SocketService {
       })
       ..on('update_data', (data) {
         log('Update data base message: $data');
-        /* if (data is Map) {
-          _openDoorController.add(Map<String, dynamic>.from(data));
-        } */
-      })
-    /* ..on('open-door', (data) {
-        log('SocketService open-door: $data');
-        if (data is Map) {
-          _openDoorController.add(Map<String, dynamic>.from(data));
-        }
-      }) */
-    ;
+      });
 
     _socket!.connect();
   }
