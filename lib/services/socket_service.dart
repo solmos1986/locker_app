@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:locker_app/helper/env.dart';
+import 'package:locker_app/infrastructure/models/door_message.dart';
 import 'package:socket_io_client/socket_io_client.dart' as io;
 
 /// Conexión Socket.IO única para toda la app.
@@ -15,13 +16,12 @@ class SocketService {
 
   io.Socket? _socket;
 
-  final _openDoorController =
-      StreamController<Map<String, dynamic>>.broadcast();
+  final _openDoorController = StreamController<DoorMessageModel>.broadcast();
   final _statusController = StreamController<bool>.broadcast();
   final _updateDataController = StreamController<void>.broadcast();
 
   /// Eventos `open-door` recibidos del servidor.
-  Stream<Map<String, dynamic>> get onOpenDoor => _openDoorController.stream;
+  Stream<DoorMessageModel> get onOpenDoor => _openDoorController.stream;
 
   /// Cambios de estado de conexión (true = conectado).
   Stream<bool> get onStatusChange => _statusController.stream;
@@ -68,7 +68,7 @@ class SocketService {
       ..on('door', (data) {
         log('door message: $data');
         if (data is Map) {
-          _openDoorController.add(Map<String, dynamic>.from(data));
+          _openDoorController.add(DoorMessageModel.fromJson(data));
         }
       })
       ..on('update_data', (data) {

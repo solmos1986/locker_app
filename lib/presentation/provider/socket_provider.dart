@@ -4,7 +4,7 @@ import 'dart:developer';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_serial/flutter_serial.dart';
 import 'package:locker_app/config/navigator_key.dart';
-import 'package:locker_app/infrastructure/models/open_door.dart';
+import 'package:locker_app/infrastructure/models/door_message.dart';
 import 'package:locker_app/presentation/provider/config_provider.dart';
 import 'package:locker_app/repositories/request_comand_repository.dart';
 import 'package:locker_app/services/integration/connect_serial.dart';
@@ -25,7 +25,7 @@ class UtilSocketProvider {
   final getLogReponse = GetLogReponse();
   final requestComandRepository = RequestComandRepository();
 
-  StreamSubscription<Map<String, dynamic>>? _subscription;
+  StreamSubscription<DoorMessageModel>? _subscription;
 
   /// Abre la conexión (si no está abierta) y empieza a procesar eventos.
   void listen() {
@@ -33,17 +33,17 @@ class UtilSocketProvider {
     _subscription ??= SocketService.instance.onOpenDoor.listen(_onOpenDoor);
   }
 
-  Future<void> _onOpenDoor(Map<String, dynamic> data) async {
+  Future<void> _onOpenDoor(DoorMessageModel data) async {
     try {
-      final openDoor = OpenDoorModel.fromJson(data);
-      log('UtilSocketProvider abrir puerta: ${openDoor.doorId}');
+      final doorId = data.message;
+      log('UtilSocketProvider abrir puerta: $doorId');
 
       final comands = await requestComandRepository.getCodeForDoor(
-        openDoor.doorId,
+        doorId,
         'abrir',
       );
       if (comands.isEmpty) {
-        log('UtilSocketProvider: sin comandos para la puerta ${openDoor.doorId}');
+        log('UtilSocketProvider: sin comandos para la puerta $doorId');
         return;
       }
 
