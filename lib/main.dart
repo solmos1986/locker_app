@@ -2,15 +2,12 @@ import 'dart:async';
 import 'dart:developer';
 import 'dart:math' as math;
 
-import 'package:background_task/background_task.dart';
 import 'package:flutter/material.dart';
 import 'package:locker_app/config/navigator_key.dart';
 import 'package:locker_app/config/theme.dart';
 import 'package:locker_app/presentation/provider/config_provider.dart';
 import 'package:locker_app/presentation/provider/confirm_reception_provider.dart';
 import 'package:locker_app/presentation/provider/movement_provider.dart';
-import 'package:locker_app/presentation/provider/rabbitmq_provider.dart';
-import 'package:locker_app/presentation/provider/rabbitmq_reception.dart';
 import 'package:locker_app/presentation/provider/reception_provider.dart';
 import 'package:locker_app/presentation/provider/select_locker_provider.dart';
 import 'package:locker_app/presentation/provider/socket_provider.dart';
@@ -69,12 +66,6 @@ void main() async {
     ),
   ); */
 
-  // Stop background processing and location updates.
-  //await BackgroundTask.instance.stop();
-
-  UtilRabbtiMqProvider rabbtiMqProvider = UtilRabbtiMqProvider();
-  await rabbtiMqProvider.connecRabbit();
-
   // Conexión Socket.IO única: se abre acá y vive durante toda la app,
   // procesando los eventos `open-door` aunque el usuario cambie de pantalla.
   UtilSocketProvider.instance.listen();
@@ -119,7 +110,6 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => RabbtiMqProvider()),
         ChangeNotifierProvider(create: (_) => ConfigProvider()),
         ChangeNotifierProvider(create: (_) => MovementProvider()),
         ChangeNotifierProvider(create: (_) => VerifiedCodeProvider()),
