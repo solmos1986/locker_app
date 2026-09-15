@@ -1,103 +1,160 @@
+import 'dart:async';
+import 'dart:developer';
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
-import 'package:locker_app/pages/depas.dart';
-import 'package:locker_app/presentation/client/cliente_screen.dart';
+import 'package:locker_app/config/navigator_key.dart';
+import 'package:locker_app/config/theme.dart';
+import 'package:locker_app/presentation/provider/config_provider.dart';
+import 'package:locker_app/presentation/provider/confirm_reception_provider.dart';
+import 'package:locker_app/presentation/provider/movement_provider.dart';
+import 'package:locker_app/presentation/provider/reception_provider.dart';
+import 'package:locker_app/presentation/provider/select_locker_provider.dart';
+import 'package:locker_app/presentation/provider/socket_provider.dart';
+import 'package:locker_app/presentation/provider/verified_code_provider.dart';
+import 'package:locker_app/services/socket_service.dart';
+import 'package:locker_app/presentation/screens/client_screen.dart';
+import 'package:locker_app/presentation/screens/confirm_delivery_screen.dart';
+import 'package:locker_app/presentation/screens/confirm_reception_screen.dart';
+import 'package:locker_app/presentation/screens/error_qr_screen.dart';
+import 'package:locker_app/presentation/screens/select_locker.dart';
+import 'package:locker_app/presentation/screens/config_screen.dart';
+import 'package:locker_app/presentation/screens/home_screen.dart';
+import 'package:locker_app/presentation/screens/password_screen.dart';
+import 'package:locker_app/presentation/screens/qr_screen.dart';
+import 'package:locker_app/presentation/screens/reception_screen.dart';
+import 'package:provider/provider.dart';
+import 'package:workmanager/workmanager.dart';
 
-void main() => runApp(MiApp());
+// Define callback handler at the top level.
+/* @pragma('vm:entry-point')
+void backgroundHandler(Location data) {
+  log('backgroundHandler');
+  debugPrint('backgroundHandler: ${DateTime.now()}, $data');
+  Timer.periodic(Duration(seconds: 5), (timer) {
+    print("Background task running: ${DateTime.now()}");
+    log("Background task running: ${DateTime.now()}");
+  });
+} */
 
-class MiApp extends StatelessWidget {
-  const MiApp({super.key});
+@pragma('vm:entry-point')
+void callbackDispatcher() {
+  Workmanager().executeTask((task, inputData) async {
+    print("Background task: $task");
+    log("Background task: $task");
+    /* UtilRabbtiMqProvider rabbtiMqProvider = UtilRabbtiMqProvider();
+    await rabbtiMqProvider.openDoor(); */
+    // Your background work here
+    return Future.value(true);
+  });
+}
+
+void main() async {
+  /* WidgetsFlutterBinding.ensureInitialized();
+  //await BackgroundTask.instance.setBackgroundHandler(backgroundHandler);
+  BackgroundTask.instance.setBackgroundHandler(backgroundHandler); */
+  WidgetsFlutterBinding.ensureInitialized();
+  /* Workmanager().initialize(callbackDispatcher);
+  Workmanager().registerOneOffTask(
+    "task-id-1",
+    "tarea_rabbit",
+    initialDelay: const Duration(seconds: 2),
+    constraints: Constraints(
+      networkType:
+          NetworkType
+              .connected, // Example constraint: requires network connection
+    ),
+  ); */
+
+  // Conexión Socket.IO única: se abre acá y vive durante toda la app,
+  // procesando los eventos `open-door` aunque el usuario cambie de pantalla.
+  UtilSocketProvider.instance.listen();
+
+  // Escucha `update_data` por Socket.IO y resincroniza la base de datos
+  // local llamando a ConfigProvider.getDataBase(), sin importar la pantalla.
+  UtilUpdateDataProvider.instance.listen();
+
+  log("DateTime : ${DateTime.now().toString()}");
+  runApp(MyApp());
+}
+
+class MyApp extends StatefulWidget {
+  const MyApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(title: "Mi App2", home: Inicio());
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
   }
-}
-
-class Inicio extends StatefulWidget {
-  const Inicio({super.key});
 
   @override
-  State<Inicio> createState() => _InicioState();
-}
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
 
-class _InicioState extends State<Inicio> {
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    // Al volver de segundo plano el socket puede haber quedado dormido.
+    if (state == AppLifecycleState.resumed) {
+      SocketService.instance.reconnect();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.black,
-      body: Center(
-        child: Column(
-          //shrinkWrap: true,
-          //padding: const EdgeInsets.all(20.0),
-          children: <Widget>[
-            Expanded(
-              flex: 3, // 30%
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Padding(padding: EdgeInsets.all(0.0)),
-                  Image.network(
-                    'https://holdinghome.com.bo/web-publica/img/logo-hh.png',
-                    fit: BoxFit.contain,
-
-                    height: 80,
-                    color: Colors.white,
-                  ),
-                ],
-              ),
-            ),
-            Expanded(
-              flex: 3, // 70%
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Padding(padding: EdgeInsets.all(20.0)),
-                  SizedBox(
-                    width: 400,
-                    child: ElevatedButton(
-                      onPressed:
-                          () => {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => Depas()),
-                            ),
-                          },
-                      child: Text('Entregar'),
-                    ),
-                  ),
-                  //SizedBox(height: 30),
-                ],
-              ),
-            ),
-            Expanded(
-              flex: 3, // 70%
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Padding(padding: EdgeInsets.all(20.0)),
-                  // SizedBox(height: 30),
-                  SizedBox(
-                    width: 400,
-                    child: ElevatedButton(
-                      onPressed:
-                          () => {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) =>  ClienteScreen()),
-                            ),
-                          },
-                      child: Text('Recoger'),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Expanded(
-              flex: 2, // 70%
-              child: Column(),
-            ),
-          ],
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => ConfigProvider()),
+        ChangeNotifierProvider(create: (_) => MovementProvider()),
+        ChangeNotifierProvider(create: (_) => VerifiedCodeProvider()),
+        ChangeNotifierProvider(create: (_) => SocketProvider()),
+      ],
+      child: Transform.rotate(
+        angle: math.pi / 2,
+        child: MaterialApp(
+          title: 'Lock App',
+          navigatorKey: navigatorKey,
+          theme: AppTheme().theme(),
+          initialRoute: '/home',
+          routes: {
+            "/home": (context) => HomeScreen(),
+            "/client": (context) => ClientScreen(),
+            "/reception":
+                (context) => ChangeNotifierProvider(
+                  create: (context) => ReceptionProvider(),
+                  builder: (context, child) => const ReceptionScreen(),
+                ),
+            "/select-locker":
+                (context) => ChangeNotifierProvider(
+                  create: (context) => SelectLockerProvider(),
+                  builder: (context, child) => const SelectLockerScreen(),
+                ),
+            "/password":
+                (context) => ChangeNotifierProvider(
+                  create: (context) => VerifiedCodeProvider(),
+                  builder: (context, child) => Password(),
+                ),
+            "/qr-scan":
+                (context) => ChangeNotifierProvider(
+                  create: (context) => VerifiedCodeProvider(),
+                  builder: (context, child) => const QrScreen(),
+                ),
+            "/config": (context) => ConfigScreen(),
+            "/confirm-delivery": (context) => ConfirmDeliveryScreen(),
+            "/confirm-reception":
+                (context) => ChangeNotifierProvider(
+                  create: (context) => ConfirmReceptionProvider(),
+                  builder: (context, child) => const ConfirmReceptionScreen(),
+                ),
+            "/error-qr": (context) => ErrorQrScreen(),
+          },
+          debugShowCheckedModeBanner: false,
         ),
       ),
     );

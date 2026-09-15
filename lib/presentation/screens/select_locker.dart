@@ -1,0 +1,248 @@
+import 'package:flutter/material.dart';
+import 'package:locker_app/config/theme.dart';
+import 'package:locker_app/helper/door_available.dart';
+import 'package:locker_app/infrastructure/models/movement_model.dart';
+import 'package:locker_app/presentation/provider/select_locker_provider.dart';
+import 'package:locker_app/widgets/reception/modal_content.dart';
+import 'package:provider/provider.dart';
+import 'package:responsive_builder/responsive_builder.dart';
+
+class SelectLockerScreen extends StatelessWidget {
+  const SelectLockerScreen({super.key, this.movement});
+  final MovementModel? movement;
+
+  @override
+  Widget build(BuildContext context) {
+    final arguments =
+        ModalRoute.of(context)?.settings.arguments as MovementModel;
+
+    final selectLockerProvider = context.watch<SelectLockerProvider>();
+
+    void activateButtonNavigate(bool valid, DoorAvailable door) {
+      Navigator.pushNamed(
+        context,
+        '/confirm-delivery',
+        arguments: MovementModel(
+          doorId: door.doorId,
+          code: '',
+          nameSizeDoor: door.nameSize,
+          nameUser: arguments.nameUser,
+          numberDoor: door.name,
+          departmentId: arguments.departmentId,
+        ),
+      );
+    }
+
+    void verifieDoor(DoorAvailable door) {
+      door.total > 0
+          ? (showDialog<String>(
+            context: context,
+            builder:
+                (BuildContext context) => ModalContent(
+                  onPressOk: (state) => {activateButtonNavigate(state, door)},
+                  nameButonOk: 'Si',
+                  onPressCancel: (state) async {
+                    await selectLockerProvider.retry(door);
+                    if (selectLockerProvider.isValid) {
+                      verifieDoor(door);
+                    }
+                  },
+                  nameButonCancel: 'No',
+                  message: "¿Esta abierto el casillero numero # ${door.name} ?",
+                ),
+          ))
+          : null;
+    }
+
+    Future<void> openDoor(DoorAvailable door) async {
+      if (door.total > 0) {
+        await selectLockerProvider.openDoor(door);
+        if (selectLockerProvider.isValid) {
+          verifieDoor(door);
+        }
+      }
+    }
+
+    return Padding(
+      padding: EdgeInsets.only(top: 220, bottom: 200),
+      child: Scaffold(
+        appBar: AppBar(
+          actions: [],
+          title: Text(
+            'Tamaño del casillero',
+            style: TextStyle(color: ConfigColor.appBarTextColor),
+          ),
+        ),
+        body: ResponsiveBuilder(
+          builder:
+              (context, sizingInformation) => Center(
+                child: SingleChildScrollView(
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Padding(
+                          padding: EdgeInsets.all(20),
+                          child: InkWell(
+                            onTap:
+                                () async => {
+                                  await openDoor(
+                                    selectLockerProvider.doorSmall,
+                                  ),
+                                },
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: Color.fromARGB(115, 77, 76, 76),
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              //color: const Color.fromARGB(160, 255, 255, 255),
+                              child: Padding(
+                                padding: EdgeInsets.only(
+                                  top: 5,
+                                  bottom: 10,
+                                  left: 10,
+                                  right: 5,
+                                ),
+                                child: Column(
+                                  children: [
+                                    Padding(
+                                      padding: EdgeInsets.all(80),
+                                      child: Image.asset(
+                                        'assets/images/caja.png',
+                                      ),
+                                    ),
+                                    Text(
+                                      selectLockerProvider.doorSmall.nameSize,
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 25,
+                                      ),
+                                    ),
+                                    Text(
+                                      'Disponibles : ${selectLockerProvider.doorSmall.total}',
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 25,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        child: Padding(
+                          padding: EdgeInsets.all(20),
+                          child: InkWell(
+                            onTap:
+                                () async => {
+                                  await openDoor(
+                                    selectLockerProvider.doorMedium,
+                                  ),
+                                },
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: Color.fromARGB(115, 77, 76, 76),
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              //color: const Color.fromARGB(160, 255, 255, 255),
+                              child: Padding(
+                                padding: EdgeInsets.only(
+                                  top: 5,
+                                  bottom: 10,
+                                  left: 10,
+                                  right: 5,
+                                ),
+                                child: Column(
+                                  children: [
+                                    Padding(
+                                      padding: EdgeInsets.all(40),
+                                      child: Image.asset(
+                                        'assets/images/caja.png',
+                                      ),
+                                    ),
+                                    Text(
+                                      selectLockerProvider.doorMedium.nameSize,
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 25,
+                                      ),
+                                    ),
+                                    Text(
+                                      'disponibles: ${selectLockerProvider.doorMedium.total}',
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 25,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        child: Padding(
+                          padding: EdgeInsets.all(20),
+                          child: InkWell(
+                            onTap:
+                                () async => {
+                                  await openDoor(selectLockerProvider.doorBig),
+                                },
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: Color.fromARGB(115, 77, 76, 76),
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              //color: const Color.fromARGB(160, 255, 255, 255),
+                              child: Padding(
+                                padding: EdgeInsets.only(
+                                  top: 5,
+                                  bottom: 10,
+                                  left: 10,
+                                  right: 5,
+                                ),
+                                child: Column(
+                                  children: [
+                                    Image.asset('assets/images/caja.png'),
+                                    Text(
+                                      selectLockerProvider.doorBig.nameSize,
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 25,
+                                      ),
+                                    ),
+                                    Text(
+                                      'Disponibles: ${selectLockerProvider.doorBig.total.toString()}',
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 25,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+        ),
+      ),
+    );
+  }
+}

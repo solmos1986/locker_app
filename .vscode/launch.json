@@ -20,6 +20,22 @@
             "request": "launch",
             "type": "dart",
             "flutterMode": "release"
+        },
+        {
+            "name": "developer",
+            "request": "launch",
+            "type": "dart",
+            "args": [
+                "--dart-define-from-file=lib/dev.json"
+            ]
+        },
+        {
+            "name": "production",
+            "request": "launch",
+            "type": "dart",
+            "args": [
+                "--dart-define-from-file=lib/prod.json"
+            ]
         }
     ]
 }

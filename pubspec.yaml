@@ -35,6 +35,23 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
   qr_code_scanner_plus: ^2.0.10+1
+  dio: ^5.8.0+1
+  socket_io_client: ^3.1.6
+  provider: ^6.1.5
+  sqflite: ^2.4.2
+  flutter_screen_lock: ^9.2.1+1
+  local_auth: ^2.3.0
+  responsive_builder: ^0.7.1
+  flutter_serial_communication: ^0.2.8
+  flutter_serial: ^0.0.3
+  libserialport: ^0.3.0+1
+  just_audio: ^0.10.4
+  keyboard_detection: ^0.8.0
+  intl: ^0.20.2
+  uuid: ^4.5.1
+  dart_amqp: ^0.3.1
+  background_task: ^0.2.0+2
+  workmanager: ^0.7.0
   #qrscan: ^0.3.3
 
 dev_dependencies:
@@ -60,8 +77,13 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  # assets:
-  #   - images/a_dot_burr.jpeg
+  assets:
+  - assets/images/caja.png
+  - assets/images/cheque.png
+  - assets/images/eliminar.png
+  - assets/images/qr.png
+  - assets/images/contrasena1.png
+  - assets/images/borrar.png
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
