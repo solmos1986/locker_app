@@ -4,6 +4,7 @@ import 'dart:math' as math;
 
 import 'package:background_task/background_task.dart';
 import 'package:flutter/material.dart';
+import 'package:locker_app/config/navigator_key.dart';
 import 'package:locker_app/config/theme.dart';
 import 'package:locker_app/presentation/provider/config_provider.dart';
 import 'package:locker_app/presentation/provider/confirm_reception_provider.dart';
@@ -78,13 +79,13 @@ void main() async {
   // procesando los eventos `open-door` aunque el usuario cambie de pantalla.
   UtilSocketProvider.instance.listen();
 
+  // Escucha `update_data` por Socket.IO y resincroniza la base de datos
+  // local llamando a ConfigProvider.getDataBase(), sin importar la pantalla.
+  UtilUpdateDataProvider.instance.listen();
+
   log("DateTime : ${DateTime.now().toString()}");
   runApp(MyApp());
 }
-
-/// Permite navegar desde fuera del árbol de widgets (p. ej. desde un evento
-/// de Socket.IO recibido mientras se está en otra pantalla).
-final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 class MyApp extends StatefulWidget {
   const MyApp({super.key});

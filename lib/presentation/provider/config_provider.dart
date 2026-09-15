@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/foundation.dart';
 import 'package:locker_app/config/database.dart';
 import 'package:locker_app/repositories/department_repository.dart';
@@ -32,6 +34,7 @@ class ConfigProvider extends ChangeNotifier {
   }
 
   Future<void> getDataBase() async {
+    log('ConfigProvider getDataBase');
     load = true;
     notifyListeners();
     final fecthDatabase = await dataBaseService.getAllDataBase();
@@ -49,5 +52,6 @@ class ConfigProvider extends ChangeNotifier {
 
     load = false;
     notifyListeners();
+    log('ConfigProvider base de datos actualizada');
   }
 }

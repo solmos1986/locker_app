@@ -18,12 +18,17 @@ class SocketService {
   final _openDoorController =
       StreamController<Map<String, dynamic>>.broadcast();
   final _statusController = StreamController<bool>.broadcast();
+  final _updateDataController = StreamController<void>.broadcast();
 
   /// Eventos `open-door` recibidos del servidor.
   Stream<Map<String, dynamic>> get onOpenDoor => _openDoorController.stream;
 
   /// Cambios de estado de conexión (true = conectado).
   Stream<bool> get onStatusChange => _statusController.stream;
+
+  /// Eventos `update_data` recibidos del servidor (aviso de que hay que
+  /// resincronizar la base de datos local).
+  Stream<void> get onUpdateData => _updateDataController.stream;
 
   bool get isConnected => _socket?.connected ?? false;
 
@@ -68,6 +73,7 @@ class SocketService {
       })
       ..on('update_data', (data) {
         log('Update data base message: $data');
+        _updateDataController.add(null);
       });
 
     _socket!.connect();
@@ -87,5 +93,6 @@ class SocketService {
     _socket = null;
     _openDoorController.close();
     _statusController.close();
+    _updateDataController.close();
   }
 }
