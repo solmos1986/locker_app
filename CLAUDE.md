@@ -11,7 +11,9 @@ tablet Android montada rotada 90° (de ahí el `Transform.rotate(angle: pi/2)` q
 
 - controla las cerraduras del locker por un **puerto serial RS-485** (`/dev/ttyS0`, 9600 baudios,
   cadenas HEX) mediante `flutter_serial` / `libserialport`;
-- recibe comandos remotos de "abrir esta puerta" desde un broker **RabbitMQ** (`dart_amqp`, cola `open`);
+- recibe en tiempo real comandos de "abrir esta puerta" y avisos de "resincronizar BD" por
+  **Socket.IO** (`socket_io_client`). RabbitMQ (`dart_amqp`, `UtilRabbtiMqProvider`) fue
+  reemplazado; lo que queda está comentado o sin uso;
 - refleja su configuración y datos de movimientos desde un **backend REST** (Dio) hacia una base
   de datos local **SQLite** (`sqflite`).
 
@@ -44,7 +46,7 @@ la UI rotada / de kiosco.
 
 La configuración en tiempo de ejecución viene de defines de compilación leídos en
 [lib/helper/env.dart](lib/helper/env.dart) (`EnvConfig`): `BASE_URL`, `TOKEN`, `LOCKER_ID`,
-`BUILDING_ID`.
+`BUILDING_ID`, `URL_SOCKET_IO`.
 
 `lib/dev.json` y `lib/prod.json` están en **.gitignore**. Copia
 [lib/dev.json.example.json](lib/dev.json.example.json) para crearlos. Ejecutar sin
@@ -90,11 +92,23 @@ por serial (`ConnectSerial.sendMessage`), luego comparar las tramas `SerialRespo
 (decodificadas con `GetLogReponse`) contra el `responseComand` esperado para confirmar el estado
 abierto/cerrado.
 
-### Flujo de apertura remota
+### Tiempo real por Socket.IO
 
-`UtilRabbtiMqProvider.connecRabbit()` se espera con `await` en `main()` antes de `runApp`. Consume
-la cola `open`; cada mensaje (`OpenDoorModel`, lleva `doorId`) dispara la secuencia de apertura por
-serial descrita arriba.
+[lib/services/socket_service.dart](lib/services/socket_service.dart) (`SocketService`, singleton)
+mantiene **una sola conexión** para toda la app (solo websocket, reconexión automática); las
+pantallas solo se suscriben a sus streams. Al conectar emite `join { locker_id, building_id }` para
+entrar al room del gabinete. `main()` arranca dos oyentes de
+[lib/presentation/provider/socket_provider.dart](lib/presentation/provider/socket_provider.dart)
+antes de `runApp`:
+
+- `UtilSocketProvider` — evento `door` `{ message: <door_id> }` → busca el comando `"abrir"` de
+  esa puerta y lo envía por serial (secuencia descrita arriba).
+- `UtilUpdateDataProvider` — evento `update_data` → llama a `ConfigProvider.getDataBase()`
+  (resincronización completa) usando `navigatorKey` para obtener un `context` fuera del árbol.
+
+`SocketProvider` (en el `MultiProvider` raíz) expone el estado conectado/desconectado para la UI, y
+`_MyAppState.didChangeAppLifecycleState` llama a `SocketService.reconnect()` al volver de segundo
+plano. Los eventos los origina el backend Laravel y los reenvía el relay `socket-io-locker-app`.
 
 ### Flujo de movimientos
 
