@@ -84,11 +84,12 @@ class MovementRepository {
 
   Future<List<VerifiedCodeModel>> verifiedCode(String code) async {
     final db = await LockeAppDatabase.instance.database;
-    // Un código es válido solo si su entrega (tipo 1) aún no tiene retiro (tipo 2).
+    // Un código es válido solo si su entrega (tipo 1) aún no tiene retiro (tipo 2)
+    // ni fue intervenida desde el panel (tipo 4).
     String query =
         "SELECT door.door_id, movement.department_id, movement.id_ref, door.name as name_door, door_size.name as name_size, movement.movement_id, movement.create_at, movement.code FROM movement INNER JOIN door on door.door_id=movement.door_id INNER JOIN door_size on door_size.door_size_id=door.door_size_id "
         "WHERE movement.code = ? and movement.type_movement_id = 1 "
-        "and NOT EXISTS (SELECT 1 FROM movement m2 WHERE m2.id_ref = movement.id_ref and m2.code = movement.code and m2.door_id = movement.door_id and m2.type_movement_id = 2) "
+        "and NOT EXISTS (SELECT 1 FROM movement m2 WHERE m2.id_ref = movement.id_ref and m2.code = movement.code and m2.door_id = movement.door_id and m2.type_movement_id IN (2, 4)) "
         "ORDER BY movement.movement_id DESC";
     final result = await db.rawQuery(query, [code]);
     return result.map((json) => VerifiedCodeModel.fromJson(json)).toList();
