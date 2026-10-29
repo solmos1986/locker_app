@@ -21,7 +21,7 @@ class ReceptionScreen extends StatelessWidget {
         users
             .map(
               (user) => Text(
-                'Departamento ${user.name}',
+                user.name,
                 style: TextStyle(color: Colors.white),
               ),
             )
