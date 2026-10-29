@@ -123,8 +123,8 @@ class LockeAppDatabase {
         building_id INTEGER NOT NULL,
         name TEXT NOT NULL,
         state INTEGER NOT NULL,
-        create_at TIMESTAMP DEFAULT (datetime('now','localtime')),
-        update_at TIMESTAMP DEFAULT (datetime('now','localtime'))
+        create_at TIMESTAMP DEFAULT (datetime('now')),
+        update_at TIMESTAMP DEFAULT (datetime('now'))
       )
         ''');
   }
@@ -138,7 +138,7 @@ class LockeAppDatabase {
         address TEXT NOT NULL,
         type_locker_id INTEGER NOT NULL,
         state TINYINT NOT NULL DEFAULT 1,
-        create_at TIMESTAMP DEFAULT (datetime('now','localtime'))
+        create_at TIMESTAMP DEFAULT (datetime('now'))
       )
         ''');
   }
@@ -150,7 +150,7 @@ class LockeAppDatabase {
         client_id INTEGER NOT NULL,
         name TEXT NOT NULL,
         state TINYINT NOT NULL DEFAULT 1,
-        create_at TIMESTAMP DEFAULT (datetime('now','localtime')),
+        create_at TIMESTAMP DEFAULT (datetime('now')),
         FOREIGN KEY(client_id) REFERENCES client(client_id)
       )
         ''');
@@ -163,7 +163,7 @@ class LockeAppDatabase {
         locker_id INTEGER  NOT NULL,
         serie TEXT NOT NULL,
         name TEXT NOT NULL,
-        create_at TIMESTAMP DEFAULT (datetime('now','localtime')),
+        create_at TIMESTAMP DEFAULT (datetime('now')),
         FOREIGN KEY(locker_id) REFERENCES locker(locker_id)
       )
         ''');
@@ -174,7 +174,7 @@ class LockeAppDatabase {
         CREATE TABLE door_size (
         door_size_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
         name TEXT NOT NULL,
-        create_at TIMESTAMP DEFAULT (datetime('now','localtime'))
+        create_at TIMESTAMP DEFAULT (datetime('now'))
       )
         ''');
   }
@@ -188,7 +188,7 @@ class LockeAppDatabase {
         `order` INTEGER NOT NULL,
         name TEXT NOT NULL,
         state TINYINT NOT NULL DEFAULT 1,
-        create_at TIMESTAMP DEFAULT (datetime('now','localtime')),
+        create_at TIMESTAMP DEFAULT (datetime('now')),
         FOREIGN KEY(door_size_id) REFERENCES door_size(door_size_id),
         FOREIGN KEY(controller_id) REFERENCES controller(controller_id)
       )
@@ -207,7 +207,7 @@ class LockeAppDatabase {
         id_ref TEXT NOT NULL,
         status_integrate TINYINT NOT NULL DEFAULT 0,
         status_notificate TINYINT NOT NULL DEFAULT 0,
-        create_at TIMESTAMP DEFAULT (datetime('now','localtime')),
+        create_at TIMESTAMP DEFAULT (datetime('now')),
         FOREIGN KEY(door_id) REFERENCES door(door_id),
         FOREIGN KEY(department_id) REFERENCES department(department_id)
       )
@@ -221,7 +221,7 @@ class LockeAppDatabase {
         door_id INTEGER NOT NULL,
         comand TEXT NOT NULL,
         name TEXT NOT NULL,
-        create_at TIMESTAMP DEFAULT (datetime('now','localtime')),
+        create_at TIMESTAMP DEFAULT (datetime('now')),
         FOREIGN KEY(door_id) REFERENCES door(door_id)
       )
         ''');
@@ -234,7 +234,7 @@ class LockeAppDatabase {
         request_comand_id INTEGER NOT NULL,
         comand TEXT NOT NULL,
         name TEXT NOT NULL,
-        create_at TIMESTAMP DEFAULT (datetime('now','localtime')),
+        create_at TIMESTAMP DEFAULT (datetime('now')),
         FOREIGN KEY(request_comand_id) REFERENCES request_comand(request_comand_id)
       )
         ''');
