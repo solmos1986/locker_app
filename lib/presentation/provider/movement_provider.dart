@@ -18,8 +18,6 @@ import 'package:locker_app/utils/sonido.dart';
 import 'package:uuid/uuid.dart';
 
 class MovementProvider extends ChangeNotifier {
-  String idRef = Uuid().v4();
-
   final sonido = Sonido();
   final detectStream = DetectStream();
   final getLogReponse = GetLogReponse();
@@ -33,8 +31,9 @@ class MovementProvider extends ChangeNotifier {
   List<DoorEntity> doorList = [];
 
   Future<void> sendMovement(MovementModel movement) async {
-    final generateCode = GenerateCode();
-    var code = generateCode.generateCode(movement.nameUser);
+    // El provider es global: el id_ref debe generarse por cada entrega.
+    final idRef = const Uuid().v4();
+    final code = await GenerateCode().generateCode();
     log('AÑADIENDO MOVIMIENTO A SQLITE');
     await movementRepository.updateDoorForMovement(0, movement.doorId);
     await movementRepository.pendingMovement(

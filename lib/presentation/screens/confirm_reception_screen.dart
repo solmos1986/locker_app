@@ -22,16 +22,20 @@ class ConfirmReceptionScreen extends StatelessWidget {
 
     Future<void> activateButtonNavigate() async {
       await movementProvider.confirmeReception(arguments);
+      if (!context.mounted) return;
       Navigator.pushNamedAndRemoveUntil(context, '/home', (route) => false);
     }
 
     void openModal(VerifiedCodeModel verified) {
       showDialog<String>(
         context: context,
+        barrierDismissible: false,
         builder:
-            (BuildContext context) => ModalContent(
+            (BuildContext dialogContext) => ModalContent(
               message: "¿Abrio la puerta?",
               onPressOk: (state) async {
+                // Cerrar antes de guardar evita que un doble toque registre dos retiros.
+                Navigator.pop(dialogContext);
                 await activateButtonNavigate();
               },
               nameButonOk: 'Si',
