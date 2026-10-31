@@ -27,7 +27,8 @@ class SocketService {
   Stream<bool> get onStatusChange => _statusController.stream;
 
   /// Eventos `update_data` recibidos del servidor (aviso de que hay que
-  /// resincronizar la base de datos local).
+  /// resincronizar la base de datos local). También se emite en cada conexión
+  /// (inicial o reconexión): mientras estuvo desconectada pudo perder avisos.
   Stream<void> get onUpdateData => _updateDataController.stream;
 
   bool get isConnected => _socket?.connected ?? false;
@@ -58,6 +59,10 @@ class SocketService {
           'locker_id': EnvConfig.lockerId,
           'building_id': EnvConfig.buildingId,
         });
+        // Los avisos `update_data` enviados mientras la tablet estaba apagada o
+        // sin conexión se pierden: se resincroniza al (re)conectar.
+        log('SocketService resincronizando base de datos tras conectar');
+        _updateDataController.add(null);
       })
       ..onDisconnect((_) {
         log('SocketService desconectado');
