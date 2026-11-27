@@ -42,7 +42,10 @@ class DepartmentRepository {
     final db = await LockeAppDatabase.instance.database;
     const orderBy = ' department_id ASC';
     final result = await db.query(DepartmentFields.tableName, orderBy: orderBy);
-    return result.map((json) => DepartmentEntity.fromJson(json)).toList();
+    final departments =
+        result.map((json) => DepartmentEntity.fromJson(json)).toList();
+    departments.sort((a, b) => compareDepartmentNames(a.name, b.name));
+    return departments;
   }
 
   Future<int> update(DepartmentEntity departament) async {
@@ -63,6 +66,26 @@ class DepartmentRepository {
       whereArgs: [id],
     );
   }
+}
+
+final _numeroInicial = RegExp(r'^\s*(\d+)');
+
+/// Orden natural de nombres de departamento: primero los que empiezan por
+/// número, de menor a mayor (1, 2, 100, 950), y luego los que empiezan por
+/// letra, de la A a la Z sin distinguir mayúsculas.
+int compareDepartmentNames(String a, String b) {
+  final numA = _numeroInicial.firstMatch(a);
+  final numB = _numeroInicial.firstMatch(b);
+
+  if (numA != null && numB != null) {
+    final cmp = BigInt.parse(numA.group(1)!).compareTo(BigInt.parse(numB.group(1)!));
+    if (cmp != 0) return cmp;
+  } else if (numA != null) {
+    return -1;
+  } else if (numB != null) {
+    return 1;
+  }
+  return a.trim().toLowerCase().compareTo(b.trim().toLowerCase());
 }
 
 class DepartmentFields {
